@@ -11,8 +11,9 @@ let colorCatalog = {
 }
 
 class InfoTable {
-	constructor(id, text = '', color = 'green', time = 200, columns = 54) {
-		this.id = id;
+	constructor(rootClass, text = '', color = 'green', time = 200, columns = 54) {
+		// TODO: add check includes point ?
+		this.rootClass = rootClass;
 		this.text = text;
 		this.color = colorCatalog[color];
 		this.time = time;
@@ -22,6 +23,9 @@ class InfoTable {
 	}
 
 	createEmptyBoard() {
+		// TODO: Don't use jquery
+		// TODO: set style for root element & img through js
+		// TODO: 
 		for (let j = 0; j < this.columns; j++) {
 			for (let i = 0; i < this._rows; i++) {
 
@@ -32,7 +36,7 @@ class InfoTable {
 					'left': () => `${25 * j}px`,
 				});
 
-				$('.row1').append(img);
+				$(`${this.rootClass}`).append(img);
 			}
 		}
 	}
@@ -44,6 +48,7 @@ class InfoTable {
 		let convertedText = [];
 
 		text.forEach((symbol, index) => {
+			// TODO: if (symbol === ' ') 0_0;
 			// letter coordinates 
 			let letterCoordinates = characters[symbol];
 			let processedLetterCoordinates = letterCoordinates.map(number => index ? number + index * sizeOneLetterAndSpace : number);
@@ -66,11 +71,12 @@ class InfoTable {
 		// }, this.time);
 
 		function print(preparedText) {
-			let imagesFromDOM = $('.row1 img')
+			let imagesFromDOM = $(`${this.rootClass} img`);
 			preparedText.forEach(value => {
 				$(imagesFromDOM[value]).attr('src', this.color.active);
-			})
+			});
 		}
+
 		function clear() { }
 		// function print() {}
 	}
@@ -79,11 +85,9 @@ class InfoTable {
 
 }
 
-let infoTable = new InfoTable('root', 'Hello');
+let infoTable = new InfoTable('.scoreboard', 'Hello');
 infoTable.show();
 infoTable.stop();
-
-
 
 // movement data
 // setInterval(function () {

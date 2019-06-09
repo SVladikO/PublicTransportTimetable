@@ -1,0 +1,12 @@
+.scoreboard {
+	height: 180px;
+	background: black;
+	position: relative;
+	top:5px;
+	left:5px;
+}
+.scoreboard img {
+ position: absolute;
+ width:20px;
+ height:20px;
+ }
