@@ -22,6 +22,10 @@ class InfoTable {
 
 	createEmptyBoard() {
 		let root = document.getElementsByClassName(this.rootClass)[0];
+		let images = root.getElementsByTagName('img');
+
+		if (images.length > 0) return;
+
 		root.style.position = 'relative';
 		root.style.background = 'black';
 		root.style.height = '180px';
@@ -81,6 +85,7 @@ class InfoTable {
 
 		function move() {
 			convertedText = convertedText.map(num => num -= 7);
+			if (convertedText.slice(-1)[0] < 0) clearInterval(intervalID);
 		}
 
 		function switchColor(color) {
