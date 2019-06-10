@@ -71,17 +71,23 @@ class InfoTable {
 
 	show(counter) {
 		let convertedText = this.convertText();
-		// let intervalID = 
-		// setInterval(() => {
-		print.call(this, convertedText);
-		// }, this.time);
+		let color = this.color;
 
-		function print(preparedText) {
+		let intervalID = setInterval(() => {
+			switchColor(color.disabled);
+			move();
+			switchColor(color.active);
+		}, this.time);
+
+		function move() {
+			convertedText = convertedText.map(num => num -= 7);
+		}
+
+		function switchColor(color) {
 			let root = document.getElementsByClassName('scoreboard')[0];
 			let images = root.getElementsByTagName('IMG');
-			let color = this.color.active;
-			preparedText.forEach((value) => {
-				images[value].src = color;
+			convertedText.forEach((value) => {
+				if (0 <= value) images[value].src = color;
 			});
 		}
 
@@ -93,6 +99,6 @@ class InfoTable {
 
 }
 
-let infoTable = new InfoTable('scoreboard', '1');
+let infoTable = new InfoTable('scoreboard', '1111111');
 infoTable.show();
 infoTable.stop();
