@@ -76,6 +76,7 @@ class InfoTable {
 	show(counter) {
 		let convertedText = this.convertText();
 		let color = this.color;
+		let rootClass = this.rootClass;
 
 		let intervalID = setInterval(() => {
 			switchColor(color.disabled);
@@ -89,10 +90,11 @@ class InfoTable {
 		}
 
 		function switchColor(color) {
-			let root = document.getElementsByClassName('scoreboard')[0];
+			let root = document.getElementsByClassName(rootClass)[0];
 			let images = root.getElementsByTagName('IMG');
 			convertedText.forEach((value) => {
-				if (0 <= value) images[value].src = color;
+				let image = images[value];
+				if (0 <= value && image) image.src = color;
 			});
 		}
 
