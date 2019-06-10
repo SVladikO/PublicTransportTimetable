@@ -9,10 +9,8 @@ let colorCatalog = {
 		disabled: 'public/img/green_off.jpg'
 	}
 }
-
 class InfoTable {
 	constructor(rootClass, text = '', color = 'green', time = 200, columns = 54) {
-		// TODO: add check includes point ?
 		this.rootClass = rootClass;
 		this.text = text;
 		this.color = colorCatalog[color];
@@ -23,20 +21,21 @@ class InfoTable {
 	}
 
 	createEmptyBoard() {
-		// TODO: Don't use jquery
-		// TODO: set style for root element & img through js
-		// TODO: 
+		let root = document.getElementsByClassName(this.rootClass)[0];
+		root.style.position = 'relative';
+		root.style.background = 'black';
+		root.style.height = '180px';
+
 		for (let j = 0; j < this.columns; j++) {
 			for (let i = 0; i < this._rows; i++) {
-
-				let img = $('<img>');
-				img.attr('src', this.color.disabled);
-				img.css({
-					'top': () => `${25 * i}px`,
-					'left': () => `${25 * j}px`,
-				});
-
-				$(`${this.rootClass}`).append(img);
+				let img = document.createElement('img');
+				img.src = this.color.disabled;
+				img.style.width = '20px';
+				img.style.height = '20px';
+				img.style.position = 'absolute';
+				img.style.top = `${25 * i}px`;
+				img.style.left = `${25 * j}px`;
+				root.appendChild(img);
 			}
 		}
 	}
@@ -55,25 +54,21 @@ class InfoTable {
 			convertedText.push(...processedLetterCoordinates);
 
 		});
-
-		log(convertedText);
-
 		return convertedText;
 	}
 
 	show(counter) {
 		let convertedText = this.convertText();
-
-		//TODO universal. use ID
 		// let intervalID = 
 		// setInterval(() => {
 		print.call(this, convertedText);
 		// }, this.time);
 
 		function print(preparedText) {
-			let imagesFromDOM = $(`${this.rootClass} img`);
-			preparedText.forEach(value => {
-				$(imagesFromDOM[value]).attr('src', this.color.active);
+			let root = document.getElementsByClassName('scoreboard')[0];
+			let images = root.getElementsByTagName('IMG');
+			preparedText.forEach((value) => {
+				images[value].src = this.color.active;
 			});
 		}
 
@@ -85,17 +80,6 @@ class InfoTable {
 
 }
 
-let infoTable = new InfoTable('.scoreboard', 'Hello');
+let infoTable = new InfoTable('scoreboard', 'Hello');
 infoTable.show();
 infoTable.stop();
-
-// movement data
-// setInterval(function () {
-// 	print(arrToPrint, defaultColor);
-// 	for (var i = 0; i < arrToPrint.length; i++) {
-// 		arrToPrint[i] = arrToPrint[i] - 7;
-// 	}
-// 	print(arrToPrint, activeColor);
-// }, 200);
-
-
