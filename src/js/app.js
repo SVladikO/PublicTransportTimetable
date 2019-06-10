@@ -10,12 +10,12 @@ let colorCatalog = {
 	}
 }
 class InfoTable {
-	constructor(rootClass, text = '', time = 200, color = 'green', columns = 54) {
+	constructor(rootClass, text = '', time = 200, columns = 54, color = 'green') {
 		this.rootClass = rootClass;
 		this.text = text;
 		this.time = time;
-		this.color = colorCatalog[color];
 		this.columns = columns;
+		this.color = colorCatalog[color];
 		this._rows = 7;
 		this.createEmptyBoard();
 	}
