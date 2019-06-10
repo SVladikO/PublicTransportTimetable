@@ -123,20 +123,39 @@ class InfoTable {
 		});
 	}
 
-	moveLeft() {
+	moveLeft(time) {
+		let customTime = time;
+		const POINTS_AMOUNT = this._rows * this.columns;
+
 		this._moveCoreFunctionality(
 			function () {
 				this.convertedText = this.convertedText.map(num => num -= 7);
-				if (this.convertedText.slice(-1)[0] < 0) clearInterval(this.intervalID);
+				if (this.convertedText.slice(-1)[0] < 0) {
+					if (--customTime) {
+						this.convertedText = this.convertedText.map(num => num += POINTS_AMOUNT);
+					} else {
+						clearInterval(this.intervalID);
+					}
+				}
 			}.bind(this)
 		);
 	}
-	moveRight() {
+
+	moveRight(time) {
+		let customTime = time;
+		const POINTS_AMOUNT = this._rows * this.columns;
+
 		this._moveCoreFunctionality(
 			function () {
 				// increment all coordinates on 7(one column) points
 				this.convertedText = this.convertedText.map(num => num += 7);
-				if (this.convertedText[0] > this._rows * this.columns) clearInterval(this.intervalID);
+				if (this.convertedText[0] > POINTS_AMOUNT) {
+					if (--customTime) {
+						this.convertedText = this.convertedText.map(num => num -= POINTS_AMOUNT);
+					} else {
+						clearInterval(this.intervalID);
+					}
+				}
 			}.bind(this)
 		);
 	}
