@@ -45,16 +45,28 @@ class InfoTable {
 
 		let text = this.text.toLowerCase().split('');
 		let convertedText = [];
+		let spaceCounter = 0;
+		let rows = this._rows;
 
-		text.forEach((symbol, index) => {
-			// TODO: if (symbol === ' ') 0_0;
-			// letter coordinates 
-			let letterCoordinates = characters[symbol];
-			let processedLetterCoordinates = letterCoordinates.map(number => index ? number + index * sizeOneLetterAndSpace : number);
-			convertedText.push(...processedLetterCoordinates);
-
+		text.forEach((symbol, textIndex) => {
+			if (symbol === ' ') {
+				spaceCounter++;
+			} else {
+				let characterCoordinates = characters[symbol];
+				let coordinates = characterCoordinates.map((v) => v + getIncrement(textIndex));
+				convertedText.push(...coordinates);
+			}
 		});
 		return convertedText;
+
+		//Handle space
+		function getIncrement(index) {
+			if (!index) return 0;
+			let charactersAmount = index - spaceCounter;
+			let correctIncrement = charactersAmount * sizeOneLetterAndSpace + spaceCounter * rows;
+
+			return correctIncrement;
+		}
 	}
 
 	show(counter) {
@@ -67,8 +79,9 @@ class InfoTable {
 		function print(preparedText) {
 			let root = document.getElementsByClassName('scoreboard')[0];
 			let images = root.getElementsByTagName('IMG');
+			let color = this.color.active;
 			preparedText.forEach((value) => {
-				images[value].src = this.color.active;
+				images[value].src = color;
 			});
 		}
 
@@ -80,6 +93,6 @@ class InfoTable {
 
 }
 
-let infoTable = new InfoTable('scoreboard', 'Hello');
+let infoTable = new InfoTable('scoreboard', '1');
 infoTable.show();
 infoTable.stop();
