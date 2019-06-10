@@ -19,6 +19,7 @@ class InfoTable {
 		this._rows = 7;
 		this.createEmptyBoard();
 		this.convertedText = this.getConvertedText(text);
+		this.intervalID;
 	}
 
 	createEmptyBoard() {
@@ -111,15 +112,16 @@ class InfoTable {
 		this._moveCoreFunctionality(
 			function () {
 				this.convertedText = this.convertedText.map(num => num -= 7);
-				if (this.convertedText.slice(-1)[0] < 0) clearInterval(intervalID);
+				if (this.convertedText.slice(-1)[0] < 0) clearInterval(this.intervalID);
 			}.bind(this)
 		);
 	}
 	moveRight() {
 		this._moveCoreFunctionality(
 			function () {
+				// increment all coordinates on 7(one column) points
 				this.convertedText = this.convertedText.map(num => num += 7);
-				if (this.convertedText.slice(-1)[0] < 0) clearInterval(intervalID);
+				if (this.convertedText[0] > this._rows * this.columns) clearInterval(this.intervalID);
 			}.bind(this)
 		);
 	}
@@ -128,13 +130,13 @@ class InfoTable {
 		let color = this.color;
 		let self = this;
 
-		let intervalID = setInterval(() => {
+		this.intervalID = setInterval(() => {
 			try {
 				self.switchColor(color.disabled);
 				callback.call(this);
 				self.switchColor(color.active);
 			} catch (error) {
-				clearInterval(intervalID);
+				clearInterval(this.intervalID);
 				throw error;
 			}
 		}, this.time);
