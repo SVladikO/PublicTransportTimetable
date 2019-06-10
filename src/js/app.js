@@ -46,11 +46,15 @@ class InfoTable {
 		}
 	}
 
+	/**
+	 * One space (equal one column) between characters.
+	 * @param {*} text 
+	 */
 	getConvertedText(text) {
 		if (!text) return [];
 
 		// 5 columns for letter & 1 for space. 6*7=42
-		const letterStep = 42;
+		const STEP_FOR_LETTER = 42;
 		let customSymbols = text.toLowerCase().split('');
 		let convertedText = [];
 		let counterSpace = 0;
@@ -62,6 +66,12 @@ class InfoTable {
 		let smallCharacters = ".':";
 		let smallCharactersStep = 14;
 		let counterSmallCharacters = 0;
+
+		/**
+		 * For one we need 4 columns 
+		 */
+		let counterOne = 0;
+		const STEP_FOR_ONE = 28;
 
 		customSymbols.forEach((symbol, textIndex) => {
 			if (symbol === ' ') {
@@ -75,6 +85,8 @@ class InfoTable {
 
 				if (smallCharacters.includes(symbol)) {
 					counterSmallCharacters++;
+				} else if (symbol === '1') {
+					counterOne++
 				}
 			}
 		});
@@ -84,8 +96,11 @@ class InfoTable {
 		//Handle space
 		function getIncrement(index) {
 			if (!index) return 0;
-			let lettersAmount = index - counterSpace - counterSmallCharacters;
-			let increment = lettersAmount * letterStep + counterSpace * rows + counterSmallCharacters * smallCharactersStep;
+			let lettersAmount = index - counterSpace - counterSmallCharacters - counterOne;
+			let increment = lettersAmount * STEP_FOR_LETTER
+				+ counterSpace * rows
+				+ counterSmallCharacters * smallCharactersStep
+				+ counterOne * STEP_FOR_ONE;
 
 			return increment;
 		}
