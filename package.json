@@ -4,7 +4,7 @@
   "description": "Print info on the page in format as public transport table. ",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --entry ./src/js/app.js --output-filename ./dist/bundle.js -w"
+    "dev": "webpack-dev-server --entry ./index.js --output-filename ./dist/bundle.js -w"
   },
   "repository": {
     "type": "git",

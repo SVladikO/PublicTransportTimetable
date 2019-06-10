@@ -99,6 +99,4 @@ class InfoTable {
 
 }
 
-let infoTable = new InfoTable('scoreboard', '1111111');
-infoTable.show();
-infoTable.stop();
+module.exports = InfoTable;
