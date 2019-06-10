@@ -91,19 +91,7 @@ class InfoTable {
 	}
 
 	show() {
-		let color = this.color;
-		let self = this;
-
-		let intervalID = setInterval(() => {
-			try {
-				self.switchColor(color.disabled);
-				self.moveLeft();
-				self.switchColor(color.active);
-			} catch (error) {
-				clearInterval(intervalID);
-				throw error;
-			}
-		}, this.time);
+		this.switchColor(this.color.active);
 	}
 
 	switchColor(color) {
@@ -120,10 +108,37 @@ class InfoTable {
 	}
 
 	moveLeft() {
-		this.convertedText = this.convertedText.map(num => num -= 7);
-		if (this.convertedText.slice(-1)[0] < 0) clearInterval(intervalID);
+		this._moveCoreFunctionality(
+			function () {
+				this.convertedText = this.convertedText.map(num => num -= 7);
+				if (this.convertedText.slice(-1)[0] < 0) clearInterval(intervalID);
+			}.bind(this)
+		);
 	}
-	moveRight() { }
+	moveRight() {
+		this._moveCoreFunctionality(
+			function () {
+				this.convertedText = this.convertedText.map(num => num += 7);
+				if (this.convertedText.slice(-1)[0] < 0) clearInterval(intervalID);
+			}.bind(this)
+		);
+	}
+
+	_moveCoreFunctionality(callback) {
+		let color = this.color;
+		let self = this;
+
+		let intervalID = setInterval(() => {
+			try {
+				self.switchColor(color.disabled);
+				callback.call(this);
+				self.switchColor(color.active);
+			} catch (error) {
+				clearInterval(intervalID);
+				throw error;
+			}
+		}, this.time);
+	}
 	stop() { }
 
 }
