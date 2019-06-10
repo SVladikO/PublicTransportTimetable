@@ -45,20 +45,34 @@ class InfoTable {
 	}
 
 	convertText() {
-		const sizeOneLetterAndSpace = 42;
+		// 5 columns for letter & 1 for space. 6*7=42
+		const letterStep = 42;
 
 		let text = this.text.toLowerCase().split('');
 		let convertedText = [];
-		let spaceCounter = 0;
+		let counterSpace = 0;
 		let rows = this._rows;
+
+		/**
+		 * Them need only two columns one for character & one for space after him
+		 */
+		let smallCharacters = ".':";
+		let smallCharactersStep = 14;
+		let counterSmallCharacters = 0;
 
 		text.forEach((symbol, textIndex) => {
 			if (symbol === ' ') {
-				spaceCounter++;
+				counterSpace++;
 			} else {
 				let characterCoordinates = characters[symbol];
-				let coordinates = characterCoordinates.map((v) => v + getIncrement(textIndex));
+				// if (!characterCoordinates) return;
+				let increment = getIncrement(textIndex);
+				let coordinates = characterCoordinates.map(number => number + increment);
 				convertedText.push(...coordinates);
+
+				if (smallCharacters.includes(symbol)) {
+					counterSmallCharacters++;
+				}
 			}
 		});
 		return convertedText;
@@ -66,10 +80,10 @@ class InfoTable {
 		//Handle space
 		function getIncrement(index) {
 			if (!index) return 0;
-			let charactersAmount = index - spaceCounter;
-			let correctIncrement = charactersAmount * sizeOneLetterAndSpace + spaceCounter * rows;
+			let lettersAmount = index - counterSpace - counterSmallCharacters;
+			let increment = lettersAmount * letterStep + counterSpace * rows + counterSmallCharacters * smallCharactersStep;
 
-			return correctIncrement;
+			return increment;
 		}
 	}
 
@@ -94,12 +108,15 @@ class InfoTable {
 			let images = root.getElementsByTagName('IMG');
 			convertedText.forEach((value) => {
 				let image = images[value];
+				/** 
+				 * We check image because size textCoordinates 
+				 * can be bigger than number of points on table
+				 */
 				if (0 <= value && image) image.src = color;
 			});
 		}
 
 		function clear() { }
-		// function print() {}
 	}
 
 	stop() { }
