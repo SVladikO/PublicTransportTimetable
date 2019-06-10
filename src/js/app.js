@@ -1,6 +1,6 @@
 'use strict';
 
-let characters = require('./characters.json');
+const CHARACTERS_CATALOG = require('./characters.json');
 
 let log = console.log;
 let colorCatalog = {
@@ -18,6 +18,7 @@ class InfoTable {
 		this.color = colorCatalog[color];
 		this._rows = 7;
 		this.createEmptyBoard();
+		this.convertedText = this.getConvertedText(text);
 	}
 
 	createEmptyBoard() {
@@ -44,11 +45,12 @@ class InfoTable {
 		}
 	}
 
-	convertText() {
+	getConvertedText(text) {
+		if (!text) return [];
+
 		// 5 columns for letter & 1 for space. 6*7=42
 		const letterStep = 42;
-
-		let text = this.text.toLowerCase().split('');
+		let customSymbols = text.toLowerCase().split('');
 		let convertedText = [];
 		let counterSpace = 0;
 		let rows = this._rows;
@@ -60,11 +62,11 @@ class InfoTable {
 		let smallCharactersStep = 14;
 		let counterSmallCharacters = 0;
 
-		text.forEach((symbol, textIndex) => {
+		customSymbols.forEach((symbol, textIndex) => {
 			if (symbol === ' ') {
 				counterSpace++;
 			} else {
-				let characterCoordinates = characters[symbol];
+				let characterCoordinates = CHARACTERS_CATALOG[symbol];
 				// if (!characterCoordinates) return;
 				let increment = getIncrement(textIndex);
 				let coordinates = characterCoordinates.map(number => number + increment);
@@ -75,6 +77,7 @@ class InfoTable {
 				}
 			}
 		});
+
 		return convertedText;
 
 		//Handle space
@@ -87,38 +90,40 @@ class InfoTable {
 		}
 	}
 
-	show(counter) {
-		let convertedText = this.convertText();
+	show() {
 		let color = this.color;
-		let rootClass = this.rootClass;
+		let self = this;
 
 		let intervalID = setInterval(() => {
-			switchColor(color.disabled);
-			move();
-			switchColor(color.active);
+			try {
+				self.switchColor(color.disabled);
+				self.moveLeft();
+				self.switchColor(color.active);
+			} catch (error) {
+				clearInterval(intervalID);
+				throw error;
+			}
 		}, this.time);
-
-		function move() {
-			convertedText = convertedText.map(num => num -= 7);
-			if (convertedText.slice(-1)[0] < 0) clearInterval(intervalID);
-		}
-
-		function switchColor(color) {
-			let root = document.getElementsByClassName(rootClass)[0];
-			let images = root.getElementsByTagName('IMG');
-			convertedText.forEach((value) => {
-				let image = images[value];
-				/** 
-				 * We check image because size textCoordinates 
-				 * can be bigger than number of points on table
-				 */
-				if (0 <= value && image) image.src = color;
-			});
-		}
-
-		function clear() { }
 	}
 
+	switchColor(color) {
+		let root = document.getElementsByClassName(this.rootClass)[0];
+		let images = root.getElementsByTagName('IMG');
+		this.convertedText.forEach((value) => {
+			let image = images[value];
+			/** 
+			 * We check image because size textCoordinates 
+			 * can be bigger/smaller than number of points on table
+			 */
+			if (image) image.src = color;
+		});
+	}
+
+	moveLeft() {
+		this.convertedText = this.convertedText.map(num => num -= 7);
+		if (this.convertedText.slice(-1)[0] < 0) clearInterval(intervalID);
+	}
+	moveRight() { }
 	stop() { }
 
 }
