@@ -1,0 +1,28 @@
+{
+  "name": "info_table",
+  "version": "1.0.0",
+  "description": "Print info on the page in format as public transport table. ",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --entry ./index.js --output-filename ./dist/bundle.js -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SVladikO/PublicTransportTimetable.git"
+  },
+  "keywords": [
+    "info_table",
+    "time_table"
+  ],
+  "author": "vlad.serhiychuk@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SVladikO/PublicTransportTimetable/issues"
+  },
+  "homepage": "https://github.com/SVladikO/PublicTransportTimetable#readme",
+  "dependencies": {
+    "webpack": "^4.29.4",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
+  }
+}
