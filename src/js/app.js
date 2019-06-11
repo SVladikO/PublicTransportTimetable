@@ -17,14 +17,65 @@ class InfoTable {
 		this.columns = columns;
 		this.color = colorCatalog[color];
 		this._rows = 7;
-		this.createEmptyBoard();
+		this._createEmptyBoard();
 		this.images = this._getImgFromDOM();
-		this.convertedText = this.getConvertedText(text);
+		this.convertedText = this._getConvertedText(text);
 		this.intervalID;
 		this.isActiveColor = false;
 	}
 
-	createEmptyBoard() {
+	show() {
+		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
+	}
+
+	clear() {
+		clearInterval(this.intervalID);
+		this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+	}
+
+	moveLeft(time) {
+		let customTime = time;
+		const POINTS_AMOUNT = this._rows * this.columns;
+
+		this._goToRight();
+		this._moveCoreFunctionality(checkPosition, changePosition);
+
+		function checkPosition(position) {
+			if (this.convertedText.slice(-1)[0] < 0) {
+				if (--customTime) {
+					this._goToRight();
+				} else {
+					clearInterval(this.intervalID);
+				}
+			}
+		}
+
+		function changePosition(position) {
+			return position - this._rows;
+		}
+	}
+
+	moveRight(time) {
+		let customTime = time;
+		const POINTS_AMOUNT = this._rows * this.columns;
+
+		this._goToLeft();
+		this._moveCoreFunctionality(checkPosition, changePosition);
+
+		function checkPosition() {
+			if (this.convertedText[0] > POINTS_AMOUNT) {
+				if (--customTime) {
+					this._goToLeft();
+				} else {
+					clearInterval(this.intervalID);
+				}
+			}
+		}
+
+		function changePosition(position) { return position + this._rows };
+	}
+
+	_createEmptyBoard() {
 		let root = document.getElementsByClassName(this.rootClass)[0];
 		let images = root.getElementsByTagName('img');
 
@@ -52,7 +103,7 @@ class InfoTable {
 	 * One space (equal one column) between characters.
 	 * @param {*} text 
 	 */
-	getConvertedText(text) {
+	_getConvertedText(text) {
 		if (!text) return [];
 
 		// 5 columns for letter & 1 for space. 6*7=42
@@ -108,67 +159,20 @@ class InfoTable {
 		}
 	}
 
-	show() {
-		this._switchColor(this.color.active);
+	_goToRight() {
+		const POSITION_FIRST = this.convertedText[0];
+		const INCREMENT = Math.floor(POSITION_FIRST / -this._rows) * this._rows + this._rows * this.columns;
+		this.convertedText = this.convertedText.map(num => num += INCREMENT);
+	}
+	_goToLeft() {
+		const POSITION_LAST = this.convertedText.slice(-1)[0];
+		const INCREMENT = Math.floor(POSITION_LAST / this._rows) * this._rows;
+		this.convertedText = this.convertedText.map(num => num -= INCREMENT);
 	}
 
 	_getImgFromDOM() {
 		let root = document.getElementsByClassName(this.rootClass)[0];
 		return root.getElementsByTagName('IMG');
-	}
-
-	moveLeft(time) {
-		let customTime = time;
-		const POINTS_AMOUNT = this._rows * this.columns;
-
-		this.goToRight();
-		this._moveCoreFunctionality(checkPosition, changePosition);
-
-		function checkPosition(position) {
-			if (this.convertedText.slice(-1)[0] < 0) {
-				if (--customTime) {
-					this.goToRight();
-				} else {
-					clearInterval(this.intervalID);
-				}
-			}
-		}
-
-		function changePosition(position) {
-			return position - this._rows;
-		}
-	}
-
-
-	moveRight(time) {
-		let customTime = time;
-		const POINTS_AMOUNT = this._rows * this.columns;
-
-		this.goToLeft();
-		this._moveCoreFunctionality(checkPosition, changePosition);
-
-		function checkPosition() {
-			if (this.convertedText[0] > POINTS_AMOUNT) {
-				if (--customTime) {
-					this.goToLeft();
-				} else {
-					clearInterval(this.intervalID);
-				}
-			}
-		}
-
-		function changePosition(position) { return position + this._rows };
-	}
-
-	goToRight() {
-		const POSITION_FIRST = this.convertedText[0];
-		const INCREMENT = Math.floor(POSITION_FIRST / -this._rows) * this._rows + this._rows * this.columns;
-		this.convertedText = this.convertedText.map(num => num += INCREMENT);
-	}
-	goToLeft() {
-		const POSITION_LAST = this.convertedText.slice(-1)[0];
-		const INCREMENT = Math.floor(POSITION_LAST / this._rows) * this._rows;
-		this.convertedText = this.convertedText.map(num => num -= INCREMENT);
 	}
 	_switchColor(position, color) {
 		let image = this.images[position];
@@ -202,8 +206,6 @@ class InfoTable {
 			}
 		}.bind(this), this.time);
 	}
-	stop() { }
-
 }
 
 module.exports = InfoTable;
