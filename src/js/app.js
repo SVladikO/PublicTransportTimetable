@@ -126,6 +126,7 @@ class InfoTable {
 	moveLeft(time) {
 		let customTime = time;
 		const POINTS_AMOUNT = this._rows * this.columns;
+
 		this.goToRight();
 		this._moveCoreFunctionality(
 			function () {
@@ -145,6 +146,7 @@ class InfoTable {
 		let customTime = time;
 		const POINTS_AMOUNT = this._rows * this.columns;
 
+		this.goToLeft();
 		this._moveCoreFunctionality(
 			function () {
 				// increment all coordinates on 7(one column) points
@@ -161,14 +163,14 @@ class InfoTable {
 	}
 
 	goToRight() {
-		const POINTS_AMOUNT = this._rows * this.columns;
-		let firstPosition = this.convertedText[0];
-		const INCREMENT = Math.floor(firstPosition / -this._rows) * this._rows + POINTS_AMOUNT;
+		const POSITION_FIRST = this.convertedText[0];
+		const INCREMENT = Math.floor(POSITION_FIRST / -this._rows) * this._rows + this._rows * this.columns;
 		this.convertedText = this.convertedText.map(num => num += INCREMENT);
 	}
 	goToLeft() {
-		const POINTS_AMOUNT = this._rows * this.columns;
-		this.convertedText = this.convertedText.map(num => num -= POINTS_AMOUNT);
+		const POSITION_LAST = this.convertedText.slice(-1)[0];
+		const INCREMENT = Math.floor(POSITION_LAST / this._rows) * this._rows;
+		this.convertedText = this.convertedText.map(num => num -= INCREMENT);
 	}
 
 	_moveCoreFunctionality(callback) {
