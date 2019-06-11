@@ -132,7 +132,7 @@ class InfoTable {
 				this.convertedText = this.convertedText.map(num => num -= 7);
 				if (this.convertedText.slice(-1)[0] < 0) {
 					if (--customTime) {
-						this.convertedText = this.convertedText.map(num => num += POINTS_AMOUNT);
+						this.goToRight();
 					} else {
 						clearInterval(this.intervalID);
 					}
@@ -151,13 +151,24 @@ class InfoTable {
 				this.convertedText = this.convertedText.map(num => num += 7);
 				if (this.convertedText[0] > POINTS_AMOUNT) {
 					if (--customTime) {
-						this.convertedText = this.convertedText.map(num => num -= POINTS_AMOUNT);
+						this.goToLeft();
 					} else {
 						clearInterval(this.intervalID);
 					}
 				}
 			}.bind(this)
 		);
+	}
+
+	goToRight() {
+		const POINTS_AMOUNT = this._rows * this.columns;
+		let firstPosition = this.convertedText[0];
+		const INCREMENT = Math.floor(firstPosition / -this._rows) * this._rows + POINTS_AMOUNT;
+		this.convertedText = this.convertedText.map(num => num += INCREMENT);
+	}
+	goToLeft() {
+		const POINTS_AMOUNT = this._rows * this.columns;
+		this.convertedText = this.convertedText.map(num => num -= POINTS_AMOUNT);
 	}
 
 	_moveCoreFunctionality(callback) {
