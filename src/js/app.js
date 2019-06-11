@@ -18,8 +18,10 @@ class InfoTable {
 		this.color = colorCatalog[color];
 		this._rows = 7;
 		this.createEmptyBoard();
+		this.images = this._getImgFromDOM();
 		this.convertedText = this.getConvertedText(text);
 		this.intervalID;
+		this.isActiveColor = false;
 	}
 
 	createEmptyBoard() {
@@ -107,20 +109,12 @@ class InfoTable {
 	}
 
 	show() {
-		this.switchColor(this.color.active);
+		this._switchColor(this.color.active);
 	}
 
-	switchColor(color) {
+	_getImgFromDOM() {
 		let root = document.getElementsByClassName(this.rootClass)[0];
-		let images = root.getElementsByTagName('IMG');
-		this.convertedText.forEach((value) => {
-			let image = images[value];
-			/** 
-			 * We check image because size textCoordinates 
-			 * can be bigger/smaller than number of points on table
-			 */
-			if (image) image.src = color;
-		});
+		return root.getElementsByTagName('IMG');
 	}
 
 	moveLeft(time) {
@@ -128,38 +122,42 @@ class InfoTable {
 		const POINTS_AMOUNT = this._rows * this.columns;
 
 		this.goToRight();
-		this._moveCoreFunctionality(
-			function () {
-				this.convertedText = this.convertedText.map(num => num -= this._rows);
-				if (this.convertedText.slice(-1)[0] < 0) {
-					if (--customTime) {
-						this.goToRight();
-					} else {
-						clearInterval(this.intervalID);
-					}
+		this._moveCoreFunctionality(checkPosition, changePosition);
+
+		function checkPosition(position) {
+			if (this.convertedText.slice(-1)[0] < 0) {
+				if (--customTime) {
+					this.goToRight();
+				} else {
+					clearInterval(this.intervalID);
 				}
-			}.bind(this)
-		);
+			}
+		}
+
+		function changePosition(position) {
+			return position - this._rows;
+		}
 	}
+
 
 	moveRight(time) {
 		let customTime = time;
 		const POINTS_AMOUNT = this._rows * this.columns;
 
 		this.goToLeft();
-		this._moveCoreFunctionality(
-			function () {
-				// increment all coordinates on 7(one column) points
-				this.convertedText = this.convertedText.map(num => num += this._rows);
-				if (this.convertedText[0] > POINTS_AMOUNT) {
-					if (--customTime) {
-						this.goToLeft();
-					} else {
-						clearInterval(this.intervalID);
-					}
+		this._moveCoreFunctionality(checkPosition, changePosition);
+
+		function checkPosition() {
+			if (this.convertedText[0] > POINTS_AMOUNT) {
+				if (--customTime) {
+					this.goToLeft();
+				} else {
+					clearInterval(this.intervalID);
 				}
-			}.bind(this)
-		);
+			}
+		}
+
+		function changePosition(position) { return position + this._rows };
 	}
 
 	goToRight() {
@@ -172,21 +170,37 @@ class InfoTable {
 		const INCREMENT = Math.floor(POSITION_LAST / this._rows) * this._rows;
 		this.convertedText = this.convertedText.map(num => num -= INCREMENT);
 	}
+	_switchColor(position, color) {
+		let image = this.images[position];
+		/** 
+		 * We check image because size textCoordinates 
+		 * can be bigger/smaller than number of points on table
+		 */
+		if (image) image.src = color;
+	}
+	_moveCoreFunctionality(checkCallback, changeCallback) {
+		const POINTS_AMOUNT = this._rows * this.columns;
 
-	_moveCoreFunctionality(callback) {
-		let color = this.color;
-		let self = this;
-
-		this.intervalID = setInterval(() => {
+		this.intervalID = setInterval(function () {
 			try {
-				self.switchColor(color.disabled);
-				callback.call(this);
-				self.switchColor(color.active);
+				checkCallback.call(this);
+				this.convertedText.forEach(position => {
+					if (position >= 0 && position <= POINTS_AMOUNT) {
+						this._switchColor(position, this.color.disabled);
+					}
+				});
+				this.convertedText = this.convertedText.map(position => {
+					let newPosition = changeCallback.call(this, position);
+					if (newPosition >= 0 && newPosition <= POINTS_AMOUNT) {
+						this._switchColor(newPosition, this.color.active);
+					}
+					return newPosition;
+				});
 			} catch (error) {
 				clearInterval(this.intervalID);
 				throw error;
 			}
-		}, this.time);
+		}.bind(this), this.time);
 	}
 	stop() { }
 
