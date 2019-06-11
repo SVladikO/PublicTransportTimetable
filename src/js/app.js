@@ -17,12 +17,65 @@ class InfoTable {
 		this.columns = columns;
 		this.color = colorCatalog[color];
 		this._rows = 7;
-		this.createEmptyBoard();
-		this.convertedText = this.getConvertedText(text);
+		this._createEmptyBoard();
+		this.images = this._getImgFromDOM();
+		this.convertedText = this._getConvertedText(text);
 		this.intervalID;
+		this.isActiveColor = false;
 	}
 
-	createEmptyBoard() {
+	show() {
+		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
+	}
+
+	clear() {
+		clearInterval(this.intervalID);
+		this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+	}
+
+	moveLeft(time) {
+		let customTime = time;
+		const POINTS_AMOUNT = this._rows * this.columns;
+
+		this._goToRight();
+		this._moveCoreFunctionality(checkPosition, changePosition);
+
+		function checkPosition(position) {
+			if (this.convertedText.slice(-1)[0] < 0) {
+				if (--customTime) {
+					this._goToRight();
+				} else {
+					clearInterval(this.intervalID);
+				}
+			}
+		}
+
+		function changePosition(position) {
+			return position - this._rows;
+		}
+	}
+
+	moveRight(time) {
+		let customTime = time;
+		const POINTS_AMOUNT = this._rows * this.columns;
+
+		this._goToLeft();
+		this._moveCoreFunctionality(checkPosition, changePosition);
+
+		function checkPosition() {
+			if (this.convertedText[0] > POINTS_AMOUNT) {
+				if (--customTime) {
+					this._goToLeft();
+				} else {
+					clearInterval(this.intervalID);
+				}
+			}
+		}
+
+		function changePosition(position) { return position + this._rows };
+	}
+
+	_createEmptyBoard() {
 		let root = document.getElementsByClassName(this.rootClass)[0];
 		let images = root.getElementsByTagName('img');
 
@@ -50,7 +103,7 @@ class InfoTable {
 	 * One space (equal one column) between characters.
 	 * @param {*} text 
 	 */
-	getConvertedText(text) {
+	_getConvertedText(text) {
 		if (!text) return [];
 
 		// 5 columns for letter & 1 for space. 6*7=42
@@ -78,7 +131,7 @@ class InfoTable {
 				counterSpace++;
 			} else {
 				let characterCoordinates = CHARACTERS_CATALOG[symbol];
-				// if (!characterCoordinates) return;
+				if (!characterCoordinates) return;
 				let increment = getIncrement(textIndex);
 				let coordinates = characterCoordinates.map(number => number + increment);
 				convertedText.push(...coordinates);
@@ -98,7 +151,7 @@ class InfoTable {
 			if (!index) return 0;
 			let lettersAmount = index - counterSpace - counterSmallCharacters - counterOne;
 			let increment = lettersAmount * STEP_FOR_LETTER
-				+ counterSpace * rows
+				+ counterSpace * rows * 2
 				+ counterSmallCharacters * smallCharactersStep
 				+ counterOne * STEP_FOR_ONE;
 
@@ -106,88 +159,53 @@ class InfoTable {
 		}
 	}
 
-	show() {
-		this.switchColor(this.color.active);
-	}
-
-	switchColor(color) {
-		let root = document.getElementsByClassName(this.rootClass)[0];
-		let images = root.getElementsByTagName('IMG');
-		this.convertedText.forEach((value) => {
-			let image = images[value];
-			/** 
-			 * We check image because size textCoordinates 
-			 * can be bigger/smaller than number of points on table
-			 */
-			if (image) image.src = color;
-		});
-	}
-
-	moveLeft(time) {
-		let customTime = time;
-		const POINTS_AMOUNT = this._rows * this.columns;
-
-		this._moveCoreFunctionality(
-			function () {
-				this.convertedText = this.convertedText.map(num => num -= 7);
-				if (this.convertedText.slice(-1)[0] < 0) {
-					if (--customTime) {
-						this.goToRight();
-					} else {
-						clearInterval(this.intervalID);
-					}
-				}
-			}.bind(this)
-		);
-	}
-
-	moveRight(time) {
-		let customTime = time;
-		const POINTS_AMOUNT = this._rows * this.columns;
-
-		this._moveCoreFunctionality(
-			function () {
-				// increment all coordinates on 7(one column) points
-				this.convertedText = this.convertedText.map(num => num += 7);
-				if (this.convertedText[0] > POINTS_AMOUNT) {
-					if (--customTime) {
-						this.goToLeft();
-					} else {
-						clearInterval(this.intervalID);
-					}
-				}
-			}.bind(this)
-		);
-	}
-
-	goToRight() {
-		const POINTS_AMOUNT = this._rows * this.columns;
-		let firstPosition = this.convertedText[0];
-		const INCREMENT = Math.floor(firstPosition / -this._rows) * this._rows + POINTS_AMOUNT;
+	_goToRight() {
+		const POSITION_FIRST = this.convertedText[0];
+		const INCREMENT = Math.floor(POSITION_FIRST / -this._rows) * this._rows + this._rows * this.columns;
 		this.convertedText = this.convertedText.map(num => num += INCREMENT);
 	}
-	goToLeft() {
-		const POINTS_AMOUNT = this._rows * this.columns;
-		this.convertedText = this.convertedText.map(num => num -= POINTS_AMOUNT);
+	_goToLeft() {
+		const POSITION_LAST = this.convertedText.slice(-1)[0];
+		const INCREMENT = Math.floor(POSITION_LAST / this._rows) * this._rows;
+		this.convertedText = this.convertedText.map(num => num -= INCREMENT);
 	}
 
-	_moveCoreFunctionality(callback) {
-		let color = this.color;
-		let self = this;
+	_getImgFromDOM() {
+		let root = document.getElementsByClassName(this.rootClass)[0];
+		return root.getElementsByTagName('IMG');
+	}
+	_switchColor(position, color) {
+		let image = this.images[position];
+		/** 
+		 * We check image because size textCoordinates 
+		 * can be bigger/smaller than number of points on table
+		 */
+		if (image) image.src = color;
+	}
+	_moveCoreFunctionality(checkCallback, changeCallback) {
+		const POINTS_AMOUNT = this._rows * this.columns;
 
-		this.intervalID = setInterval(() => {
+		this.intervalID = setInterval(function () {
 			try {
-				self.switchColor(color.disabled);
-				callback.call(this);
-				self.switchColor(color.active);
+				checkCallback.call(this);
+				this.convertedText.forEach(position => {
+					if (position >= 0 && position <= POINTS_AMOUNT) {
+						this._switchColor(position, this.color.disabled);
+					}
+				});
+				this.convertedText = this.convertedText.map(position => {
+					let newPosition = changeCallback.call(this, position);
+					if (newPosition >= 0 && newPosition <= POINTS_AMOUNT) {
+						this._switchColor(newPosition, this.color.active);
+					}
+					return newPosition;
+				});
 			} catch (error) {
 				clearInterval(this.intervalID);
 				throw error;
 			}
-		}, this.time);
+		}.bind(this), this.time);
 	}
-	stop() { }
-
 }
 
 module.exports = InfoTable;
