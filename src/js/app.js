@@ -126,10 +126,10 @@ class InfoTable {
 	moveLeft(time) {
 		let customTime = time;
 		const POINTS_AMOUNT = this._rows * this.columns;
-
+		this.goToRight();
 		this._moveCoreFunctionality(
 			function () {
-				this.convertedText = this.convertedText.map(num => num -= 7);
+				this.convertedText = this.convertedText.map(num => num -= this._rows);
 				if (this.convertedText.slice(-1)[0] < 0) {
 					if (--customTime) {
 						this.goToRight();
@@ -148,7 +148,7 @@ class InfoTable {
 		this._moveCoreFunctionality(
 			function () {
 				// increment all coordinates on 7(one column) points
-				this.convertedText = this.convertedText.map(num => num += 7);
+				this.convertedText = this.convertedText.map(num => num += this._rows);
 				if (this.convertedText[0] > POINTS_AMOUNT) {
 					if (--customTime) {
 						this.goToLeft();
