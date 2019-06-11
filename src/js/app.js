@@ -78,7 +78,7 @@ class InfoTable {
 				counterSpace++;
 			} else {
 				let characterCoordinates = CHARACTERS_CATALOG[symbol];
-				// if (!characterCoordinates) return;
+				if (!characterCoordinates) return;
 				let increment = getIncrement(textIndex);
 				let coordinates = characterCoordinates.map(number => number + increment);
 				convertedText.push(...coordinates);
@@ -98,7 +98,7 @@ class InfoTable {
 			if (!index) return 0;
 			let lettersAmount = index - counterSpace - counterSmallCharacters - counterOne;
 			let increment = lettersAmount * STEP_FOR_LETTER
-				+ counterSpace * rows
+				+ counterSpace * rows * 2
 				+ counterSmallCharacters * smallCharactersStep
 				+ counterOne * STEP_FOR_ONE;
 
