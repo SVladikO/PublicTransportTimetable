@@ -1,51 +1,16 @@
 'use strict';
 
 const CHARACTERS_CATALOG = require('./characters.json');
+const COLOR_CATALOG = require('./Color');
 
 let log = console.log;
-let colorCatalog = {
-	lightBlue: {
-		active: 'public/img/light_blue_on.png',
-		disabled: 'public/img/off.png'
-	},
-	blue: {
-		active: 'public/img/blue_on.png',
-		disabled: 'public/img/off.png'
-	},
-	yellow: {
-		active: 'public/img/yellow_on.png',
-		disabled: 'public/img/off.png'
-	},
-	red: {
-		active: 'public/img/red_on.png',
-		disabled: 'public/img/off.png'
-	},
-
-	green: {
-		active: 'public/img/_green_on.png',
-		disabled: 'public/img/off.png'
-	},
-	_red: {
-		active: 'public/img/_red_on.png',
-		disabled: 'public/img/off.png'
-	},
-	_blue: {
-		active: 'public/img/_blue_on.png',
-		disabled: 'public/img/off.png'
-	},
-
-	_yellow_on: {
-		active: 'public/img/_yellow_on.png',
-		disabled: 'public/img/off.png'
-	},
-}
 class InfoTable {
 	constructor(rootClass, text = '', time = 200, columns = 54, color = 'green') {
 		this.rootClass = rootClass;
 		this.text = text;
 		this.time = time;
 		this.columns = columns;
-		this.color = colorCatalog[color];
+		this.color = COLOR_CATALOG[color];
 		this._rows = 7;
 		this._createEmptyBoard();
 		this.images = this._getImgFromDOM();
