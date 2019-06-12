@@ -1,31 +1,44 @@
 'use strict';
 
-const CHARACTERS_CATALOG = require('./characters.json');
+let colorsCatalog = require('./Color');
+let charactersCatalog = {   // I separated characters in two files, because they have different height.
+	eng: require('./eng_characters.json'),
+	ua: require('./ua_characters.json')
+};
 
-let log = console.log;
-let colorCatalog = {
-	green: {
-		active: 'public/img/green_on.jpg',
-		disabled: 'public/img/green_off.jpg'
-	}
-}
+const ROWS = 7;
+let pointsAmount;
+
 class InfoTable {
 	constructor(rootClass, text = '', time = 200, columns = 54, color = 'green') {
+		this.language = 'eng';
 		this.rootClass = rootClass;
 		this.text = text;
 		this.time = time;
 		this.columns = columns;
-		this.color = colorCatalog[color];
-		this._rows = 7;
+		this.color = colorsCatalog[color];
 		this._createEmptyBoard();
 		this.images = this._getImgFromDOM();
 		this.convertedText = this._getConvertedText(text);
 		this.intervalID;
-		this.isActiveColor = false;
+		pointsAmount = ROWS * this.columns;
+	}
+
+	setLanguage(language) {
+		this.language = language;
+		this.convertedText = this._getConvertedText(this.text);
+		return this;
 	}
 
 	show() {
+		this.clear();
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
+	}
+
+	update(text) {
+		this.clear();
+		this.convertedText = this._getConvertedText(text);
+		this.show();
 	}
 
 	clear() {
@@ -35,12 +48,11 @@ class InfoTable {
 
 	moveLeft(time) {
 		let customTime = time;
-		const POINTS_AMOUNT = this._rows * this.columns;
-
+		this.clear();
 		this._goToRight();
-		this._moveCoreFunctionality(checkPosition, changePosition);
+		this._moveCoreFunctionality(checkPosition, position => position - ROWS);
 
-		function checkPosition(position) {
+		function checkPosition() {
 			if (this.convertedText.slice(-1)[0] < 0) {
 				if (--customTime) {
 					this._goToRight();
@@ -49,21 +61,17 @@ class InfoTable {
 				}
 			}
 		}
-
-		function changePosition(position) {
-			return position - this._rows;
-		}
 	}
 
 	moveRight(time) {
+		this.clear();
 		let customTime = time;
-		const POINTS_AMOUNT = this._rows * this.columns;
 
 		this._goToLeft();
-		this._moveCoreFunctionality(checkPosition, changePosition);
+		this._moveCoreFunctionality(checkPosition, position => position + ROWS);
 
 		function checkPosition() {
-			if (this.convertedText[0] > POINTS_AMOUNT) {
+			if (this.convertedText[0] > pointsAmount) {
 				if (--customTime) {
 					this._goToLeft();
 				} else {
@@ -71,11 +79,31 @@ class InfoTable {
 				}
 			}
 		}
-
-		function changePosition(position) { return position + this._rows };
 	}
 
-	_createEmptyBoard() {
+	createCharacter() {
+		this.convertedText = [];
+		let root = document.getElementsByClassName(this.rootClass)[0];
+		let nodes = Array.prototype.slice.call(root.children);
+
+		root.addEventListener('click', function (event) {
+			this.clear();
+
+			let { target } = event;
+			const indexInImage = nodes.indexOf(target);
+			let indexInCoordinates = this.convertedText.indexOf(indexInImage)
+			if (indexInCoordinates >= 0) {
+				this.convertedText.splice(indexInCoordinates, 1);
+			} else {
+				this.convertedText.push(indexInImage);
+			}
+			console.log(this.convertedText);
+
+			this.show();
+		}.bind(this));
+	}
+
+	_createEmptyBoard(withIndex) {
 		let root = document.getElementsByClassName(this.rootClass)[0];
 		let images = root.getElementsByTagName('img');
 
@@ -86,7 +114,7 @@ class InfoTable {
 		root.style.height = '180px';
 
 		for (let j = 0; j < this.columns; j++) {
-			for (let i = 0; i < this._rows; i++) {
+			for (let i = 0; i < ROWS; i++) {
 				let img = document.createElement('img');
 				img.src = this.color.disabled;
 				img.style.width = '20px';
@@ -94,6 +122,7 @@ class InfoTable {
 				img.style.position = 'absolute';
 				img.style.top = `${25 * i}px`;
 				img.style.left = `${25 * j}px`;
+
 				root.appendChild(img);
 			}
 		}
@@ -106,67 +135,45 @@ class InfoTable {
 	_getConvertedText(text) {
 		if (!text) return [];
 
-		// 5 columns for letter & 1 for space. 6*7=42
-		const STEP_FOR_LETTER = 42;
-		let customSymbols = text.toLowerCase().split('');
+		let counterColumns = 0;
 		let convertedText = [];
-		let counterSpace = 0;
-		let rows = this._rows;
+		let customSymbols = text.toUpperCase().split('');
 
-		/**
-		 * Them need only two columns one for character & one for space after him
-		 */
-		let smallCharacters = ".':";
-		let smallCharactersStep = 14;
-		let counterSmallCharacters = 0;
+		customSymbols.forEach((symbol) => {
+			let characterCoordinates = charactersCatalog[this.language][symbol];
 
-		/**
-		 * For one we need 4 columns 
-		 */
-		let counterOne = 0;
-		const STEP_FOR_ONE = 28;
-
-		customSymbols.forEach((symbol, textIndex) => {
-			if (symbol === ' ') {
-				counterSpace++;
-			} else {
-				let characterCoordinates = CHARACTERS_CATALOG[symbol];
-				if (!characterCoordinates) return;
-				let increment = getIncrement(textIndex);
-				let coordinates = characterCoordinates.map(number => number + increment);
-				convertedText.push(...coordinates);
-
-				if (smallCharacters.includes(symbol)) {
-					counterSmallCharacters++;
-				} else if (symbol === '1') {
-					counterOne++
-				}
+			if (!characterCoordinates) {
+				if (symbol === ' ') counterColumns++;
+				return;
 			}
+
+			let increment = counterColumns * ROWS;
+			counterColumns += getColumns(characterCoordinates);
+
+			let coordinates = characterCoordinates.map(number => number + increment);
+			convertedText.push(...coordinates);
 		});
 
 		return convertedText;
 
-		//Handle space
-		function getIncrement(index) {
-			if (!index) return 0;
-			let lettersAmount = index - counterSpace - counterSmallCharacters - counterOne;
-			let increment = lettersAmount * STEP_FOR_LETTER
-				+ counterSpace * rows * 2
-				+ counterSmallCharacters * smallCharactersStep
-				+ counterOne * STEP_FOR_ONE;
-
-			return increment;
+		function getColumns(characterCoordinates) {
+			let columnsForSpace = 1;
+			const MAX = Math.max(...characterCoordinates);
+			let columns = Math.floor(MAX / ROWS);
+			// increment ++columns is because 'columns' for first column return 0
+			let resultColumns = ++columns + columnsForSpace;
+			return resultColumns;
 		}
 	}
 
 	_goToRight() {
 		const POSITION_FIRST = this.convertedText[0];
-		const INCREMENT = Math.floor(POSITION_FIRST / -this._rows) * this._rows + this._rows * this.columns;
+		const INCREMENT = Math.floor(POSITION_FIRST / -ROWS) * ROWS + ROWS * this.columns;
 		this.convertedText = this.convertedText.map(num => num += INCREMENT);
 	}
 	_goToLeft() {
 		const POSITION_LAST = this.convertedText.slice(-1)[0];
-		const INCREMENT = Math.floor(POSITION_LAST / this._rows) * this._rows;
+		const INCREMENT = Math.floor(POSITION_LAST / ROWS) * ROWS;
 		this.convertedText = this.convertedText.map(num => num -= INCREMENT);
 	}
 
@@ -183,19 +190,17 @@ class InfoTable {
 		if (image) image.src = color;
 	}
 	_moveCoreFunctionality(checkCallback, changeCallback) {
-		const POINTS_AMOUNT = this._rows * this.columns;
-
 		this.intervalID = setInterval(function () {
 			try {
 				checkCallback.call(this);
 				this.convertedText.forEach(position => {
-					if (position >= 0 && position <= POINTS_AMOUNT) {
+					if (position >= 0 && position <= pointsAmount) {
 						this._switchColor(position, this.color.disabled);
 					}
 				});
 				this.convertedText = this.convertedText.map(position => {
 					let newPosition = changeCallback.call(this, position);
-					if (newPosition >= 0 && newPosition <= POINTS_AMOUNT) {
+					if (newPosition >= 0 && newPosition <= pointsAmount) {
 						this._switchColor(newPosition, this.color.active);
 					}
 					return newPosition;
