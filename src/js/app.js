@@ -25,7 +25,14 @@ class InfoTable {
 	}
 
 	show() {
+		this.clear();
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
+	}
+
+	update(text) {
+		this.clear();
+		this.convertedText = this._getConvertedText(text);
+		this.show();
 	}
 
 	clear() {
@@ -34,6 +41,7 @@ class InfoTable {
 	}
 
 	moveLeft(time) {
+		this.clear();
 		let customTime = time;
 		const POINTS_AMOUNT = this._rows * this.columns;
 
@@ -56,6 +64,7 @@ class InfoTable {
 	}
 
 	moveRight(time) {
+		this.clear();
 		let customTime = time;
 		const POINTS_AMOUNT = this._rows * this.columns;
 
