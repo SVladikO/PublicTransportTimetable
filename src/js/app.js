@@ -7,8 +7,6 @@ let charactersCatalog = {   // I separated characters in two files, because they
 };
 
 const ROWS = 7;
-
-let log = console.log;
 class InfoTable {
 	constructor(rootClass, text = '', time = 200, columns = 54, color = 'green') {
 		this.language = 'eng';
