@@ -19,36 +19,44 @@ class InfoTable {
 		this.color = colorsCatalog[color];
 		this._createEmptyBoard();
 		this.images = this._getImgFromDOM();
-		this.convertedText = this._getConvertedText(text);
 		this.intervalID;
+		// it's need to avoid this.clear()
+		this.isItWork = false;
 		pointsAmount = ROWS * this.columns;
 	}
 
 	setLanguage(language) {
 		this.language = language;
-		this.convertedText = this._getConvertedText(this.text);
 		return this;
 	}
 
 	show() {
 		this.clear();
+		this.isItWork = true;
+		this.convertedText = this._getConvertedText(this.text);
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
 	}
 
 	update(text) {
 		this.clear();
-		this.convertedText = this._getConvertedText(text);
+		this.isItWork = true;
+		this.convertedText = this._getConvertedText(this.text);
 		this.show();
 	}
 
 	clear() {
-		clearInterval(this.intervalID);
-		this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+		if (this.isItWork) {
+			clearInterval(this.intervalID);
+			this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+			this.isItWork = false;
+		}
 	}
 
 	moveLeft(time) {
 		let customTime = time;
 		this.clear();
+		this.isItWork = true;
+		this.convertedText = this._getConvertedText(this.text);
 		this._goToRight();
 		this._moveCoreFunctionality(checkPosition, position => position - ROWS);
 
@@ -64,9 +72,10 @@ class InfoTable {
 	}
 
 	moveRight(time) {
-		this.clear();
 		let customTime = time;
-
+		this.clear();
+		this.isItWork = true;
+		this.convertedText = this._getConvertedText(this.text);
 		this._goToLeft();
 		this._moveCoreFunctionality(checkPosition, position => position + ROWS);
 
