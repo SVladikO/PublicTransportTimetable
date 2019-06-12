@@ -27,6 +27,7 @@ class InfoTable {
 
 	setLanguage(language) {
 		this.language = language;
+		return this;
 	}
 
 	show() {
