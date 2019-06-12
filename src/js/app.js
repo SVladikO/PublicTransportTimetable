@@ -1,22 +1,32 @@
 'use strict';
 
-const CHARACTERS_CATALOG = require('./characters.json');
-const COLOR_CATALOG = require('./Color');
+let colorsCatalog = require('./Color');
+let charactersCatalog = {   // I separated characters in two files, because they have different height.
+	eng: require('./eng_characters.json'),
+	ua: require('./ua_characters.json')
+};
+
+const ROWS = 7;
 
 let log = console.log;
 class InfoTable {
 	constructor(rootClass, text = '', time = 200, columns = 54, color = 'green') {
+		this.language = 'eng';
 		this.rootClass = rootClass;
 		this.text = text;
 		this.time = time;
 		this.columns = columns;
-		this.color = COLOR_CATALOG[color];
+		this.color = colorsCatalog[color];
 		this._rows = 7;
 		this._createEmptyBoard();
 		this.images = this._getImgFromDOM();
 		this.convertedText = this._getConvertedText(text);
 		this.intervalID;
 		this.isActiveColor = false;
+	}
+
+	setLanguage(language) {
+		this.language = language;
 	}
 
 	show() {
@@ -134,56 +144,34 @@ class InfoTable {
 	_getConvertedText(text) {
 		if (!text) return [];
 
-		// 5 columns for letter & 1 for space. 6*7=42
-		const STEP_FOR_LETTER = 42;
-		let customSymbols = text.toUpperCase().split('');
+		let counterColumns = 0;
 		let convertedText = [];
-		let counterSpace = 0;
-		let rows = this._rows;
+		let customSymbols = text.toUpperCase().split('');
 
-		/**
-		 * Them need only two columns one for character & one for space after him
-		 */
-		let smallCharacters = ".':";
-		let smallCharactersStep = 14;
-		let counterSmallCharacters = 0;
+		customSymbols.forEach((symbol) => {
+			let characterCoordinates = charactersCatalog[this.language][symbol];
 
-		/**
-		 * For one we need 4 columns 
-		 */
-		let counterOne = 0;
-		const STEP_FOR_ONE = 28;
-
-		customSymbols.forEach((symbol, textIndex) => {
-			if (symbol === ' ') {
-				counterSpace++;
-			} else {
-				let characterCoordinates = CHARACTERS_CATALOG[symbol];
-				if (!characterCoordinates) return;
-				let increment = getIncrement(textIndex);
-				let coordinates = characterCoordinates.map(number => number + increment);
-				convertedText.push(...coordinates);
-
-				if (smallCharacters.includes(symbol)) {
-					counterSmallCharacters++;
-				} else if (symbol === '1') {
-					counterOne++
-				}
+			if (!characterCoordinates) {
+				if (symbol === ' ') counterColumns++;
+				return;
 			}
+
+			let increment = counterColumns * ROWS;
+			counterColumns += getColumns(characterCoordinates);
+
+			let coordinates = characterCoordinates.map(number => number + increment);
+			convertedText.push(...coordinates);
 		});
 
 		return convertedText;
 
-		//Handle space
-		function getIncrement(index) {
-			if (!index) return 0;
-			let lettersAmount = index - counterSpace - counterSmallCharacters - counterOne;
-			let increment = lettersAmount * STEP_FOR_LETTER
-				+ counterSpace * rows * 2
-				+ counterSmallCharacters * smallCharactersStep
-				+ counterOne * STEP_FOR_ONE;
-
-			return increment;
+		function getColumns(characterCoordinates) {
+			let columnsForSpace = 1;
+			const MAX = Math.max(...characterCoordinates);
+			let columns = Math.floor(MAX / ROWS);
+			// increment ++columns is because 'columns' for first column return 0
+			let resultColumns = ++columns + columnsForSpace;
+			return resultColumns;
 		}
 	}
 
