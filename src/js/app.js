@@ -114,7 +114,30 @@ class InfoTable {
 		function changePosition(position) { return position + this._rows };
 	}
 
-	_createEmptyBoard() {
+	createCharacter() {
+		this.convertedText = [];
+
+		let root = document.getElementsByClassName(this.rootClass)[0];
+		let nodes = Array.prototype.slice.call(root.children);
+
+		root.addEventListener('click', function (event) {
+			this.clear();
+
+			let { target } = event;
+			const indexInImage = nodes.indexOf(target);
+			let indexInCoordinates = this.convertedText.indexOf(indexInImage)
+			if (indexInCoordinates >= 0) {
+				this.convertedText.splice(indexInCoordinates, 1);
+			} else {
+				this.convertedText.push(indexInImage);
+			}
+			console.log(this.convertedText);
+
+			this.show();
+		}.bind(this));
+	}
+
+	_createEmptyBoard(withIndex) {
 		let root = document.getElementsByClassName(this.rootClass)[0];
 		let images = root.getElementsByTagName('img');
 
@@ -133,6 +156,7 @@ class InfoTable {
 				img.style.position = 'absolute';
 				img.style.top = `${25 * i}px`;
 				img.style.left = `${25 * j}px`;
+
 				root.appendChild(img);
 			}
 		}
@@ -147,7 +171,7 @@ class InfoTable {
 
 		// 5 columns for letter & 1 for space. 6*7=42
 		const STEP_FOR_LETTER = 42;
-		let customSymbols = text.toLowerCase().split('');
+		let customSymbols = text.toUpperCase().split('');
 		let convertedText = [];
 		let counterSpace = 0;
 		let rows = this._rows;
