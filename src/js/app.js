@@ -28,6 +28,7 @@ class InfoTable {
 
 	setLanguage(language) {
 		this.language = language;
+		this._updateConvertedText();
 		return this;
 	}
 
@@ -123,7 +124,7 @@ class InfoTable {
 		}.bind(this));
 	}
 
-	_createEmptyBoard(withIndex) {
+	_createEmptyBoard() {
 		let root = document.getElementsByClassName(this.rootClass)[0];
 		let images = root.getElementsByTagName('img');
 
@@ -131,17 +132,20 @@ class InfoTable {
 
 		root.style.position = 'relative';
 		root.style.background = 'black';
-		root.style.height = '180px';
+		root.style.height = `${this.tableHeight}px`;
+		let imageSize = this.tableHeight / 8.2;
+		let position = imageSize + imageSize / 5;
+
 
 		for (let j = 0; j < this.columns; j++) {
 			for (let i = 0; i < ROWS; i++) {
 				let img = document.createElement('img');
 				img.src = this.color.disabled;
-				img.style.width = '20px';
-				img.style.height = '20px';
+				img.style.width = `${imageSize}px`;
+				img.style.height = `${imageSize}px`;
 				img.style.position = 'absolute';
-				img.style.top = `${25 * i}px`;
-				img.style.left = `${25 * j}px`;
+				img.style.top = `${position * i}px`;
+				img.style.left = `${position * j}px`;
 
 				root.appendChild(img);
 			}
