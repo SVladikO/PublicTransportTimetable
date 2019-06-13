@@ -10,10 +10,11 @@ const ROWS = 7;
 let pointsAmount;
 
 class InfoTable {
-	constructor(rootClass, text = '', time = 200, columns = 54, color = 'green') {
+	constructor(rootClass, text = '', time = 500, columns = 54, color = 'green') {
 		this.language = 'eng';
 		this.rootClass = rootClass;
 		this.text = text;
+		this._updateConvertedText(); // Set this.convertedText;
 		this.time = time;
 		this.columns = columns;
 		this.color = colorsCatalog[color];
@@ -21,7 +22,6 @@ class InfoTable {
 		this.images = this._getImgFromDOM();
 		this.intervalID;
 		// it's need to avoid this.clear()
-		this.isItWork = false;
 		pointsAmount = ROWS * this.columns;
 	}
 
@@ -30,37 +30,35 @@ class InfoTable {
 		return this;
 	}
 
+	setTime(time) {
+		this.time = time;
+	}
+
 	setText(text) {
 		this.text = text;
+		this._updateConvertedText();
 		return this;
 	}
 
 	show() {
-		this.isItWork = true;
-		this.convertedText = this._getConvertedText(this.text);
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
 	}
 
 	update(text) {
 		this.clear();
-		this.isItWork = true;
 		this.text = text;
+		this._updateConvertedText();
 		this.show();
 	}
 
 	clear() {
-		if (this.isItWork) {
-			clearInterval(this.intervalID);
-			this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
-			this.isItWork = false;
-		}
+		clearInterval(this.intervalID);
+		this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
 	}
 
 	moveLeft(time) {
 		let customTime = time;
-		this.clear();
-		this.isItWork = true;
-		this.convertedText = this._getConvertedText(this.text);
+		this._updateConvertedText();
 		this._goToRight();
 		this._moveCoreFunctionality(checkPosition, position => position - ROWS);
 
@@ -77,9 +75,6 @@ class InfoTable {
 
 	moveRight(time) {
 		let customTime = time;
-		this.clear();
-		this.isItWork = true;
-		this.convertedText = this._getConvertedText(this.text);
 		this._goToLeft();
 		this._moveCoreFunctionality(checkPosition, position => position + ROWS);
 
@@ -101,7 +96,6 @@ class InfoTable {
 
 		root.addEventListener('click', function (event) {
 			this.clear();
-
 			let { target } = event;
 			const indexInImage = nodes.indexOf(target);
 			let indexInCoordinates = this.convertedText.indexOf(indexInImage)
@@ -112,7 +106,7 @@ class InfoTable {
 			}
 			console.log(this.convertedText);
 
-			this.show();
+			this.convertedText.forEach(position => this._switchColor(position, this.color.active));
 		}.bind(this));
 	}
 
@@ -145,12 +139,15 @@ class InfoTable {
 	 * One space (equal one column) between characters.
 	 * @param {*} text 
 	 */
-	_getConvertedText(text) {
-		if (!text) return [];
+	_updateConvertedText() {
+		if (!this.text) {
+			this.convertedText = []
+			return;
+		}
 
 		let counterColumns = 0;
 		let convertedText = [];
-		let customSymbols = text.toUpperCase().split('');
+		let customSymbols = this.text.toUpperCase().split('');
 
 		customSymbols.forEach((symbol) => {
 			let characterCoordinates = charactersCatalog[this.language][symbol];
@@ -167,7 +164,7 @@ class InfoTable {
 			convertedText.push(...coordinates);
 		});
 
-		return convertedText;
+		this.convertedText = convertedText;
 
 		function getColumns(characterCoordinates) {
 			let columnsForSpace = 1;
