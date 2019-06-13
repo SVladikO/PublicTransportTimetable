@@ -27,7 +27,8 @@ new InfoTable('scoreboard11', tableHeight, textUA, time, columns, Color.yellow).
 new InfoTable('scoreboard12', tableHeight, textUA, time, columns, Color._blue).setLanguage('ua').show();
 new InfoTable('scoreboard13', tableHeight, textUA, time, columns, Color._red).setLanguage('ua').show();
 new InfoTable('scoreboard14', tableHeight, textUA, time, columns, Color._yellow_on).setLanguage('ua').show();
-new InfoTable('scoreboard15', tableHeight, textUA, time, columns, Color.green).setLanguage('ua').show();
+new InfoTable('scoreboard15', tableHeight, textUA, time, columns, Color._white_on).setLanguage('ua').show();
+new InfoTable('scoreboard16', tableHeight, textUA, time, columns, Color.green).setLanguage('ua').show();
 
 
 // *** TIMER CHECK ***

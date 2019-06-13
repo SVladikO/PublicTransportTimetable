@@ -33,4 +33,8 @@ module.exports = {
         active: 'public/img/_yellow_on.png',
         disabled: 'public/img/off.png'
     },
+    _white_on: {
+        active: 'public/img/_white_on.png',
+        disabled: 'public/img/off.png'
+    },
 };

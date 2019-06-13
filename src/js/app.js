@@ -1,6 +1,6 @@
 'use strict';
 
-let colorsCatalog = require('./Color');
+let colorsCatalog = require('./color');
 let charactersCatalog = {   // I separated characters in two files, because they have different height.
 	eng: require('./eng_characters.json'),
 	ua: require('./ua_characters.json')
