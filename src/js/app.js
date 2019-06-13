@@ -30,7 +30,13 @@ class InfoTable {
 		return this;
 	}
 
+	setText(text) {
+		this.text = text;
+		return this;
+	}
+
 	show() {
+		this.isItWork = true;
 		this.convertedText = this._getConvertedText(this.text);
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
 	}
@@ -38,7 +44,7 @@ class InfoTable {
 	update(text) {
 		this.clear();
 		this.isItWork = true;
-		this.convertedText = this._getConvertedText(text);
+		this.text = text;
 		this.show();
 	}
 
