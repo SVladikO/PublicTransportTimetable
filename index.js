@@ -1,11 +1,13 @@
 let InfoTable = require('./src/js/app');
+let Color = require('./src/js/color');
 
 let text = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!";
+let color = Color._red;
 let columns = 40;
 let time = 500;
 
 //  *** ENG CHARACTERS CHECK  *** 
-// new InfoTable('scoreboard1', text, time, columns, 'lightBlue').moveLeft(5);
+new InfoTable('scoreboard1', 180, text, time, columns, color).moveLeft(5);
 // new InfoTable('scoreboard2', text, time, columns, 'blue').moveRight(5);
 // new InfoTable('scoreboard3', text, time, columns, 'red').moveLeft(5);
 // new InfoTable('scoreboard4', text, time, columns, 'yellow').moveLeft(5);

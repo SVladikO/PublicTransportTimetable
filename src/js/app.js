@@ -10,19 +10,20 @@ const ROWS = 7;
 let pointsAmount;
 
 class InfoTable {
-	constructor(rootClass, text = '', time = 500, columns = 54, color = 'green') {
-		this.language = 'eng';
+	constructor(rootClass, tableHeight = 180, text = '', time = 500, columns = 54, color) {
 		this.rootClass = rootClass;
+		this.tableHeight = tableHeight;
 		this.text = text;
-		this._updateConvertedText(); // Set this.convertedText;
 		this.time = time;
 		this.columns = columns;
-		this.color = colorsCatalog[color];
+		this.color = color;
 		this._createEmptyBoard();
 		this.images = this._getImgFromDOM();
 		this.intervalID;
-		// it's need to avoid this.clear()
+		this.language = 'eng';
+		this._updateConvertedText(); // Set this.convertedText;
 		pointsAmount = ROWS * this.columns;
+
 	}
 
 	setLanguage(language) {
@@ -30,8 +31,9 @@ class InfoTable {
 		return this;
 	}
 
-	setTime(time) {
-		this.time = time;
+	setRootClass(className) {
+		this.rootClass = className;
+		return this;
 	}
 
 	setText(text) {
@@ -39,6 +41,17 @@ class InfoTable {
 		this._updateConvertedText();
 		return this;
 	}
+
+	setTimer(time) {
+		this.time = time;
+		return this;
+	}
+
+	setColor(color) {
+		this.color = color;
+		return this;
+	}
+
 
 	show() {
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
