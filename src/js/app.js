@@ -1,6 +1,6 @@
 'use strict';
 
-let colorsCatalog = require('./Color');
+let colorsCatalog = require('./color');
 let charactersCatalog = {   // I separated characters in two files, because they have different height.
 	eng: require('./eng_characters.json'),
 	ua: require('./ua_characters.json')
@@ -10,34 +10,58 @@ const ROWS = 7;
 let pointsAmount;
 
 class InfoTable {
-	constructor(rootClass, text = '', time = 200, columns = 54, color = 'green') {
-		this.language = 'eng';
+	constructor(rootClass, tableHeight = 180, text = '', time = 500, columns = 54, color) {
 		this.rootClass = rootClass;
+		this.tableHeight = tableHeight;
 		this.text = text;
 		this.time = time;
 		this.columns = columns;
-		this.color = colorsCatalog[color];
+		this.color = color;
 		this._createEmptyBoard();
 		this.images = this._getImgFromDOM();
-		this.convertedText = this._getConvertedText(text);
 		this.intervalID;
+		this.language = 'eng';
+		this._updateConvertedText(); // Set this.convertedText;
 		pointsAmount = ROWS * this.columns;
+
 	}
 
 	setLanguage(language) {
 		this.language = language;
-		this.convertedText = this._getConvertedText(this.text);
+		this._updateConvertedText();
 		return this;
 	}
 
+	setRootClass(className) {
+		this.rootClass = className;
+		return this;
+	}
+
+	setText(text) {
+		this.text = text;
+		this._updateConvertedText();
+		return this;
+	}
+
+	setTimer(time) {
+		this.time = time;
+		return this;
+	}
+
+	setColor(color) {
+		this.color = color;
+		return this;
+	}
+
+
 	show() {
-		this.clear();
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
 	}
 
 	update(text) {
 		this.clear();
-		this.convertedText = this._getConvertedText(text);
+		this.text = text;
+		this._updateConvertedText();
 		this.show();
 	}
 
@@ -48,7 +72,7 @@ class InfoTable {
 
 	moveLeft(time) {
 		let customTime = time;
-		this.clear();
+		this._updateConvertedText();
 		this._goToRight();
 		this._moveCoreFunctionality(checkPosition, position => position - ROWS);
 
@@ -64,9 +88,7 @@ class InfoTable {
 	}
 
 	moveRight(time) {
-		this.clear();
 		let customTime = time;
-
 		this._goToLeft();
 		this._moveCoreFunctionality(checkPosition, position => position + ROWS);
 
@@ -88,7 +110,6 @@ class InfoTable {
 
 		root.addEventListener('click', function (event) {
 			this.clear();
-
 			let { target } = event;
 			const indexInImage = nodes.indexOf(target);
 			let indexInCoordinates = this.convertedText.indexOf(indexInImage)
@@ -99,11 +120,11 @@ class InfoTable {
 			}
 			console.log(this.convertedText);
 
-			this.show();
+			this.convertedText.forEach(position => this._switchColor(position, this.color.active));
 		}.bind(this));
 	}
 
-	_createEmptyBoard(withIndex) {
+	_createEmptyBoard() {
 		let root = document.getElementsByClassName(this.rootClass)[0];
 		let images = root.getElementsByTagName('img');
 
@@ -111,17 +132,20 @@ class InfoTable {
 
 		root.style.position = 'relative';
 		root.style.background = 'black';
-		root.style.height = '180px';
+		root.style.height = `${this.tableHeight}px`;
+		let imageSize = this.tableHeight / 8.2;
+		let position = imageSize + imageSize / 5;
+
 
 		for (let j = 0; j < this.columns; j++) {
 			for (let i = 0; i < ROWS; i++) {
 				let img = document.createElement('img');
 				img.src = this.color.disabled;
-				img.style.width = '20px';
-				img.style.height = '20px';
+				img.style.width = `${imageSize}px`;
+				img.style.height = `${imageSize}px`;
 				img.style.position = 'absolute';
-				img.style.top = `${25 * i}px`;
-				img.style.left = `${25 * j}px`;
+				img.style.top = `${position * i}px`;
+				img.style.left = `${position * j}px`;
 
 				root.appendChild(img);
 			}
@@ -132,12 +156,15 @@ class InfoTable {
 	 * One space (equal one column) between characters.
 	 * @param {*} text 
 	 */
-	_getConvertedText(text) {
-		if (!text) return [];
+	_updateConvertedText() {
+		if (!this.text) {
+			this.convertedText = []
+			return;
+		}
 
 		let counterColumns = 0;
 		let convertedText = [];
-		let customSymbols = text.toUpperCase().split('');
+		let customSymbols = this.text.toUpperCase().split('');
 
 		customSymbols.forEach((symbol) => {
 			let characterCoordinates = charactersCatalog[this.language][symbol];
@@ -154,7 +181,7 @@ class InfoTable {
 			convertedText.push(...coordinates);
 		});
 
-		return convertedText;
+		this.convertedText = convertedText;
 
 		function getColumns(characterCoordinates) {
 			let columnsForSpace = 1;
