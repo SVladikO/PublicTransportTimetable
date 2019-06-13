@@ -30,51 +30,8 @@ class InfoTable {
 		return this;
 	}
 
-	genies() {
-		this.convertedText = this._getConvertedText(this.text);
-
-		const MAX = Math.max(...this.convertedText);
-		let root = document.getElementsByClassName(this.rootClass)[0];
-		let inner_root = root.getElementsByTagName('div');
-
-		if (inner_root) {
-			inner_root = document.createElement('div');
-			inner_root.className = 'inner_' + this.rootClass;
-			root.appendChild(inner_root);
-		}
-
-		inner_root.style.position = 'relative';
-		inner_root.style.background = 'black';
-		inner_root.style.height = '180px';
-
-		this.convertedText.forEach(position => {
-			let columns = Math.floor(position / ROWS);
-			let rows = position % ROWS;
-
-			let img = document.createElement('img');
-			img.src = this.color.active;
-			img.style.width = '20px';
-			img.style.height = '20px';
-			img.style.position = 'absolute';
-			img.style.top = `${25 * rows}px`;
-			img.style.left = `${25 * columns}px`;
-
-			inner_root.appendChild(img);
-		});
-
-		let current = 0;
-		const RANGE = Math.floor(MAX / ROWS) * 25;
-		this.intervalID = setInterval(function () {
-			current -= 25;
-			inner_root.style.left = `${current}px`;
-
-			if (parseInt(inner_root.style.left) < -RANGE) {
-				clearInterval(this.intervalID);
-			}
-		}.bind(this), this.time);
-	}
-
 	show() {
+		this.convertedText = this._getConvertedText(this.text);
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
 	}
 
