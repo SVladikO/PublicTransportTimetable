@@ -75,16 +75,13 @@ class InfoTable {
 	}
 
 	show() {
-		this.clear();
-		this.isItWork = true;
-		this.convertedText = this._getConvertedText(this.text);
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
 	}
 
 	update(text) {
 		this.clear();
 		this.isItWork = true;
-		this.convertedText = this._getConvertedText(this.text);
+		this.convertedText = this._getConvertedText(text);
 		this.show();
 	}
 
