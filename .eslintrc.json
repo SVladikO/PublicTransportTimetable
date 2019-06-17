@@ -12,5 +12,12 @@
     "parserOptions": {
         "ecmaVersion": 2015
     },
-    "rules": {}
+    "rules": {
+        "semi": 0,
+        "space-before-function-paren": [
+            "error",
+            "newer"
+        ],
+        "no-return-assign": "off"
+    }
 }
