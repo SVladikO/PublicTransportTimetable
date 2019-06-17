@@ -1,16 +1,16 @@
 'use strict';
 
-let colorsCatalog = require('./color');
-let charactersCatalog = {   // I separated characters in two files, because they have different height.
-	eng: require('./eng_characters.json'),
-	ua: require('./ua_characters.json')
-};
+let colorsCatalog = require('./color')
+const engCharacters = require('./eng_characters.json')
+const uaCharacters = require('./ua_characters.json')
+// I separated characters in two files, because they have different height.
+let charactersCatalog = { eng: engCharacters, ua: uaCharacters }
 
 const ROWS = 7;
 let pointsAmount;
 
 class InfoTable {
-	constructor(rootClass, tableHeight = 180, text = '', time = 500, columns = 54, color) {
+	constructor(rootClass, tableHeight = 180, text = '', time = 500, columns = 54, color = colorsCatalog.green) {
 		this.rootClass = rootClass;
 		this.tableHeight = tableHeight;
 		this.text = text;
@@ -19,11 +19,10 @@ class InfoTable {
 		this.color = color;
 		this._createEmptyBoard();
 		this.images = this._getImgFromDOM();
-		this.intervalID;
+		this.intervalID = 0;
 		this.language = 'eng';
 		this._updateConvertedText(); // Set this.convertedText;
 		pointsAmount = ROWS * this.columns;
-
 	}
 
 	setLanguage(language) {
@@ -52,7 +51,6 @@ class InfoTable {
 		this.color = color;
 		return this;
 	}
-
 
 	show() {
 		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
@@ -136,7 +134,6 @@ class InfoTable {
 		let imageSize = this.tableHeight / 8.2;
 		let position = imageSize + imageSize / 5;
 
-
 		for (let j = 0; j < this.columns; j++) {
 			for (let i = 0; i < ROWS; i++) {
 				let img = document.createElement('img');
@@ -152,10 +149,6 @@ class InfoTable {
 		}
 	}
 
-	/**
-	 * One space (equal one column) between characters.
-	 * @param {*} text 
-	 */
 	_updateConvertedText() {
 		if (!this.text) {
 			this.convertedText = []
@@ -174,10 +167,10 @@ class InfoTable {
 				return;
 			}
 
-			let increment = counterColumns * ROWS;
+			const INCREMENT = counterColumns * ROWS;
 			counterColumns += getColumns(characterCoordinates);
 
-			let coordinates = characterCoordinates.map(number => number + increment);
+			let coordinates = characterCoordinates.map(number => number + INCREMENT);
 			convertedText.push(...coordinates);
 		});
 
@@ -196,12 +189,12 @@ class InfoTable {
 	_goToRight() {
 		const POSITION_FIRST = this.convertedText[0];
 		const INCREMENT = Math.floor(POSITION_FIRST / -ROWS) * ROWS + ROWS * this.columns;
-		this.convertedText = this.convertedText.map(num => num += INCREMENT);
+		this.convertedText = this.convertedText.map(num => num + INCREMENT);
 	}
 	_goToLeft() {
 		const POSITION_LAST = this.convertedText.slice(-1)[0];
 		const INCREMENT = Math.floor(POSITION_LAST / ROWS) * ROWS;
-		this.convertedText = this.convertedText.map(num => num -= INCREMENT);
+		this.convertedText = this.convertedText.map(num => num - INCREMENT);
 	}
 
 	_getImgFromDOM() {
@@ -210,10 +203,9 @@ class InfoTable {
 	}
 	_switchColor(position, color) {
 		let image = this.images[position];
-		/** 
-		 * We check image because size textCoordinates 
-		 * can be bigger/smaller than number of points on table
-		 */
+
+		// We check image because size textCoordinates
+		// can be bigger/smaller than number of points on table
 		if (image) image.src = color;
 	}
 	_moveCoreFunctionality(checkCallback, changeCallback) {
