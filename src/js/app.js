@@ -10,226 +10,226 @@ const ROWS = 7;
 let pointsAmount;
 
 class InfoTable {
-	constructor(rootClass, tableHeight = 180, text = '', time = 500, columns = 54, color = colorsCatalog.green) {
-		this.rootClass = rootClass;
-		this.tableHeight = tableHeight;
-		this.text = text;
-		this.time = time;
-		this.columns = columns;
-		this.color = color;
-		this._createEmptyBoard();
-		this.images = this._getImgFromDOM();
-		this.intervalID = 0;
-		this.language = 'eng';
-		this._updateConvertedText(); // Set this.convertedText;
-		pointsAmount = ROWS * this.columns;
-	}
+  constructor(rootClass, tableHeight = 180, text = '', time = 500, columns = 54, color = colorsCatalog.green) {
+    this.rootClass = rootClass;
+    this.tableHeight = tableHeight;
+    this.text = text;
+    this.time = time;
+    this.columns = columns;
+    this.color = color;
+    this._createEmptyBoard();
+    this.images = this._getImgFromDOM();
+    this.intervalID = 0;
+    this.language = 'eng';
+    this._updateConvertedText(); // Set this.convertedText;
+    pointsAmount = ROWS * this.columns;
+  }
 
-	setLanguage(language) {
-		this.language = language;
-		this._updateConvertedText();
-		return this;
-	}
+  setLanguage(language) {
+    this.language = language;
+    this._updateConvertedText();
+    return this;
+  }
 
-	setRootClass(className) {
-		this.rootClass = className;
-		return this;
-	}
+  setRootClass(className) {
+    this.rootClass = className;
+    return this;
+  }
 
-	setText(text) {
-		this.text = text;
-		this._updateConvertedText();
-		return this;
-	}
+  setText(text) {
+    this.text = text;
+    this._updateConvertedText();
+    return this;
+  }
 
-	setTimer(time) {
-		this.time = time;
-		return this;
-	}
+  setTimer(time) {
+    this.time = time;
+    return this;
+  }
 
-	setColor(color) {
-		this.color = color;
-		return this;
-	}
+  setColor(color) {
+    this.color = color;
+    return this;
+  }
 
-	show() {
-		this.convertedText.forEach(position => this._switchColor(position, this.color.active));
-	}
+  show() {
+    this.convertedText.forEach(position => this._switchColor(position, this.color.active));
+  }
 
-	update(text) {
-		this.clear();
-		this.text = text;
-		this._updateConvertedText();
-		this.show();
-	}
+  update(text) {
+    this.clear();
+    this.text = text;
+    this._updateConvertedText();
+    this.show();
+  }
 
-	clear() {
-		clearInterval(this.intervalID);
-		this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
-	}
+  clear() {
+    clearInterval(this.intervalID);
+    this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+  }
 
-	moveLeft(time) {
-		let customTime = time;
-		this._updateConvertedText();
-		this._goToRight();
-		this._moveCoreFunctionality(checkPosition, position => position - ROWS);
+  moveLeft(time) {
+    let customTime = time;
+    this._updateConvertedText();
+    this._goToRight();
+    this._moveCoreFunctionality(checkPosition, position => position - ROWS);
 
-		function checkPosition() {
-			if (this.convertedText.slice(-1)[0] < 0) {
-				if (--customTime) {
-					this._goToRight();
-				} else {
-					clearInterval(this.intervalID);
-				}
-			}
-		}
-	}
+    function checkPosition() {
+      if (this.convertedText.slice(-1)[0] < 0) {
+        if (--customTime) {
+          this._goToRight();
+        } else {
+          clearInterval(this.intervalID);
+        }
+      }
+    }
+  }
 
-	moveRight(time) {
-		let customTime = time;
-		this._goToLeft();
-		this._moveCoreFunctionality(checkPosition, position => position + ROWS);
+  moveRight(time) {
+    let customTime = time;
+    this._goToLeft();
+    this._moveCoreFunctionality(checkPosition, position => position + ROWS);
 
-		function checkPosition() {
-			if (this.convertedText[0] > pointsAmount) {
-				if (--customTime) {
-					this._goToLeft();
-				} else {
-					clearInterval(this.intervalID);
-				}
-			}
-		}
-	}
+    function checkPosition() {
+      if (this.convertedText[0] > pointsAmount) {
+        if (--customTime) {
+          this._goToLeft();
+        } else {
+          clearInterval(this.intervalID);
+        }
+      }
+    }
+  }
 
-	createCharacter() {
-		this.convertedText = [];
-		let root = document.getElementsByClassName(this.rootClass)[0];
-		let nodes = Array.prototype.slice.call(root.children);
+  createCharacter() {
+    this.convertedText = [];
+    let root = document.getElementsByClassName(this.rootClass)[0];
+    let nodes = Array.prototype.slice.call(root.children);
 
-		root.addEventListener('click', function (event) {
-			this.clear();
-			let { target } = event;
-			const indexInImage = nodes.indexOf(target);
-			let indexInCoordinates = this.convertedText.indexOf(indexInImage)
-			if (indexInCoordinates >= 0) {
-				this.convertedText.splice(indexInCoordinates, 1);
-			} else {
-				this.convertedText.push(indexInImage);
-			}
-			console.log(this.convertedText);
+    root.addEventListener('click', function(event) {
+      this.clear();
+      let { target } = event;
+      const indexInImage = nodes.indexOf(target);
+      let indexInCoordinates = this.convertedText.indexOf(indexInImage)
+      if (indexInCoordinates >= 0) {
+        this.convertedText.splice(indexInCoordinates, 1);
+      } else {
+        this.convertedText.push(indexInImage);
+      }
+      console.log(this.convertedText);
 
-			this.convertedText.forEach(position => this._switchColor(position, this.color.active));
-		}.bind(this));
-	}
+      this.convertedText.forEach(position => this._switchColor(position, this.color.active));
+    }.bind(this));
+  }
 
-	_createEmptyBoard() {
-		let root = document.getElementsByClassName(this.rootClass)[0];
-		let images = root.getElementsByTagName('img');
+  _createEmptyBoard() {
+    let root = document.getElementsByClassName(this.rootClass)[0];
+    let images = root.getElementsByTagName('img');
 
-		if (images.length > 0) return;
+    if (images.length > 0) return;
 
-		root.style.position = 'relative';
-		root.style.background = 'black';
-		root.style.height = `${this.tableHeight}px`;
-		let imageSize = this.tableHeight / 8.2;
-		let position = imageSize + imageSize / 5;
+    root.style.position = 'relative';
+    root.style.background = 'black';
+    root.style.height = `${this.tableHeight}px`;
+    let imageSize = this.tableHeight / 8.2;
+    let position = imageSize + imageSize / 5;
 
-		for (let j = 0; j < this.columns; j++) {
-			for (let i = 0; i < ROWS; i++) {
-				let img = document.createElement('img');
-				img.src = this.color.disabled;
-				img.style.width = `${imageSize}px`;
-				img.style.height = `${imageSize}px`;
-				img.style.position = 'absolute';
-				img.style.top = `${position * i}px`;
-				img.style.left = `${position * j}px`;
+    for (let j = 0; j < this.columns; j++) {
+      for (let i = 0; i < ROWS; i++) {
+        let img = document.createElement('img');
+        img.src = this.color.disabled;
+        img.style.width = `${imageSize}px`;
+        img.style.height = `${imageSize}px`;
+        img.style.position = 'absolute';
+        img.style.top = `${position * i}px`;
+        img.style.left = `${position * j}px`;
 
-				root.appendChild(img);
-			}
-		}
-	}
+        root.appendChild(img);
+      }
+    }
+  }
 
-	_updateConvertedText() {
-		if (!this.text) {
-			this.convertedText = []
-			return;
-		}
+  _updateConvertedText() {
+    if (!this.text) {
+      this.convertedText = []
+      return;
+    }
 
-		let counterColumns = 0;
-		let convertedText = [];
-		let customSymbols = this.text.toUpperCase().split('');
+    let counterColumns = 0;
+    let convertedText = [];
+    let customSymbols = this.text.toUpperCase().split('');
 
-		customSymbols.forEach((symbol) => {
-			let characterCoordinates = charactersCatalog[this.language][symbol];
+    customSymbols.forEach((symbol) => {
+      let characterCoordinates = charactersCatalog[this.language][symbol];
 
-			if (!characterCoordinates) {
-				if (symbol === ' ') counterColumns++;
-				return;
-			}
+      if (!characterCoordinates) {
+        if (symbol === ' ') counterColumns++;
+        return;
+      }
 
-			const INCREMENT = counterColumns * ROWS;
-			counterColumns += getColumns(characterCoordinates);
+      const INCREMENT = counterColumns * ROWS;
+      counterColumns += getColumns(characterCoordinates);
 
-			let coordinates = characterCoordinates.map(number => number + INCREMENT);
-			convertedText.push(...coordinates);
-		});
+      let coordinates = characterCoordinates.map(number => number + INCREMENT);
+      convertedText.push(...coordinates);
+    });
 
-		this.convertedText = convertedText;
+    this.convertedText = convertedText;
 
-		function getColumns(characterCoordinates) {
-			let columnsForSpace = 1;
-			const MAX = Math.max(...characterCoordinates);
-			let columns = Math.floor(MAX / ROWS);
-			// increment ++columns is because 'columns' for first column return 0
-			let resultColumns = ++columns + columnsForSpace;
-			return resultColumns;
-		}
-	}
+    function getColumns(characterCoordinates) {
+      let columnsForSpace = 1;
+      const MAX = Math.max(...characterCoordinates);
+      let columns = Math.floor(MAX / ROWS);
+      // increment ++columns is because 'columns' for first column return 0
+      let resultColumns = ++columns + columnsForSpace;
+      return resultColumns;
+    }
+  }
 
-	_goToRight() {
-		const POSITION_FIRST = this.convertedText[0];
-		const INCREMENT = Math.floor(POSITION_FIRST / -ROWS) * ROWS + ROWS * this.columns;
-		this.convertedText = this.convertedText.map(num => num + INCREMENT);
-	}
-	_goToLeft() {
-		const POSITION_LAST = this.convertedText.slice(-1)[0];
-		const INCREMENT = Math.floor(POSITION_LAST / ROWS) * ROWS;
-		this.convertedText = this.convertedText.map(num => num - INCREMENT);
-	}
+  _goToRight() {
+    const POSITION_FIRST = this.convertedText[0];
+    const INCREMENT = Math.floor(POSITION_FIRST / -ROWS) * ROWS + ROWS * this.columns;
+    this.convertedText = this.convertedText.map(num => num + INCREMENT);
+  }
+  _goToLeft() {
+    const POSITION_LAST = this.convertedText.slice(-1)[0];
+    const INCREMENT = Math.floor(POSITION_LAST / ROWS) * ROWS;
+    this.convertedText = this.convertedText.map(num => num - INCREMENT);
+  }
 
-	_getImgFromDOM() {
-		let root = document.getElementsByClassName(this.rootClass)[0];
-		return root.getElementsByTagName('IMG');
-	}
-	_switchColor(position, color) {
-		let image = this.images[position];
+  _getImgFromDOM() {
+    let root = document.getElementsByClassName(this.rootClass)[0];
+    return root.getElementsByTagName('IMG');
+  }
+  _switchColor(position, color) {
+    let image = this.images[position];
 
-		// We check image because size textCoordinates
-		// can be bigger/smaller than number of points on table
-		if (image) image.src = color;
-	}
-	_moveCoreFunctionality(checkCallback, changeCallback) {
-		this.intervalID = setInterval(function () {
-			try {
-				checkCallback.call(this);
-				this.convertedText.forEach(position => {
-					if (position >= 0 && position <= pointsAmount) {
-						this._switchColor(position, this.color.disabled);
-					}
-				});
-				this.convertedText = this.convertedText.map(position => {
-					let newPosition = changeCallback.call(this, position);
-					if (newPosition >= 0 && newPosition <= pointsAmount) {
-						this._switchColor(newPosition, this.color.active);
-					}
-					return newPosition;
-				});
-			} catch (error) {
-				clearInterval(this.intervalID);
-				throw error;
-			}
-		}.bind(this), this.time);
-	}
+    // We check image because size textCoordinates
+    // can be bigger/smaller than number of points on table
+    if (image) image.src = color;
+  }
+  _moveCoreFunctionality(checkCallback, changeCallback) {
+    this.intervalID = setInterval(function() {
+      try {
+        checkCallback.call(this);
+        this.convertedText.forEach(position => {
+          if (position >= 0 && position <= pointsAmount) {
+            this._switchColor(position, this.color.disabled);
+          }
+        });
+        this.convertedText = this.convertedText.map(position => {
+          let newPosition = changeCallback.call(this, position);
+          if (newPosition >= 0 && newPosition <= pointsAmount) {
+            this._switchColor(newPosition, this.color.active);
+          }
+          return newPosition;
+        });
+      } catch (error) {
+        clearInterval(this.intervalID);
+        throw error;
+      }
+    }.bind(this), this.time);
+  }
 }
 
 module.exports = InfoTable;
