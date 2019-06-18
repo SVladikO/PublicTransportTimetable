@@ -16,7 +16,7 @@
         "semi": 0,
         "space-before-function-paren": [
             "error",
-            "newer"
+            "never"
         ],
         "no-return-assign": "off"
     }
