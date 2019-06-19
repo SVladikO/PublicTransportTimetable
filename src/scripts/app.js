@@ -7,13 +7,13 @@ const TABLE_ROWS = 7;
 let pointsAmount;
 
 class InfoTable {
-  constructor(rootClass, { tableHeight = 80, tableColumns = 7, color = Color.green, language = 'eng', time = 500 }) {
+  constructor(rootClass, { tableHeight = 80, tableColumns = 7, color = Color.green, language = 'eng', timeInterval = 500 }) {
     this.rootClass = rootClass;
     this.tableHeight = tableHeight;
     this.tableColumns = tableColumns;
     this.color = color;
     this.language = language;
-    this.time = time;
+    this.timeInterval = timeInterval;
 
     // Auto generation
     this._createEmptyBoard();
@@ -39,11 +39,11 @@ class InfoTable {
     this._updateConvertedText();
   }
 
-  moveLeft(text, time) {
+  moveLeft(text, time, timeInterval) {
     this._prepareDataAndTable(text);
     let customTime = time;
     this._goToRight();
-    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS);
+    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, timeInterval);
 
     function checkPosition() {
       if (!(this.convertedText.slice(-1)[0] < 0)) return;
@@ -56,11 +56,11 @@ class InfoTable {
     }
   }
 
-  moveRight(text, time, timeout) {
+  moveRight(text, time, timeInterval) {
     this._prepareDataAndTable(text);
     let customTime = time;
     this._goToLeft();
-    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS);
+    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, timeInterval);
 
     function checkPosition() {
       if (!(this.convertedText[0] > pointsAmount)) return;
@@ -180,7 +180,7 @@ class InfoTable {
     // can be bigger/smaller than number of points on table
     if (image) image.src = color;
   }
-  _moveCoreFunctionality(checkCallback, changeCallback) {
+  _moveCoreFunctionality(checkCallback, changeCallback, interval = this.timeInterval) {
     this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
@@ -200,7 +200,7 @@ class InfoTable {
         clearInterval(this.intervalID);
         throw error;
       }
-    }.bind(this), this.time);
+    }.bind(this), interval);
   }
 }
 

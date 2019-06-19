@@ -1,33 +1,38 @@
-let InfoTable = require('./src/js/app');
-let Color = require('./src/js/color');
+let InfoTable = require('./src/scripts/app');
+let Color = require('./src/scripts/color');
 
 let text = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!";
-let textUA = '0123456789АБВГДЕЄЖІЇЙЗИКЛМНОПРСТУФЦЧШЩЬЮЯ._-!:><=+/';
-let columns = 270;
-let time = 100;
-let tableHeight = 40;
+// let textUA = '0123456789АБВГДЕЄЖІЇЙЗИКЛМНОПРСТУФЦЧШЩЬЮЯ._-!:><=+/';
+let options = {
+  tableHeight: 85,
+  tableColumns: 50,
+  color: Color.green,
+  language: 'eng',
+  time: 1000
+};
 //  *** ENG CHARACTERS CHECK  ***
-new InfoTable('scoreboard0', tableHeight, text, time, columns, Color.green).show();
-new InfoTable('scoreboard1', tableHeight, textUA, time, columns, Color._white_on).setLanguage('ua').show();
-
+new InfoTable('scoreboard0', options).show(text);
 text = '0';
-new InfoTable('scoreboard8', tableHeight, text, time, columns, Color.lightBlue).setLanguage('ua').show();
-new InfoTable('scoreboard9', tableHeight, text, time, columns, Color.blue).setLanguage('ua').show();
-new InfoTable('scoreboard10', tableHeight, text, time, columns, Color.red).setLanguage('ua').show();
-new InfoTable('scoreboard11', tableHeight, text, time, columns, Color.yellow).setLanguage('ua').show();
-new InfoTable('scoreboard12', tableHeight, text, time, columns, Color._blue).setLanguage('ua').show();
-new InfoTable('scoreboard13', tableHeight, text, time, columns, Color._red).setLanguage('ua').show();
-new InfoTable('scoreboard14', tableHeight, text, time, columns, Color._yellow_on).setLanguage('ua').show();
-new InfoTable('scoreboard15', tableHeight, text, time, columns, Color._white_on).setLanguage('ua').show();
-new InfoTable('scoreboard16', tableHeight, text, time, columns, Color.green).setLanguage('ua').show();
+new InfoTable('scoreboard1', options).show(text);
+new InfoTable('scoreboard8', options).moveLeft(text, 3);
+new InfoTable('scoreboard9', options).moveRight(text, 2, 100);
+new InfoTable('scoreboard10', options).show(text);
+new InfoTable('scoreboard11', options).show(text);
+new InfoTable('scoreboard12', options).show(text);
+new InfoTable('scoreboard13', options).show(text);
+new InfoTable('scoreboard14', options).show(text);
+new InfoTable('scoreboard15', options).show(text);
+new InfoTable('scoreboard16', options).show(text);
 
 // *** TIMER CHECK ***
-let timer = new InfoTable('timer', tableHeight, '', time, columns, Color._red);
+options.color = Color.red;
+
+let timer = new InfoTable('timer', options);
 let format = time => time < 10 ? '0' + time : time;
 setInterval(() => {
   let date = new Date();
   let timeStr = `${format(date.getHours())}:${format(date.getMinutes())}:${format(date.getSeconds())}`;
-  timer.update(timeStr);
+  timer.show(timeStr);
 }, 1000);
 
 // CREATE CHARACTER
