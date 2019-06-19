@@ -1,66 +1,31 @@
 'use strict';
 
-let colorsCatalog = require('./color')
-const engCharacters = require('./eng_characters.json')
-const uaCharacters = require('./ua_characters.json')
-// I separated characters in two files, because they have different height.
-let charactersCatalog = { eng: engCharacters, ua: uaCharacters }
+let Color = require('./color')
+const Character = require('../repository/characters')
 
-const ROWS = 7;
+const TABLE_ROWS = 7;
 let pointsAmount;
 
 class InfoTable {
-  constructor(rootClass, tableHeight = 180, text = '', time = 500, columns = 54, color = colorsCatalog.green) {
+  constructor(rootClass, { tableHeight = 80, tableColumns = 7, color = Color.green, language = 'eng', time = 500 }) {
     this.rootClass = rootClass;
     this.tableHeight = tableHeight;
-    this.text = text;
-    this.time = time;
-    this.columns = columns;
+    this.tableColumns = tableColumns;
     this.color = color;
+    this.language = language;
+    this.time = time;
+
+    // Auto generation
     this._createEmptyBoard();
     this.images = this._getImgFromDOM();
-    this.intervalID = 0;
-    this.language = 'eng';
-    this._updateConvertedText(); // Set this.convertedText;
-    pointsAmount = ROWS * this.columns;
+    this.intervalID = null;
+    this.convertedText = [];
+    pointsAmount = TABLE_ROWS * this.tableColumns;
   }
 
-  setLanguage(language) {
-    this.language = language;
-    this._updateConvertedText();
-    return this;
-  }
-
-  setRootClass(className) {
-    this.rootClass = className;
-    return this;
-  }
-
-  setText(text) {
-    this.text = text;
-    this._updateConvertedText();
-    return this;
-  }
-
-  setTimer(time) {
-    this.time = time;
-    return this;
-  }
-
-  setColor(color) {
-    this.color = color;
-    return this;
-  }
-
-  show() {
+  show(text) {
+    this._prepareDataAndTable(text);
     this.convertedText.forEach(position => this._switchColor(position, this.color.active));
-  }
-
-  update(text) {
-    this.clear();
-    this.text = text;
-    this._updateConvertedText();
-    this.show();
   }
 
   clear() {
@@ -68,35 +33,42 @@ class InfoTable {
     this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
   }
 
-  moveLeft(time) {
-    let customTime = time;
+  _prepareDataAndTable(text) {
+    this.clear();
+    if (text) this.text = text;
     this._updateConvertedText();
+  }
+
+  moveLeft(text, time) {
+    this._prepareDataAndTable(text);
+    let customTime = time;
     this._goToRight();
-    this._moveCoreFunctionality(checkPosition, position => position - ROWS);
+    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS);
 
     function checkPosition() {
-      if (this.convertedText.slice(-1)[0] < 0) {
-        if (--customTime) {
-          this._goToRight();
-        } else {
-          clearInterval(this.intervalID);
-        }
+      if (!(this.convertedText.slice(-1)[0] < 0)) return;
+
+      if (--customTime) {
+        this._goToRight();
+      } else {
+        clearInterval(this.intervalID);
       }
     }
   }
 
-  moveRight(time) {
+  moveRight(text, time, timeout) {
+    this._prepareDataAndTable(text);
     let customTime = time;
     this._goToLeft();
-    this._moveCoreFunctionality(checkPosition, position => position + ROWS);
+    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS);
 
     function checkPosition() {
-      if (this.convertedText[0] > pointsAmount) {
-        if (--customTime) {
-          this._goToLeft();
-        } else {
-          clearInterval(this.intervalID);
-        }
+      if (!(this.convertedText[0] > pointsAmount)) return;
+
+      if (--customTime) {
+        this._goToLeft();
+      } else {
+        clearInterval(this.intervalID);
       }
     }
   }
@@ -134,8 +106,8 @@ class InfoTable {
     let imageSize = this.tableHeight / 8.2;
     let position = imageSize + imageSize / 5;
 
-    for (let j = 0; j < this.columns; j++) {
-      for (let i = 0; i < ROWS; i++) {
+    for (let j = 0; j < this.tableColumns; j++) {
+      for (let i = 0; i < TABLE_ROWS; i++) {
         let img = document.createElement('img');
         img.src = this.color.disabled;
         img.style.width = `${imageSize}px`;
@@ -160,14 +132,14 @@ class InfoTable {
     let customSymbols = this.text.toUpperCase().split('');
 
     customSymbols.forEach((symbol) => {
-      let characterCoordinates = charactersCatalog[this.language][symbol];
+      let characterCoordinates = Character[this.language][symbol];
 
       if (!characterCoordinates) {
         if (symbol === ' ') counterColumns++;
         return;
       }
 
-      const INCREMENT = counterColumns * ROWS;
+      const INCREMENT = counterColumns * TABLE_ROWS;
       counterColumns += getColumns(characterCoordinates);
 
       let coordinates = characterCoordinates.map(number => number + INCREMENT);
@@ -179,7 +151,7 @@ class InfoTable {
     function getColumns(characterCoordinates) {
       let columnsForSpace = 1;
       const MAX = Math.max(...characterCoordinates);
-      let columns = Math.floor(MAX / ROWS);
+      let columns = Math.floor(MAX / TABLE_ROWS);
       // increment ++columns is because 'columns' for first column return 0
       let resultColumns = ++columns + columnsForSpace;
       return resultColumns;
@@ -188,12 +160,12 @@ class InfoTable {
 
   _goToRight() {
     const POSITION_FIRST = this.convertedText[0];
-    const INCREMENT = Math.floor(POSITION_FIRST / -ROWS) * ROWS + ROWS * this.columns;
+    const INCREMENT = Math.floor(POSITION_FIRST / -TABLE_ROWS) * TABLE_ROWS + pointsAmount;
     this.convertedText = this.convertedText.map(num => num + INCREMENT);
   }
   _goToLeft() {
     const POSITION_LAST = this.convertedText.slice(-1)[0];
-    const INCREMENT = Math.floor(POSITION_LAST / ROWS) * ROWS;
+    const INCREMENT = Math.floor(POSITION_LAST / TABLE_ROWS) * TABLE_ROWS;
     this.convertedText = this.convertedText.map(num => num - INCREMENT);
   }
 
@@ -218,7 +190,7 @@ class InfoTable {
           }
         });
         this.convertedText = this.convertedText.map(position => {
-          let newPosition = changeCallback.call(this, position);
+          let newPosition = changeCallback(position);
           if (newPosition >= 0 && newPosition <= pointsAmount) {
             this._switchColor(newPosition, this.color.active);
           }
