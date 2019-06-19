@@ -31,8 +31,11 @@ let timer = new InfoTable('timer', options);
 let format = time => time < 10 ? '0' + time : time;
 setInterval(() => {
   let date = new Date();
-  let timeStr = `${format(date.getHours())}:${format(date.getMinutes())}:${format(date.getSeconds())}`;
-  timer.show(timeStr);
+  const HOURS = format(date.getHours());
+  const MINUTES = format(date.getMinutes());
+  const SECONDS = format(date.getSeconds());
+
+  timer.show(`${HOURS}:${MINUTES}:${SECONDS}`);
 }, 1000);
 
 // CREATE CHARACTER
