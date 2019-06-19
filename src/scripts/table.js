@@ -1,12 +1,12 @@
 'use strict';
 
-let Color = require('./color')
-const Character = require('../repository/characters')
+let Color = require('./color');
+const Character = require('./character');
 
 const TABLE_ROWS = 7;
 let pointsAmount;
 
-class InfoTable {
+class Table {
   constructor(rootClass, { tableHeight = 80, tableColumns = 7, color = Color.green, language = 'eng', timeInterval = 500 }) {
     this.rootClass = rootClass;
     this.tableHeight = tableHeight;
@@ -204,4 +204,4 @@ class InfoTable {
   }
 }
 
-module.exports = InfoTable;
+module.exports = Table;
