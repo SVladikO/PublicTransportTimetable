@@ -8,7 +8,7 @@ let options = {
   tableColumns: 50,
   color: Color.green,
   language: 'eng',
-  time: 1000
+  timeInterval: 1000
 };
 //  *** ENG CHARACTERS CHECK  ***
 new InfoTable('scoreboard0', options).show(text);
