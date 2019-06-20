@@ -123,38 +123,50 @@ class Table {
 
   _updateConvertedText() {
     if (!this.text) {
-      this.convertedText = []
+      this.convertedText = [];
       return;
     }
 
-    let counterColumns = 0;
     let convertedText = [];
+    let counter = createColumnsCounter();
     let customSymbols = this.text.toUpperCase().split('');
 
     customSymbols.forEach((symbol) => {
-      let characterCoordinates = Character[this.language][symbol];
+      let coordinates = Character[this.language][symbol];
 
-      if (!characterCoordinates) {
-        if (symbol === ' ') counterColumns++;
+      if (!coordinates) {
+        if (symbol === ' ') counter.increment();
         return;
       }
 
-      const INCREMENT = counterColumns * TABLE_ROWS;
-      counterColumns += getColumns(characterCoordinates);
+      let newCoordinates = coordinates.map(n => n + counter.get());
 
-      let coordinates = characterCoordinates.map(number => number + INCREMENT);
-      convertedText.push(...coordinates);
+      convertedText.push(...newCoordinates);
+      counter.add(coordinates);
     });
 
     this.convertedText = convertedText;
 
-    function getColumns(characterCoordinates) {
-      let columnsForSpace = 1;
-      const MAX = Math.max(...characterCoordinates);
-      let columns = Math.floor(MAX / TABLE_ROWS);
-      // increment ++columns is because 'columns' for first column return 0
-      let resultColumns = ++columns + columnsForSpace;
-      return resultColumns;
+    function createColumnsCounter() {
+      let columns = 0;
+
+      return {
+        add(coordinates) {
+          let spaceColumn = 1;
+          const MAX = Math.max(...coordinates);
+          let characterColumns = Math.floor(MAX / TABLE_ROWS);
+          // increment ++characterColumns is because we count length not index
+          columns += ++characterColumns + spaceColumn;
+        },
+
+        get() {
+          return columns * TABLE_ROWS;
+        },
+
+        increment() {
+          columns++;
+        }
+      }
     }
   }
 
