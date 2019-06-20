@@ -33,9 +33,9 @@ class Table {
     this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
   }
 
-  _prepareDataAndTable(text) {
+  _prepareDataAndTable(text = this.text) {
     this.clear();
-    if (text) this.text = text;
+    this.text = text;
     this._updateConvertedText();
   }
 
@@ -122,30 +122,26 @@ class Table {
   }
 
   _updateConvertedText() {
-    if (!this.text) {
-      this.convertedText = [];
-      return;
-    }
+    this.convertedText = [];
 
-    let convertedText = [];
+    if (!this.text) return;
+
     let counter = createColumnsCounter();
     let customSymbols = this.text.toUpperCase().split('');
 
-    customSymbols.forEach((symbol) => {
+    this.convertedText = customSymbols.reduce((convertedText, symbol) => {
       let coordinates = Character[this.language][symbol];
 
-      if (!coordinates) {
-        if (symbol === ' ') counter.increment();
-        return;
+      if (coordinates) {
+        let newCoordinates = coordinates.map(n => n + counter.get());
+        convertedText.push(...newCoordinates);
+        counter.add(coordinates);
+      } else if (symbol === ' ') {
+        counter.increment();
       }
 
-      let newCoordinates = coordinates.map(n => n + counter.get());
-
-      convertedText.push(...newCoordinates);
-      counter.add(coordinates);
-    });
-
-    this.convertedText = convertedText;
+      return convertedText;
+    }, []);
 
     function createColumnsCounter() {
       let columns = 0;
