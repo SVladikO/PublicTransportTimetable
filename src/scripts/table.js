@@ -163,6 +163,7 @@ class Table {
     const INCREMENT = Math.floor(POSITION_FIRST / -TABLE_ROWS) * TABLE_ROWS + pointsAmount;
     this.convertedText = this.convertedText.map(num => num + INCREMENT);
   }
+
   _goToLeft() {
     const POSITION_LAST = this.convertedText.slice(-1)[0];
     const INCREMENT = Math.floor(POSITION_LAST / TABLE_ROWS) * TABLE_ROWS;
@@ -174,26 +175,20 @@ class Table {
     return root.getElementsByTagName('IMG');
   }
   _switchColor(position, color) {
-    let image = this.images[position];
-
-    // We check image because size textCoordinates
-    // can be bigger/smaller than number of points on table
-    if (image) image.src = color;
+    if (position >= 0 && position < pointsAmount) {
+      this.images[position].src = color;
+    }
   }
   _moveCoreFunctionality(checkCallback, changeCallback, interval = this.timeInterval) {
     this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
         this.convertedText.forEach(position => {
-          if (position >= 0 && position <= pointsAmount) {
-            this._switchColor(position, this.color.disabled);
-          }
+          this._switchColor(position, this.color.disabled);
         });
         this.convertedText = this.convertedText.map(position => {
           let newPosition = changeCallback(position);
-          if (newPosition >= 0 && newPosition <= pointsAmount) {
-            this._switchColor(newPosition, this.color.active);
-          }
+          this._switchColor(newPosition, this.color.active);
           return newPosition;
         });
       } catch (error) {
