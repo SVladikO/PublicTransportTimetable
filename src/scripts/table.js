@@ -15,11 +15,11 @@ class Table {
     this.language = language;
     this.timeInterval = timeInterval;
 
-    // Auto generation
-    this._createEmptyBoard();
-    this.images = this._getImgFromDOM();
     this.intervalID = null;
     this.convertedText = [];
+
+    this._createEmptyBoard();
+    this.images = this._getImgFromDOM();
     pointsAmount = TABLE_ROWS * this.tableColumns;
   }
 
@@ -96,6 +96,7 @@ class Table {
 
   _createEmptyBoard() {
     let root = document.getElementsByClassName(this.rootClass)[0];
+    if (!root) throw Error("RootClass doesn't exist");
     let images = root.getElementsByTagName('img');
 
     if (images.length > 0) return;
