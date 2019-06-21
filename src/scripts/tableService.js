@@ -1,7 +1,7 @@
 'use strict';
 
-const Character = require('./character');
-const TableData = require('./tableData');
+let Character = require('./character');
+let TableData = require('./tableData');
 
 const TABLE_ROWS = 7;
 let pointsAmount;
@@ -11,7 +11,7 @@ class TableService extends TableData {
     super(...arguments);
     this._createEmptyBoard();
     this._images = this._getImgFromDOM();
-    pointsAmount = TABLE_ROWS * this._columns;
+    pointsAmount = TABLE_ROWS * this.columns;
   }
 
   show(text) {
@@ -60,7 +60,7 @@ class TableService extends TableData {
 
   createCharacter() {
     this._convertedText = [];
-    let root = document.getElementsByClassName(this._rootClass)[0];
+    let root = document.getElementsByClassName(this.rootClass)[0];
     let nodes = Array.prototype.slice.call(root.children);
 
     root.addEventListener('click', function(event) {
@@ -78,7 +78,7 @@ class TableService extends TableData {
   }
 
   _createEmptyBoard() {
-    let root = document.getElementsByClassName(this._rootClass)[0];
+    let root = document.getElementsByClassName(this.rootClass)[0];
     if (!root) throw new Error("RootClass doesn't exist");
     let images = root.getElementsByTagName('img');
 
@@ -86,14 +86,14 @@ class TableService extends TableData {
 
     root.style.position = 'relative';
     root.style.background = 'black';
-    root.style.height = `${this._height}px`;
-    let imageSize = this._height / 8.2;
+    root.style.height = `${this.height}px`;
+    let imageSize = this.height / 8.2;
     let position = imageSize + imageSize / 5;
 
-    for (let j = 0; j < this._columns; j++) {
+    for (let j = 0; j < this.columns; j++) {
       for (let i = 0; i < TABLE_ROWS; i++) {
         let img = document.createElement('img');
-        img.src = this._color.disabled;
+        img.src = this.color.disabled;
         img.style.width = `${imageSize}px`;
         img.style.height = `${imageSize}px`;
         img.style.position = 'absolute';
@@ -120,7 +120,7 @@ class TableService extends TableData {
     let customSymbols = this.text.toUpperCase().split('');
 
     this._convertedText = customSymbols.reduce((convertedText, symbol) => {
-      let coordinates = Character[this._language][symbol];
+      let coordinates = Character[this.language][symbol];
 
       if (coordinates) {
         let newCoordinates = coordinates.map(n => n + counter.get());
@@ -169,7 +169,7 @@ class TableService extends TableData {
   }
 
   _getImgFromDOM() {
-    let root = document.getElementsByClassName(this._rootClass)[0];
+    let root = document.getElementsByClassName(this.rootClass)[0];
     return root.getElementsByTagName('IMG');
   }
 
@@ -179,20 +179,20 @@ class TableService extends TableData {
     }
   }
   _turnOnAllCoordinates() {
-    this._convertedText.forEach(position => this._switchColor(position, this._color.active));
+    this._convertedText.forEach(position => this._switchColor(position, this.color.active));
   }
   _turnOffAllCoordinates() {
-    this._convertedText.forEach(position => this._switchColor(position, this._color.disabled));
+    this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
   }
 
-  _moveCoreFunctionality(checkCallback, changeCallback, interval = this._interval) {
+  _moveCoreFunctionality(checkCallback, changeCallback, interval = this.interval) {
     this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
         this._turnOffAllCoordinates();
         this._convertedText = this._convertedText.map(position => {
           let newPosition = changeCallback(position);
-          this._switchColor(newPosition, this._color.active);
+          this._switchColor(newPosition, this.color.active);
           return newPosition;
         });
       } catch (error) {
