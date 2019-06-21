@@ -11,12 +11,12 @@ class TableService extends TableData {
     super(...arguments);
     this._createEmptyBoard();
     this._images = this._getImgFromDOM();
-    pointsAmount = TABLE_ROWS * this.columns;
+    pointsAmount = TABLE_ROWS * this._columns;
   }
 
   show(text) {
     this._prepareDataAndTable(text);
-    this._turnOffAllCoordinates();
+    this._turnOnAllCoordinates();
   }
 
   moveLeft(text, time, interval) {
@@ -86,14 +86,14 @@ class TableService extends TableData {
 
     root.style.position = 'relative';
     root.style.background = 'black';
-    root.style.height = `${this.height}px`;
-    let imageSize = this.height / 8.2;
+    root.style.height = `${this._height}px`;
+    let imageSize = this._height / 8.2;
     let position = imageSize + imageSize / 5;
 
-    for (let j = 0; j < this.columns; j++) {
+    for (let j = 0; j < this._columns; j++) {
       for (let i = 0; i < TABLE_ROWS; i++) {
         let img = document.createElement('img');
-        img.src = this.color.disabled;
+        img.src = this._color.disabled;
         img.style.width = `${imageSize}px`;
         img.style.height = `${imageSize}px`;
         img.style.position = 'absolute';
@@ -120,7 +120,7 @@ class TableService extends TableData {
     let customSymbols = this.text.toUpperCase().split('');
 
     this._convertedText = customSymbols.reduce((convertedText, symbol) => {
-      let coordinates = Character[this.language][symbol];
+      let coordinates = Character[this._language][symbol];
 
       if (coordinates) {
         let newCoordinates = coordinates.map(n => n + counter.get());
@@ -179,20 +179,20 @@ class TableService extends TableData {
     }
   }
   _turnOnAllCoordinates() {
-    this._convertedText.forEach(position => this._switchColor(position, this.color.active));
+    this._convertedText.forEach(position => this._switchColor(position, this._color.active));
   }
   _turnOffAllCoordinates() {
-    this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+    this._convertedText.forEach(position => this._switchColor(position, this._color.disabled));
   }
 
-  _moveCoreFunctionality(checkCallback, changeCallback, interval = this.interval) {
+  _moveCoreFunctionality(checkCallback, changeCallback, interval = this._interval) {
     this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
         this._turnOffAllCoordinates();
         this._convertedText = this._convertedText.map(position => {
           let newPosition = changeCallback(position);
-          this._switchColor(newPosition, this.color.active);
+          this._switchColor(newPosition, this._color.active);
           return newPosition;
         });
       } catch (error) {
