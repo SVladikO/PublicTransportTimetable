@@ -12,7 +12,7 @@ class TableData {
     this.interval = interval;
 
     this.intervalID = null;
-    this.convertedText = [];
+    this._convertedText = [];
   }
 }
 

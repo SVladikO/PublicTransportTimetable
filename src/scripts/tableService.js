@@ -16,12 +16,12 @@ class TableService extends TableData {
 
   show(text) {
     this._prepareDataAndTable(text);
-    this.convertedText.forEach(position => this._switchColor(position, this.color.active));
+    this._convertedText.forEach(position => this._switchColor(position, this.color.active));
   }
 
   clear() {
     clearInterval(this.intervalID);
-    this.convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+    this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
   }
 
   _prepareDataAndTable(text = this.text) {
@@ -37,7 +37,7 @@ class TableService extends TableData {
     this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, interval);
 
     function checkPosition() {
-      if (!(this.convertedText.slice(-1)[0] < 0)) return;
+      if (!(this._convertedText.slice(-1)[0] < 0)) return;
 
       if (--customTime) {
         this._goToRight();
@@ -54,7 +54,7 @@ class TableService extends TableData {
     this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, interval);
 
     function checkPosition() {
-      if (!(this.convertedText[0] > pointsAmount)) return;
+      if (!(this._convertedText[0] > pointsAmount)) return;
 
       if (--customTime) {
         this._goToLeft();
@@ -65,22 +65,22 @@ class TableService extends TableData {
   }
 
   createCharacter() {
-    this.convertedText = [];
+    this._convertedText = [];
     let root = document.getElementsByClassName(this.rootClass)[0];
     let nodes = Array.prototype.slice.call(root.children);
 
-    root.addEventListener('click', function(event) {
+    root.addEventListener('click', function (event) {
       this.clear();
       let { target } = event;
       const indexInImage = nodes.indexOf(target);
-      let indexInCoordinates = this.convertedText.indexOf(indexInImage)
+      let indexInCoordinates = this._convertedText.indexOf(indexInImage)
       if (indexInCoordinates >= 0) {
-        this.convertedText.splice(indexInCoordinates, 1);
+        this._convertedText.splice(indexInCoordinates, 1);
       } else {
-        this.convertedText.push(indexInImage);
+        this._convertedText.push(indexInImage);
       }
 
-      this.convertedText.forEach(position => this._switchColor(position, this.color.active));
+      this._convertedText.forEach(position => this._switchColor(position, this.color.active));
     }.bind(this));
   }
 
@@ -113,14 +113,14 @@ class TableService extends TableData {
   }
 
   _updateConvertedText() {
-    this.convertedText = [];
+    this._convertedText = [];
 
     if (!this.text) return;
 
     let counter = createColumnsCounter();
     let customSymbols = this.text.toUpperCase().split('');
 
-    this.convertedText = customSymbols.reduce((convertedText, symbol) => {
+    this._convertedText = customSymbols.reduce((convertedText, symbol) => {
       let coordinates = Character[this.language][symbol];
 
       if (coordinates) {
@@ -158,15 +158,15 @@ class TableService extends TableData {
   }
 
   _goToRight() {
-    const POSITION_FIRST = this.convertedText[0];
+    const POSITION_FIRST = this._convertedText[0];
     const INCREMENT = Math.floor(POSITION_FIRST / -TABLE_ROWS) * TABLE_ROWS + pointsAmount;
-    this.convertedText = this.convertedText.map(num => num + INCREMENT);
+    this._convertedText = this._convertedText.map(num => num + INCREMENT);
   }
 
   _goToLeft() {
-    const POSITION_LAST = this.convertedText.slice(-1)[0];
+    const POSITION_LAST = this._convertedText.slice(-1)[0];
     const INCREMENT = Math.floor(POSITION_LAST / TABLE_ROWS) * TABLE_ROWS;
-    this.convertedText = this.convertedText.map(num => num - INCREMENT);
+    this._convertedText = this._convertedText.map(num => num - INCREMENT);
   }
 
   _getImgFromDOM() {
@@ -179,13 +179,13 @@ class TableService extends TableData {
     }
   }
   _moveCoreFunctionality(checkCallback, changeCallback, interval = this.interval) {
-    this.intervalID = setInterval(function() {
+    this.intervalID = setInterval(function () {
       try {
         checkCallback.call(this);
-        this.convertedText.forEach(position => {
+        this._convertedText.forEach(position => {
           this._switchColor(position, this.color.disabled);
         });
-        this.convertedText = this.convertedText.map(position => {
+        this._convertedText = this._convertedText.map(position => {
           let newPosition = changeCallback(position);
           this._switchColor(newPosition, this.color.active);
           return newPosition;
