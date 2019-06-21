@@ -8,7 +8,7 @@ const ClASS_NAME = 'className';
 test('Should set default parameters', () => {
   let table = new TableData(ClASS_NAME);
 
-  expect(table.rootClass).toBe(ClASS_NAME);
+  expect(table._rootClass).toBe(ClASS_NAME);
   expect(table.height).toBe(80);
   expect(table.columns).toBe(21);
   expect(table.color).toBe(Color.green);
@@ -30,7 +30,7 @@ test('Should set outcomes parameters', () => {
 
   let table = new TableData(ClASS_NAME, options);
 
-  expect(table.rootClass).toBe(ClASS_NAME);
+  expect(table._rootClass).toBe(ClASS_NAME);
   expect(table.height).toBe(options.height);
   expect(table.columns).toBe(options.columns);
   expect(table.color).toBe(options.color);

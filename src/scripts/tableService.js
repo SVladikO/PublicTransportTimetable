@@ -10,13 +10,13 @@ class TableService extends TableData {
   constructor(rootClass, options) {
     super(...arguments);
     this._createEmptyBoard();
-    this.images = this._getImgFromDOM();
+    this._images = this._getImgFromDOM();
     pointsAmount = TABLE_ROWS * this.columns;
   }
 
   show(text) {
     this._prepareDataAndTable(text);
-    this._turnOff();
+    this._turnOffAllCoordinates();
   }
 
   moveLeft(text, time, interval) {
@@ -55,12 +55,12 @@ class TableService extends TableData {
 
   clear() {
     clearInterval(this.intervalID);
-    this._turnOff();
+    this._turnOffAllCoordinates();
   }
 
   createCharacter() {
     this._convertedText = [];
-    let root = document.getElementsByClassName(this.rootClass)[0];
+    let root = document.getElementsByClassName(this._rootClass)[0];
     let nodes = Array.prototype.slice.call(root.children);
 
     root.addEventListener('click', function(event) {
@@ -73,12 +73,12 @@ class TableService extends TableData {
       } else {
         this._convertedText.push(indexInImage);
       }
-      this._turnOn();
+      this._turnOnAllCoordinates();
     }.bind(this));
   }
 
   _createEmptyBoard() {
-    let root = document.getElementsByClassName(this.rootClass)[0];
+    let root = document.getElementsByClassName(this._rootClass)[0];
     if (!root) throw new Error("RootClass doesn't exist");
     let images = root.getElementsByTagName('img');
 
@@ -169,20 +169,19 @@ class TableService extends TableData {
   }
 
   _getImgFromDOM() {
-    let root = document.getElementsByClassName(this.rootClass)[0];
+    let root = document.getElementsByClassName(this._rootClass)[0];
     return root.getElementsByTagName('IMG');
   }
+
   _switchColor(position, color) {
     if (position >= 0 && position < pointsAmount) {
-      this.images[position].src = color;
+      this._images[position].src = color;
     }
   }
-
-  _turnOn() {
+  _turnOnAllCoordinates() {
     this._convertedText.forEach(position => this._switchColor(position, this.color.active));
   }
-
-  _turnOff() {
+  _turnOffAllCoordinates() {
     this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
   }
 
@@ -190,7 +189,7 @@ class TableService extends TableData {
     this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
-        this._turnOff();
+        this._turnOffAllCoordinates();
         this._convertedText = this._convertedText.map(position => {
           let newPosition = changeCallback(position);
           this._switchColor(newPosition, this.color.active);
