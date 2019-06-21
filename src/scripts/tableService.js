@@ -1,26 +1,17 @@
 'use strict';
 
-let Color = require('./color');
 const Character = require('./character');
+const TableData = require('./tableData');
 
 const TABLE_ROWS = 7;
 let pointsAmount;
 
-class Table {
-  constructor(rootClass, { tableHeight = 80, tableColumns = 7, color = Color.green, language = 'eng', timeInterval = 500 }) {
-    this.rootClass = rootClass;
-    this.tableHeight = tableHeight;
-    this.tableColumns = tableColumns;
-    this.color = color;
-    this.language = language;
-    this.timeInterval = timeInterval;
-
-    this.intervalID = null;
-    this.convertedText = [];
-
+class TableService extends TableData {
+  constructor(rootClass, options) {
+    super(...arguments);
     this._createEmptyBoard();
     this.images = this._getImgFromDOM();
-    pointsAmount = TABLE_ROWS * this.tableColumns;
+    pointsAmount = TABLE_ROWS * this.columns;
   }
 
   show(text) {
@@ -39,11 +30,11 @@ class Table {
     this._updateConvertedText();
   }
 
-  moveLeft(text, time, timeInterval) {
+  moveLeft(text, time, interval) {
     this._prepareDataAndTable(text);
     let customTime = time;
     this._goToRight();
-    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, timeInterval);
+    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, interval);
 
     function checkPosition() {
       if (!(this.convertedText.slice(-1)[0] < 0)) return;
@@ -56,11 +47,11 @@ class Table {
     }
   }
 
-  moveRight(text, time, timeInterval) {
+  moveRight(text, time, interval) {
     this._prepareDataAndTable(text);
     let customTime = time;
     this._goToLeft();
-    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, timeInterval);
+    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, interval);
 
     function checkPosition() {
       if (!(this.convertedText[0] > pointsAmount)) return;
@@ -88,7 +79,6 @@ class Table {
       } else {
         this.convertedText.push(indexInImage);
       }
-      console.log(this.convertedText);
 
       this.convertedText.forEach(position => this._switchColor(position, this.color.active));
     }.bind(this));
@@ -103,11 +93,11 @@ class Table {
 
     root.style.position = 'relative';
     root.style.background = 'black';
-    root.style.height = `${this.tableHeight}px`;
-    let imageSize = this.tableHeight / 8.2;
+    root.style.height = `${this.height}px`;
+    let imageSize = this.height / 8.2;
     let position = imageSize + imageSize / 5;
 
-    for (let j = 0; j < this.tableColumns; j++) {
+    for (let j = 0; j < this.columns; j++) {
       for (let i = 0; i < TABLE_ROWS; i++) {
         let img = document.createElement('img');
         img.src = this.color.disabled;
@@ -188,7 +178,7 @@ class Table {
       this.images[position].src = color;
     }
   }
-  _moveCoreFunctionality(checkCallback, changeCallback, interval = this.timeInterval) {
+  _moveCoreFunctionality(checkCallback, changeCallback, interval = this.interval) {
     this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
@@ -208,4 +198,4 @@ class Table {
   }
 }
 
-module.exports = Table;
+module.exports = TableService;
