@@ -16,18 +16,7 @@ class TableService extends TableData {
 
   show(text) {
     this._prepareDataAndTable(text);
-    this._convertedText.forEach(position => this._switchColor(position, this.color.active));
-  }
-
-  clear() {
-    clearInterval(this.intervalID);
-    this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
-  }
-
-  _prepareDataAndTable(text = this.text) {
-    this.clear();
-    this.text = text;
-    this._updateConvertedText();
+    this._turnOff();
   }
 
   moveLeft(text, time, interval) {
@@ -64,12 +53,17 @@ class TableService extends TableData {
     }
   }
 
+  clear() {
+    clearInterval(this.intervalID);
+    this._turnOff();
+  }
+
   createCharacter() {
     this._convertedText = [];
     let root = document.getElementsByClassName(this.rootClass)[0];
     let nodes = Array.prototype.slice.call(root.children);
 
-    root.addEventListener('click', function (event) {
+    root.addEventListener('click', function(event) {
       this.clear();
       let { target } = event;
       const indexInImage = nodes.indexOf(target);
@@ -79,14 +73,13 @@ class TableService extends TableData {
       } else {
         this._convertedText.push(indexInImage);
       }
-
-      this._convertedText.forEach(position => this._switchColor(position, this.color.active));
+      this._turnOn();
     }.bind(this));
   }
 
   _createEmptyBoard() {
     let root = document.getElementsByClassName(this.rootClass)[0];
-    if (!root) throw Error("RootClass doesn't exist");
+    if (!root) throw new Error("RootClass doesn't exist");
     let images = root.getElementsByTagName('img');
 
     if (images.length > 0) return;
@@ -110,6 +103,12 @@ class TableService extends TableData {
         root.appendChild(img);
       }
     }
+  }
+
+  _prepareDataAndTable(text) {
+    this.clear();
+    this.text = '' + text;
+    this._updateConvertedText();
   }
 
   _updateConvertedText() {
@@ -178,13 +177,20 @@ class TableService extends TableData {
       this.images[position].src = color;
     }
   }
+
+  _turnOn() {
+    this._convertedText.forEach(position => this._switchColor(position, this.color.active));
+  }
+
+  _turnOff() {
+    this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+  }
+
   _moveCoreFunctionality(checkCallback, changeCallback, interval = this.interval) {
-    this.intervalID = setInterval(function () {
+    this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
-        this._convertedText.forEach(position => {
-          this._switchColor(position, this.color.disabled);
-        });
+        this._turnOff();
         this._convertedText = this._convertedText.map(position => {
           let newPosition = changeCallback(position);
           this._switchColor(newPosition, this.color.active);
