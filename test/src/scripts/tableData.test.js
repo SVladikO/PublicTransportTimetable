@@ -1,12 +1,14 @@
 'use strict';
 
-let TableData = require('./src/scripts/tableData');
-let Color = require('./src/scripts/color');
+const TableData = require('../../../src/scripts/tableData');
+const Color = require('../../../src/scripts/color');
+
+const ClASS_NAME = 'className';
 
 test('Should set default parameters', () => {
-  let table = new TableData();
+  let table = new TableData(ClASS_NAME);
 
-  expect(table.rootClass).toBe(undefined);
+  expect(table.rootClass).toBe(ClASS_NAME);
   expect(table.height).toBe(80);
   expect(table.columns).toBe(21);
   expect(table.color).toBe(Color.green);
@@ -26,8 +28,6 @@ test('Should set outcomes parameters', () => {
     interval: 1000
   };
 
-  const ClASS_NAME = 'className';
-
   let table = new TableData(ClASS_NAME, options);
 
   expect(table.rootClass).toBe(ClASS_NAME);
@@ -36,4 +36,9 @@ test('Should set outcomes parameters', () => {
   expect(table.color).toBe(options.color);
   expect(table.language).toBe(options.language);
   expect(table.interval).toBe(options.interval);
+});
+
+
+test('Should throw errors without .rootClass', () => {
+  expect(() => new TableData()).toThrow();
 });
