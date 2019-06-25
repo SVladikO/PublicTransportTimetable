@@ -85,7 +85,11 @@ class Timetable {
         this._convertedText.splice(indexInCoordinates, 1);
       } else {
         this._convertedText.push(indexInImage);
-        console.log(this._convertedText.sort((a, b) => a - b));
+
+        if (this._convertedText.length >= 2) {
+          this._convertedText.sort((a, b) => a - b);
+        }
+        console.log(this._convertedText);
       }
       this._turnOnAllCoordinates();
     }.bind(this));
