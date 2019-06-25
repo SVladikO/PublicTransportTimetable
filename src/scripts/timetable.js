@@ -72,27 +72,37 @@ class Timetable {
   }
 
   createCharacter() {
-    this._convertedText = [];
-    let root = document.getElementsByClassName(this.rootClass)[0];
-    let nodes = Array.prototype.slice.call(root.children);
+    const root = document.getElementsByClassName(this.rootClass)[0];
+    addStyle(root);
+    const nodes = Array.prototype.slice.call(root.children);
 
     root.addEventListener('click', function(event) {
       this.clear();
-      let { target } = event;
-      const indexInImage = nodes.indexOf(target);
-      let indexInCoordinates = this._convertedText.indexOf(indexInImage)
-      if (indexInCoordinates >= 0) {
-        this._convertedText.splice(indexInCoordinates, 1);
-      } else {
-        this._convertedText.push(indexInImage);
-
-        if (this._convertedText.length >= 2) {
-          this._convertedText.sort((a, b) => a - b);
-        }
-        console.log(this._convertedText);
-      }
+      addOrDeleteCoordinate(nodes, event.target, this._convertedText);
+      console.log(sort(this._convertedText));
       this._turnOnAllCoordinates();
     }.bind(this));
+
+    function addStyle(root) {
+      root.style.border = 'solid 2px red';
+      root.style.width = '80px';
+      root.style.margin = 'auto';
+    }
+
+    function sort(coordinates) {
+      return (coordinates.length >= 2) ? coordinates.sort((a, b) => a - b) : coordinates;
+    }
+
+    function addOrDeleteCoordinate(nodes, target, coordinates) {
+      const imageIndex = nodes.indexOf(target);
+      let indexOf = coordinates.indexOf(imageIndex);
+
+      if (indexOf >= 0) {
+        coordinates.splice(indexOf, 1);
+      } else if (imageIndex > 0) {
+        coordinates.push(imageIndex);
+      }
+    }
   }
 
   _prepareDataAndTable(text) {
