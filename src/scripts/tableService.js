@@ -7,7 +7,7 @@ const TABLE_ROWS = 7;
 let pointsAmount;
 
 class TableService extends TableData {
-  constructor(rootClass, options) {
+  constructor() {
     super(...arguments);
     this._createEmptyBoard();
     this._images = this._getImgFromDOM();
@@ -79,6 +79,7 @@ class TableService extends TableData {
 
   _createEmptyBoard() {
     let root = document.getElementsByClassName(this.rootClass)[0];
+
     if (!root) throw new Error("RootClass doesn't exist");
     let images = root.getElementsByTagName('img');
 
