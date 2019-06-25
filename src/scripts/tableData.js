@@ -2,7 +2,7 @@
 
 let Color = require('./color');
 class TableData {
-  constructor(rootClass, { height = 80, columns = 20, color: colorName = 'green', language = 'eng', interval = 500 } = {}) {
+  constructor(rootClass, { height = 80, columns = 40, color: colorName = 'green', language = 'eng', interval = 500 } = {}) {
     if (!rootClass || rootClass.length === 0) throw new Error(".rootClass isn't valid");
     this.rootClass = rootClass;
     this.height = height;
