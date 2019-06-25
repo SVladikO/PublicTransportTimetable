@@ -1,4 +1,4 @@
-let Table = require('./src/scripts/tableService');
+let Timetable = require('./src/scripts/timetable');
 
 // Create timer
 (function() {
@@ -10,7 +10,7 @@ let Table = require('./src/scripts/tableService');
     timeInterval: 1000
   };
 
-  let timer = new Table('timer', options);
+  let timer = new Timetable('timer', options).init();
   let format = time => time < 10 ? '0' + time : time;
 
   setInterval(() => {
@@ -23,39 +23,39 @@ let Table = require('./src/scripts/tableService');
   }, 1000);
 })();
 
-// (function() {
-//   const ENG_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
+(function() {
+  const ENG_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
 
-//   let options = {
-//     columns: 200,
-//     color: 'green'
-//   };
-//   new Table('eng_char', options).show(ENG_CHARACTERS);
-// })();
+  let options = {
+    columns: 280,
+    color: 'green'
+  };
+  new Timetable('eng_char', options).init().show(ENG_CHARACTERS);
+})();
 
-// (function() {
-//   const UA_CHARACTERS = 'АБВГДЕЄЖІЇЙЗИКЛМНОПРСТУФЦЧШЩЬЮЯ._-!:><=+/0123456789';
+(function() {
+  const UA_CHARACTERS = 'АБВГДЕЄЖІЇЙЗИКЛМНОПРСТУФЦЧШЩЬЮЯ._-!:><=+/0123456789';
 
-//   let options = {
-//     columns: 200,
-//     color: 'red',
-//     language: 'ua'
-//   };
-//   new Table('ua_char', options).show(UA_CHARACTERS);
-// })();
+  let options = {
+    columns: 250,
+    color: 'red',
+    language: 'ua'
+  };
+  new Timetable('ua_char', options).init().show(UA_CHARACTERS);
+})();
 
-// new Table('scoreboard1', { color: 'green' }).show('green');
-// new Table('scoreboard2', { color: 'red' }).show('red');
-// new Table('scoreboard3', { color: 'yellow' }).show('yellow');
-// new Table('scoreboard4', { color: 'blue' }).show('blue');
-// new Table('scoreboard5', { color: 'white' }).show('white');
+new Timetable('scoreboard1', { color: 'green' }).init().show('green');
+new Timetable('scoreboard2', { color: 'red' }).init().show('red');
+new Timetable('scoreboard3', { color: 'yellow' }).init().show('yellow');
+new Timetable('scoreboard4', { color: 'blue' }).init().show('blue');
+new Timetable('scoreboard5', { color: 'white' }).init().show('white');
 
-// setTimeout(() => new Table('scoreboard6').moveLeft(0, 2), 2000);
-setTimeout(() => new Table('scoreboard6'), 3000);
-
-new Table('scoreboard7').moveRight(0, 2);
-new Table('scoreboard8').moveRight(0, 2);
-new Table('scoreboard9').moveRight(0, 2);
+new Timetable('scoreboard7').init().moveLeft(0, 2);
+new Timetable('scoreboard8').init().moveRight(0, 2);
+new Timetable('scoreboard9').init().moveRight(0, 2);
 
 // CREATE CHARACTER
 // new Table('scoreboard0').createCharacter();
+
+// new Timetable('scoreboard3', { color: 'red', columns: 160 }).init().show('TRAIN                                                                                             TIME');
+// new Timetable('scoreboard4', { color: 'white', columns: 160 }).init().show('001         Kushuniv > Moskva    12:00');

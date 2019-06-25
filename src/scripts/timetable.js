@@ -1,15 +1,30 @@
 'use strict';
 
-let Character = require('./character');
-let TableData = require('./tableData');
+const Character = require('./character');
+const Color = require('./color');
+const createBoard = require('./features/create-board.js');
+const getConvertedText = require('./features/get-converted-text.js');
 
 const TABLE_ROWS = 7;
 
-class TableService extends TableData {
-  constructor() {
-    super(...arguments);
-    this._createEmptyBoard();
+class Timetable {
+  constructor(rootClass, { height = 80, columns = 40, color: colorName = 'green', language = 'eng', interval = 500 } = {}) {
+    if (!rootClass || rootClass.length === 0) throw new Error(".rootClass isn't valid");
+    this.rootClass = rootClass;
+    this.height = height;
+    this.columns = columns;
+    this.color = Color.get(colorName);
+    this.language = language;
+    this.interval = interval;
+
+    this.intervalID = null;
+    this._convertedText = [];
+  }
+
+  init() {
+    createBoard(this.rootClass, this.height, this.columns, this.color.disabled);
     this._images = this._getImgFromDOM();
+    return this;
   }
 
   show(text) {
@@ -75,84 +90,10 @@ class TableService extends TableData {
     }.bind(this));
   }
 
-  _createEmptyBoard() {
-    let root = document.getElementsByClassName(this.rootClass)[0];
-
-    if (!root) throw new Error("RootClass doesn't exist");
-    let images = root.getElementsByTagName('img');
-
-    if (images.length > 0) return;
-
-    root.style.position = 'relative';
-    root.style.background = 'black';
-    root.style.height = `${this.height}px`;
-    let imageSize = this.height / 8.2;
-    let position = imageSize + imageSize / 5;
-
-    for (let j = 0; j < this.columns; j++) {
-      for (let i = 0; i < TABLE_ROWS; i++) {
-        let img = document.createElement('img');
-        img.src = this.color.disabled;
-        img.style.width = `${imageSize}px`;
-        img.style.height = `${imageSize}px`;
-        img.style.position = 'absolute';
-        img.style.top = `${position * i}px`;
-        img.style.left = `${position * j}px`;
-
-        root.appendChild(img);
-      }
-    }
-  }
-
   _prepareDataAndTable(text) {
     this.clear();
     this.text = '' + text;
-    this._updateConvertedText();
-  }
-
-  _updateConvertedText() {
-    this._convertedText = [];
-
-    if (!this.text) return;
-
-    let counter = createColumnsCounter();
-    let customSymbols = this.text.toUpperCase().split('');
-
-    this._convertedText = customSymbols.reduce((convertedText, symbol) => {
-      let coordinates = Character[this.language][symbol];
-
-      if (coordinates) {
-        let newCoordinates = coordinates.map(n => n + counter.get());
-        convertedText.push(...newCoordinates);
-        counter.add(coordinates);
-      } else if (symbol === ' ') {
-        counter.increment();
-      }
-
-      return convertedText;
-    }, []);
-
-    function createColumnsCounter() {
-      let columns = 0;
-
-      return {
-        add(coordinates) {
-          let spaceColumn = 1;
-          const MAX = Math.max(...coordinates);
-          let characterColumns = Math.floor(MAX / TABLE_ROWS);
-          // increment ++characterColumns is because we count length not index
-          columns += ++characterColumns + spaceColumn;
-        },
-
-        get() {
-          return columns * TABLE_ROWS;
-        },
-
-        increment() {
-          columns++;
-        }
-      }
-    }
+    this._convertedText = getConvertedText(this.text, this.language);
   }
 
   _goToRight() {
@@ -177,9 +118,11 @@ class TableService extends TableData {
       this._images[position].src = color;
     }
   }
+
   _turnOnAllCoordinates() {
     this._convertedText.forEach(position => this._switchColor(position, this.color.active));
   }
+
   _turnOffAllCoordinates() {
     this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
   }
@@ -202,4 +145,4 @@ class TableService extends TableData {
   }
 }
 
-module.exports = TableService;
+module.exports = Timetable;
