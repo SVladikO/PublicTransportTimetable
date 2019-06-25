@@ -1,6 +1,6 @@
 const TABLE_ROWS = 7;
 
-function createBoard(rootClass, height, columns, color) {
+function createBoard(rootClass, height, columns, imageDisabledLamp) {
   let root = document.getElementsByClassName(rootClass)[0];
 
   if (!root) throw new Error("RootClass doesn't exist");
@@ -17,10 +17,11 @@ function createBoard(rootClass, height, columns, color) {
   for (let j = 0; j < columns; j++) {
     for (let i = 0; i < TABLE_ROWS; i++) {
       let img = document.createElement('img');
-      img.src = color;
+      img.src = imageDisabledLamp;
       img.style.width = `${imageSize}px`;
       img.style.height = `${imageSize}px`;
       img.style.position = 'absolute';
+      img.style.borderRadius = '50%';
       img.style.top = `${position * i}px`;
       img.style.left = `${position * j}px`;
 

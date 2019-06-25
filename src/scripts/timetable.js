@@ -1,19 +1,19 @@
 'use strict';
 
 const Character = require('./character');
-const Color = require('./color');
+const imageDisabledLamp = 'public/img/off.png';
 const createBoard = require('./features/create-board.js');
 const getConvertedText = require('./features/get-converted-text.js');
 
 const TABLE_ROWS = 7;
 
 class Timetable {
-  constructor(rootClass, { height = 80, columns = 40, color: colorName = 'green', language = 'eng', interval = 500 } = {}) {
+  constructor(rootClass, { height = 80, columns = 40, color = 'chartreuse', language = 'eng', interval = 500 } = {}) {
     if (!rootClass || rootClass.length === 0) throw new Error(".rootClass isn't valid");
     this.rootClass = rootClass;
     this.height = height;
     this.columns = columns;
-    this.color = Color.get(colorName);
+    this.color = { active: color, disabled: '' };
     this.language = language;
     this.interval = interval;
 
@@ -22,7 +22,7 @@ class Timetable {
   }
 
   init() {
-    createBoard(this.rootClass, this.height, this.columns, this.color.disabled);
+    createBoard(this.rootClass, this.height, this.columns, imageDisabledLamp);
     this._images = this._getImgFromDOM();
     return this;
   }
@@ -85,6 +85,7 @@ class Timetable {
         this._convertedText.splice(indexInCoordinates, 1);
       } else {
         this._convertedText.push(indexInImage);
+        console.log(this._convertedText);
       }
       this._turnOnAllCoordinates();
     }.bind(this));
@@ -93,7 +94,7 @@ class Timetable {
   _prepareDataAndTable(text) {
     this.clear();
     this.text = '' + text;
-    this._convertedText = getConvertedText(this.text, this.language);
+    this._convertedText = getConvertedText(this.text, this.language, Character);
   }
 
   _goToRight() {
@@ -115,7 +116,7 @@ class Timetable {
 
   _switchColor(position, color) {
     if (position >= 0 && position < this._images.length) {
-      this._images[position].src = color;
+      this._images[position].style.backgroundColor = color;
     }
   }
 

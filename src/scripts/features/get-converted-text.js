@@ -1,7 +1,6 @@
 const createColumnsCounter = require('./column-counter.js');
-const Character = require('../character.js');
 
-function getConvertedText(text, language) {
+function getConvertedText(text, language, Character) {
   if (!text) return [];
 
   const symbols = text.toUpperCase().split('');
