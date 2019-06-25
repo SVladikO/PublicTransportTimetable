@@ -1,7 +1,7 @@
 {
   "name": "info_table",
   "version": "1.0.0",
-  "description": "Print info on the page in format as public transport table. ",
+  "description": "Create table (it looks like publick transport table) and put there your text. Text can show/moveLeft/moveRight",
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
