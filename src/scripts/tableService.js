@@ -4,14 +4,12 @@ let Character = require('./character');
 let TableData = require('./tableData');
 
 const TABLE_ROWS = 7;
-let pointsAmount;
 
 class TableService extends TableData {
   constructor() {
     super(...arguments);
     this._createEmptyBoard();
     this._images = this._getImgFromDOM();
-    pointsAmount = TABLE_ROWS * this.columns;
   }
 
   show(text) {
@@ -43,7 +41,7 @@ class TableService extends TableData {
     this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, interval);
 
     function checkPosition() {
-      if (!(this._convertedText[0] > pointsAmount)) return;
+      if (!(this._convertedText[0] > this._images.length)) return;
 
       if (--customTime) {
         this._goToLeft();
@@ -159,7 +157,7 @@ class TableService extends TableData {
 
   _goToRight() {
     const POSITION_FIRST = this._convertedText[0];
-    const INCREMENT = Math.floor(POSITION_FIRST / -TABLE_ROWS) * TABLE_ROWS + pointsAmount;
+    const INCREMENT = Math.floor(POSITION_FIRST / -TABLE_ROWS) * TABLE_ROWS + this._images.length;
     this._convertedText = this._convertedText.map(num => num + INCREMENT);
   }
 
@@ -175,7 +173,7 @@ class TableService extends TableData {
   }
 
   _switchColor(position, color) {
-    if (position >= 0 && position < pointsAmount) {
+    if (position >= 0 && position < this._images.length) {
       this._images[position].src = color;
     }
   }
