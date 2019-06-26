@@ -34,14 +34,13 @@ class Timetable {
 
   moveLeft(text, time, interval) {
     this._prepareDataAndTable(text);
-    let customTime = time;
     this._goToRight();
     this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, interval);
 
     function checkPosition() {
       if (!(this._convertedText.slice(-1)[0] < 0)) return;
 
-      if (--customTime) {
+      if (--time) {
         this._goToRight();
       } else {
         clearInterval(this.intervalID);
@@ -51,14 +50,13 @@ class Timetable {
 
   moveRight(text, time, interval) {
     this._prepareDataAndTable(text);
-    let customTime = time;
     this._goToLeft();
     this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, interval);
 
     function checkPosition() {
       if (!(this._convertedText[0] > this._images.length)) return;
 
-      if (--customTime) {
+      if (--time) {
         this._goToLeft();
       } else {
         clearInterval(this.intervalID);

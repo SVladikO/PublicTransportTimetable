@@ -29,7 +29,7 @@ let Timetable = require('./src/scripts/timetable');
   const UA_CHARACTERS = 'АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ._-!:><=+/0123456789';
 
   let options = {
-    columns: 250,
+    columns: 280,
     color: '#00fbff',
     language: 'ua'
   };
@@ -40,4 +40,4 @@ new Timetable('scoreboard0').init().moveLeft(0, 2);
 new Timetable('scoreboard1').init().moveRight(0, 2);
 
 // CREATE CHARACTER
-new Timetable('character', { columns: 7 }).init().createCharacter();
+// new Timetable('character', { columns: 7 }).init().createCharacter();
