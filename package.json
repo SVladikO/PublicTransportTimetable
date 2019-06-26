@@ -1,22 +1,26 @@
 {
-  "name": "info_table",
-  "version": "1.0.0",
-  "description": "Create timetable and put there your data. You can show/moveLeft/moveRight",
+  "name": "_timetable",
+  "version": "0.1.0",
+  "description": "Create timetable and put there your text. You can show/moveLeft/moveRight",
   "main": "index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint .",
-    "lint:fix": "./node_modules/.bin/eslint . --fix",
-    "dev": "webpack-dev-server --entry ./index.js --output-filename ./dist/bundle.js -w",
+    "build": "webpack",
+    "dev": "webpack-dev-server --entry ./app.js --output-filename ./dist/bundle.js -w",
+    "test": "jest",
     "test:w": "jest --watch",
-    "test": "jest"
+    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls",
+    "lint": "./node_modules/.bin/eslint .",
+    "lint:fix": "./node_modules/.bin/eslint . --fix"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SVladikO/PublicTransportTimetable.git"
   },
   "keywords": [
-    "info_table",
-    "time_table"
+    "timetable",
+    "_timetable",
+    "info table",
+    "table"
   ],
   "license": "ISC",
   "bugs": {
@@ -29,6 +33,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "devDependencies": {
+    "coveralls": "^3.0.4",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.3",

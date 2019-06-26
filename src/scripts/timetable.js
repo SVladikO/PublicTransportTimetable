@@ -12,6 +12,9 @@ const imageDisabledLamp = 'public/img/off.png';
 
 const TABLE_ROWS = 7;
 
+/**
+ * Manipulation ua/eng text in div(table)
+ */
 class Timetable extends Table {
   init() {
     createBoard(this.className, this.height, this.columns, imageDisabledLamp, this.backgroundColor);
@@ -19,12 +22,22 @@ class Timetable extends Table {
     return this;
   }
 
+  /**
+   * Clear previous and show new text
+   * @param  {string} text
+   */
   show(text) {
     this._prepareDataAndTable(text);
     this._turnOnAllCoordinates();
   }
 
-  moveLeft(text, time, interval) {
+  /**
+   * Clear previous and move left new text.
+   * @param  {string} text
+   * @param  {number} [time] circles to repeat
+   * @param  {number} [interval] seconds for setInterval
+   */
+  moveLeft(text, time = 0, interval) {
     this._prepareDataAndTable(text);
     this._goToRight();
     this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, interval);
@@ -40,7 +53,13 @@ class Timetable extends Table {
     }
   }
 
-  moveRight(text, time, interval) {
+  /**
+    * Clear previous and move right new text.
+    * @param  {string} text
+    * @param  {number} [time] circles to repeat
+    * @param  {number} [interval] seconds for setInterval
+    */
+  moveRight(text, time = 0, interval) {
     this._prepareDataAndTable(text);
     this._goToLeft();
     this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, interval);
@@ -56,19 +75,39 @@ class Timetable extends Table {
     }
   }
 
+  /**
+   * Unique method to stop work any method show/moveLeft/moveRight
+   * Clear intervalID
+   * Disable text (It's mean we delete background color for processed text)
+   */
   clear() {
     clearInterval(this.intervalID);
     this._turnOffAllCoordinates();
   }
-
+  /**
+   * Calculate columns depends on div[className].width.
+   * We need here height too, because image size calculated from height
+   * @param  {number} height    Table's
+   * @param  {string} className Where you want to create table
+   * @returns {string} columns
+   */
   static getColumnsFullWidth(height, className) {
     return getColumnsFullWidth(height, className);
   }
 
+  /**
+   * Calculate columns depends on text length.
+   * @param  {string} text
+   * @param  {string} language
+   * @returns {number} columns
+   */
   static getColumnsByText(text, language) {
     return getColumnsByText(text, language, Character, TABLE_ROWS)
   }
 
+  /**
+   * Add eventListener on create table. Print clicked coordinates in console
+   */
   createCharacter() {
     const root = getDiv(this.className);
     addStyle(root);
@@ -141,6 +180,12 @@ class Timetable extends Table {
     this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
   }
 
+  /**
+   * Full circle movement text's coordinates
+   * @param  {function} checkCallback
+   * @param  {function} changeCallback
+   * @param  {number} interval=this.interval
+   */
   _moveCoreFunctionality(checkCallback, changeCallback, interval = this.interval) {
     this.intervalID = setInterval(function() {
       try {
