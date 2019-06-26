@@ -41,7 +41,7 @@ let Timetable = require('./src/scripts/timetable');
 const opt = {
   height: 70,
   color: '#FFEB3B',
-  columns: Timetable.getColumnsFullWidth('scoreboard0', 70)
+  columns: Timetable.getColumnsFullWidth(70, 'scoreboard0')
 };
 new Timetable('scoreboard0', opt).init().moveLeft(0, 2);
 new Timetable('scoreboard1').init().moveRight(0, 2);

@@ -5,3 +5,7 @@ table.test.js
 column-counter.test.js
 create-board.test.js
 get-converted-text.test.js
+get-columns-by-text.test.js
+get-columns-full-width.test.js
+get-div.test.js
+get-image-size.test.js

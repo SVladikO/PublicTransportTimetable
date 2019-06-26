@@ -3,7 +3,7 @@
 const Table = require('./table.js');
 const Character = require('./character.js');
 const getColumnsByText = require('./features/get-columns-by-text.js');
-const getColumnsFullWidth = require('./features/get-columns-full-widht.js');
+const getColumnsFullWidth = require('./features/get-columns-full-width.js');
 const createBoard = require('./features/create-board.js');
 const getDiv = require('./features/get-div.js');
 const getConvertedText = require('./features/get-converted-text.js');
@@ -61,8 +61,8 @@ class Timetable extends Table {
     this._turnOffAllCoordinates();
   }
 
-  static getColumnsFullWidth(className, heigh) {
-    return getColumnsFullWidth(heigh, className);
+  static getColumnsFullWidth(height, className) {
+    return getColumnsFullWidth(height, className);
   }
 
   static getColumnsByText(text, language) {
