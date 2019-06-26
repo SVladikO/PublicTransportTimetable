@@ -7,7 +7,7 @@ test('Should set default parameters', () => {
   let table = new Table(ClASS_NAME);
 
   expect(table.rootClass).toBe(ClASS_NAME);
-  expect(table.height).toBe(80);
+  expect(table.height).toBe(30);
   expect(table.columns).toBe(40);
   expect(table.color.active).toBe('chartreuse');
   expect(table.color.disabled).toBe('');
