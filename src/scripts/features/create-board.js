@@ -1,6 +1,7 @@
 const TABLE_ROWS = 7;
 
 function createBoard(rootClass, height, columns, imageDisabledLamp) {
+  if (!rootClass) throw new Error('.rootClass is empty');
   let root = document.getElementsByClassName(rootClass)[0];
 
   if (!root) throw new Error("RootClass doesn't exist");

@@ -6,11 +6,12 @@ function ColumnsCounter() {
 
   return {
     add(coordinates) {
-      let spaceColumn = 1;
+      validate(coordinates);
+      let spaceAfterCharacter = 1;
       const MAX = Math.max(...coordinates);
       let characterColumns = Math.floor(MAX / TABLE_ROWS);
-      // increment ++characterColumns is because we count length not index
-      columns += ++characterColumns + spaceColumn;
+      // ++characterColumns is because we count length not index
+      columns += ++characterColumns + spaceAfterCharacter;
     },
 
     get() {
@@ -21,6 +22,11 @@ function ColumnsCounter() {
       columns++;
     }
   }
+}
+
+function validate(array) {
+  if (!Array.isArray(array)) throw new Error('Param is not array.');
+  if (!array.length) throw new Error('Array is empty.');
 }
 
 module.exports = ColumnsCounter;

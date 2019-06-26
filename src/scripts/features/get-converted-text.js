@@ -3,6 +3,10 @@ const createColumnsCounter = require('./column-counter.js');
 function getConvertedText(text, language, Character) {
   if (!text) return [];
 
+  if (!language) throw new Error('language is not valid');
+  if (!Character) throw new Error('Character is not valid');
+  if (!Character[language]) throw new Error('Character does not support this language');
+
   const symbols = text.toUpperCase().split('');
   const counter = createColumnsCounter();
 
