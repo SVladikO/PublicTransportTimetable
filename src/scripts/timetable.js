@@ -14,7 +14,7 @@ const TABLE_ROWS = 7;
 
 class Timetable extends Table {
   init() {
-    createBoard(this.rootClass, this.height, this.columns, imageDisabledLamp, this.backgroundColor);
+    createBoard(this.className, this.height, this.columns, imageDisabledLamp, this.backgroundColor);
     this._images = this._getImgFromDOM();
     return this;
   }
@@ -70,7 +70,7 @@ class Timetable extends Table {
   }
 
   createCharacter() {
-    const root = getDiv(this.rootClass);
+    const root = getDiv(this.className);
     addStyle(root);
 
     const nodes = Array.prototype.slice.call(root.children);
@@ -123,7 +123,7 @@ class Timetable extends Table {
   }
 
   _getImgFromDOM() {
-    let root = document.getElementsByClassName(this.rootClass)[0];
+    let root = document.getElementsByClassName(this.className)[0];
     return root.getElementsByTagName('IMG');
   }
 

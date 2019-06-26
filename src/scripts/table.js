@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = class Table {
-  constructor(rootClass, { height = 30, columns = 40, color = 'chartreuse', language = 'eng', interval = 500, backgroundColor = 'black' } = {}) {
-    if (!rootClass || rootClass.length === 0) throw new Error(".rootClass isn't valid");
-    this.rootClass = rootClass;
+  constructor(className, { height = 30, columns = 40, color = 'chartreuse', language = 'eng', interval = 500, backgroundColor = 'black' } = {}) {
+    if (!className || className.length === 0) throw new Error(".className isn't valid");
+    this.className = className;
     this.backgroundColor = backgroundColor;
     this.height = height;
     this.columns = columns;
