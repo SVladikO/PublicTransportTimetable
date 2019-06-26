@@ -1,7 +1,7 @@
 {
-  "name": "info_table",
+  "name": "_timetable",
   "version": "0.1.0",
-  "description": "Create timetable and put there your data. You can show/moveLeft/moveRight",
+  "description": "Create timetable and put there your text. You can show/moveLeft/moveRight",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
