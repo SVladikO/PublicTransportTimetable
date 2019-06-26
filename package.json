@@ -1,10 +1,14 @@
 {
   "name": "info_table",
   "version": "1.0.0",
-  "description": "Print info on the page in format as public transport table. ",
+  "description": "Create timetable and put there your data. You can show/moveLeft/moveRight",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --entry ./index.js --output-filename ./dist/bundle.js -w"
+    "lint": "./node_modules/.bin/eslint .",
+    "lint:fix": "./node_modules/.bin/eslint . --fix",
+    "dev": "webpack-dev-server --entry ./index.js --output-filename ./dist/bundle.js -w",
+    "test:w": "jest --watch",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -14,7 +18,6 @@
     "info_table",
     "time_table"
   ],
-  "author": "vlad.serhiychuk@gmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/SVladikO/PublicTransportTimetable/issues"
@@ -24,5 +27,15 @@
     "webpack": "^4.29.4",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "jest": "^24.8.0",
+    "puppeteer": "^1.18.0"
   }
 }

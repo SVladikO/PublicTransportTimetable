@@ -1,38 +1,50 @@
-let InfoTable = require('./src/js/app');
-let Color = require('./src/js/color');
+let Timetable = require('./src/scripts/timetable');
 
-let text = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!";
-let textUA = "0123456789АБВГДЕЄЖІЇЙЗИКЛМНОПРСТУФЦЧШЩЬЮЯ._-!:><=+/";
-let color = Color._red;
-let columns = 270;
-let time = 100;
-let tableHeight = 40;
-//  *** ENG CHARACTERS CHECK  *** 
-new InfoTable('scoreboard0', tableHeight, text, time, columns, Color.green).show();
-new InfoTable('scoreboard1', tableHeight, textUA, time, columns, Color._white_on).setLanguage('ua').show();
+// Create timer
+(function() {
+  let timer = new Timetable('timer', { height: 80, color: '#00aaff' }).init();
+  let format = time => time < 10 ? '0' + time : time;
 
-text = '0';
-new InfoTable('scoreboard8', tableHeight, text, time, columns, Color.lightBlue).setLanguage('ua').show();
-new InfoTable('scoreboard9', tableHeight, text, time, columns, Color.blue).setLanguage('ua').show();
-new InfoTable('scoreboard10', tableHeight, text, time, columns, Color.red).setLanguage('ua').show();
-new InfoTable('scoreboard11', tableHeight, text, time, columns, Color.yellow).setLanguage('ua').show();
-new InfoTable('scoreboard12', tableHeight, text, time, columns, Color._blue).setLanguage('ua').show();
-new InfoTable('scoreboard13', tableHeight, text, time, columns, Color._red).setLanguage('ua').show();
-new InfoTable('scoreboard14', tableHeight, text, time, columns, Color._yellow_on).setLanguage('ua').show();
-new InfoTable('scoreboard15', tableHeight, text, time, columns, Color._white_on).setLanguage('ua').show();
-new InfoTable('scoreboard16', tableHeight, text, time, columns, Color.green).setLanguage('ua').show();
-
-
-// *** TIMER CHECK ***
-let timer = new InfoTable('timer', tableHeight, '', time, columns, Color._red);
-let format = time => time < 10 ? '0' + time : time;
-setInterval(() => {
+  setInterval(() => {
     let date = new Date();
-    let timeStr = `${format(date.getHours())}:${format(date.getMinutes())}:${format(date.getSeconds())}`;
-    timer.update(timeStr);
-}, 1000);
+    const HOURS = format(date.getHours());
+    const MINUTES = format(date.getMinutes());
+    const SECONDS = format(date.getSeconds());
+
+    timer.show(`${HOURS}:${MINUTES}:${SECONDS}`);
+  }, 1000);
+})();
+
+(function() {
+  const ENG_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
+
+  let options = {
+    columns: Timetable.getColumnsByText(ENG_CHARACTERS, 'eng'),
+    height: 30,
+    color: 'white'
+  };
+  new Timetable('eng_char', options).init().show(ENG_CHARACTERS);
+})();
+
+(function() {
+  const UA_CHARACTERS = 'АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ._-!:><=+/0123456789';
+
+  let options = {
+    height: 30,
+    columns: Timetable.getColumnsByText(UA_CHARACTERS, 'ua'),
+    color: 'rgb(255, 0, 0)',
+    language: 'ua'
+  };
+  new Timetable('ua_char', options).init().show(UA_CHARACTERS);
+})();
+
+const opt = {
+  height: 70,
+  color: '#FFEB3B',
+  columns: Timetable.getColumnsFullWidth(70, 'scoreboard0')
+};
+new Timetable('scoreboard0', opt).init().moveLeft(0, 2);
+new Timetable('scoreboard1').init().moveRight(0, 2);
 
 // CREATE CHARACTER
-// new InfoTable('scoreboard0').createCharacter();
-
-global.InfoTable = InfoTable;
+// new Timetable('character', { columns: 7 }).init().createCharacter();
