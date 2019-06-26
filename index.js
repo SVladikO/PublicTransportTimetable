@@ -1,16 +1,8 @@
-let Table = require('./src/scripts/tableService');
+let Timetable = require('./src/scripts/timetable');
 
 // Create timer
 (function() {
-  let options = {
-    height: 85,
-    columns: 40,
-    color: 'red',
-    language: 'eng',
-    timeInterval: 1000
-  };
-
-  let timer = new Table('timer', options);
+  let timer = new Timetable('timer', { height: 80, color: '#00aaff' }).init();
   let format = time => time < 10 ? '0' + time : time;
 
   setInterval(() => {
@@ -23,39 +15,36 @@ let Table = require('./src/scripts/tableService');
   }, 1000);
 })();
 
-// (function() {
-//   const ENG_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
+(function() {
+  const ENG_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
 
-//   let options = {
-//     columns: 200,
-//     color: 'green'
-//   };
-//   new Table('eng_char', options).show(ENG_CHARACTERS);
-// })();
+  let options = {
+    columns: Timetable.getColumnsByText(ENG_CHARACTERS, 'eng'),
+    height: 30,
+    color: 'white'
+  };
+  new Timetable('eng_char', options).init().show(ENG_CHARACTERS);
+})();
 
-// (function() {
-//   const UA_CHARACTERS = 'АБВГДЕЄЖІЇЙЗИКЛМНОПРСТУФЦЧШЩЬЮЯ._-!:><=+/0123456789';
+(function() {
+  const UA_CHARACTERS = 'АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ._-!:><=+/0123456789';
 
-//   let options = {
-//     columns: 200,
-//     color: 'red',
-//     language: 'ua'
-//   };
-//   new Table('ua_char', options).show(UA_CHARACTERS);
-// })();
+  let options = {
+    height: 30,
+    columns: Timetable.getColumnsByText(UA_CHARACTERS, 'ua'),
+    color: 'rgb(255, 0, 0)',
+    language: 'ua'
+  };
+  new Timetable('ua_char', options).init().show(UA_CHARACTERS);
+})();
 
-// new Table('scoreboard1', { color: 'green' }).show('green');
-// new Table('scoreboard2', { color: 'red' }).show('red');
-// new Table('scoreboard3', { color: 'yellow' }).show('yellow');
-// new Table('scoreboard4', { color: 'blue' }).show('blue');
-// new Table('scoreboard5', { color: 'white' }).show('white');
-
-// setTimeout(() => new Table('scoreboard6').moveLeft(0, 2), 2000);
-setTimeout(() => new Table('scoreboard6'), 3000);
-
-new Table('scoreboard7').moveRight(0, 2);
-new Table('scoreboard8').moveRight(0, 2);
-new Table('scoreboard9').moveRight(0, 2);
+const opt = {
+  height: 70,
+  color: '#FFEB3B',
+  columns: Timetable.getColumnsFullWidth(70, 'scoreboard0')
+};
+new Timetable('scoreboard0', opt).init().moveLeft(0, 2);
+new Timetable('scoreboard1').init().moveRight(0, 2);
 
 // CREATE CHARACTER
-// new Table('scoreboard0').createCharacter();
+// new Timetable('character', { columns: 7 }).init().createCharacter();

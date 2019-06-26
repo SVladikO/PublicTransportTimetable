@@ -1,7 +1,7 @@
 {
   "name": "info_table",
   "version": "1.0.0",
-  "description": "Create table (it looks like publick transport table) and put there your text. Text can show/moveLeft/moveRight",
+  "description": "Create timetable and put there your data. You can show/moveLeft/moveRight",
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
@@ -18,7 +18,6 @@
     "info_table",
     "time_table"
   ],
-  "author": "vlad.serhiychuk@gmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/SVladikO/PublicTransportTimetable/issues"
