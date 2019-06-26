@@ -1,10 +1,11 @@
+'use strict';
+
+const getImageSize = require('./get-image-size.js');
+const getDiv = require('./get-div.js');
 const TABLE_ROWS = 7;
 
-function createBoard(rootClass, height, columns, imageDisabledLamp) {
-  if (!rootClass) throw new Error('.rootClass is empty');
-  let root = document.getElementsByClassName(rootClass)[0];
-
-  if (!root) throw new Error("RootClass doesn't exist");
+function createBoard(className, height, columns, imageDisabledLamp) {
+  let root = getDiv(className);
   let images = root.getElementsByTagName('img');
 
   if (images.length > 0) return;
@@ -12,8 +13,8 @@ function createBoard(rootClass, height, columns, imageDisabledLamp) {
   root.style.position = 'relative';
   root.style.background = 'black';
   root.style.height = `${height}px`;
-  let imageSize = height / 8.2;
-  let position = imageSize + imageSize / 5;
+  const imageSize = getImageSize(height);
+  const position = imageSize + imageSize / 5;
 
   for (let j = 0; j < columns; j++) {
     for (let i = 0; i < TABLE_ROWS; i++) {

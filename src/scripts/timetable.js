@@ -2,9 +2,13 @@
 
 const Table = require('./table.js');
 const Character = require('./character.js');
-const imageDisabledLamp = 'public/img/off.png';
+const getColumnsByText = require('./features/get-columns-by-text.js');
+const getColumnsFullWidth = require('./features/get-columns-full-widht.js');
 const createBoard = require('./features/create-board.js');
+const getDiv = require('./features/get-div.js');
 const getConvertedText = require('./features/get-converted-text.js');
+
+const imageDisabledLamp = 'public/img/off.png';
 
 const TABLE_ROWS = 7;
 
@@ -57,18 +61,19 @@ class Timetable extends Table {
     this._turnOffAllCoordinates();
   }
 
-  static getColumnsFor(text, language) {
-    const coordinates = getConvertedText(text, language, Character);
-    const MAX = Math.max(...coordinates);
-    const columns = Math.floor(MAX / TABLE_ROWS);
-    return columns + 2;
+  static getColumnsFullWidth(className, heigh) {
+    return getColumnsFullWidth(heigh, className);
+  }
+
+  static getColumnsByText(text, language) {
+    return getColumnsByText(text, language, Character, TABLE_ROWS)
   }
 
   createCharacter() {
-    const root = document.getElementsByClassName(this.rootClass)[0];
+    const root = getDiv(this.rootClass);
     addStyle(root);
-    const nodes = Array.prototype.slice.call(root.children);
 
+    const nodes = Array.prototype.slice.call(root.children);
     root.addEventListener('click', function(event) {
       this.clear();
       addOrDeleteCoordinate(nodes, event.target, this._convertedText);
@@ -80,6 +85,7 @@ class Timetable extends Table {
       root.style.border = 'solid 2px red';
       root.style.width = '80px';
       root.style.margin = 'auto';
+      return root
     }
 
     function sort(coordinates) {

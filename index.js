@@ -19,7 +19,7 @@ let Timetable = require('./src/scripts/timetable');
   const ENG_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
 
   let options = {
-    columns: Timetable.getColumnsFor(ENG_CHARACTERS, 'eng'),
+    columns: Timetable.getColumnsByText(ENG_CHARACTERS, 'eng'),
     height: 30,
     color: 'white'
   };
@@ -31,14 +31,19 @@ let Timetable = require('./src/scripts/timetable');
 
   let options = {
     height: 30,
-    columns: Timetable.getColumnsFor(UA_CHARACTERS, 'ua'),
+    columns: Timetable.getColumnsByText(UA_CHARACTERS, 'ua'),
     color: 'rgb(255, 0, 0)',
     language: 'ua'
   };
   new Timetable('ua_char', options).init().show(UA_CHARACTERS);
 })();
 
-new Timetable('scoreboard0', { color: '#FFEB3B' }).init().moveLeft(0, 2);
+const opt = {
+  height: 70,
+  color: '#FFEB3B',
+  columns: Timetable.getColumnsFullWidth('scoreboard0', 70)
+};
+new Timetable('scoreboard0', opt).init().moveLeft(0, 2);
 new Timetable('scoreboard1').init().moveRight(0, 2);
 
 // CREATE CHARACTER
