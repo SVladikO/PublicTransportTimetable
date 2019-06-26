@@ -1,6 +1,6 @@
 {
   "name": "info_table",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Create timetable and put there your data. You can show/moveLeft/moveRight",
   "main": "index.js",
   "scripts": {
@@ -16,8 +16,10 @@
     "url": "git+https://github.com/SVladikO/PublicTransportTimetable.git"
   },
   "keywords": [
-    "info_table",
-    "time_table"
+    "timetable",
+    "_timetable",
+    "info table",
+    "table"
   ],
   "license": "ISC",
   "bugs": {
