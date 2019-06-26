@@ -57,6 +57,13 @@ class Timetable extends Table {
     this._turnOffAllCoordinates();
   }
 
+  static getColumnsFor(text, language) {
+    const coordinates = getConvertedText(text, language, Character);
+    const MAX = Math.max(...coordinates);
+    const columns = Math.floor(MAX / TABLE_ROWS);
+    return columns + 2;
+  }
+
   createCharacter() {
     const root = document.getElementsByClassName(this.rootClass)[0];
     addStyle(root);

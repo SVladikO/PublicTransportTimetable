@@ -19,7 +19,7 @@ let Timetable = require('./src/scripts/timetable');
   const ENG_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
 
   let options = {
-    columns: 280,
+    columns: Timetable.getColumnsFor(ENG_CHARACTERS, 'eng'),
     height: 30,
     color: 'white'
   };
@@ -31,7 +31,7 @@ let Timetable = require('./src/scripts/timetable');
 
   let options = {
     height: 30,
-    columns: 280,
+    columns: Timetable.getColumnsFor(UA_CHARACTERS, 'ua'),
     color: 'rgb(255, 0, 0)',
     language: 'ua'
   };
