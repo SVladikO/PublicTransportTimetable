@@ -1,26 +1,14 @@
 'use strict';
 
-const Character = require('./character');
+const Table = require('./table.js');
+const Character = require('./character.js');
 const imageDisabledLamp = 'public/img/off.png';
 const createBoard = require('./features/create-board.js');
 const getConvertedText = require('./features/get-converted-text.js');
 
 const TABLE_ROWS = 7;
 
-class Timetable {
-  constructor(rootClass, { height = 80, columns = 40, color = 'chartreuse', language = 'eng', interval = 500 } = {}) {
-    if (!rootClass || rootClass.length === 0) throw new Error(".rootClass isn't valid");
-    this.rootClass = rootClass;
-    this.height = height;
-    this.columns = columns;
-    this.color = { active: color, disabled: '' };
-    this.language = language;
-    this.interval = interval;
-
-    this.intervalID = null;
-    this._convertedText = [];
-  }
-
+class Timetable extends Table {
   init() {
     createBoard(this.rootClass, this.height, this.columns, imageDisabledLamp);
     this._images = this._getImgFromDOM();
