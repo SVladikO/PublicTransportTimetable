@@ -8,6 +8,7 @@
     "dev": "webpack-dev-server --entry ./app.js --output-filename ./dist/bundle.js -w",
     "test": "jest",
     "test:w": "jest --watch",
+    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls",
     "lint": "./node_modules/.bin/eslint .",
     "lint:fix": "./node_modules/.bin/eslint . --fix"
   },
@@ -32,6 +33,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "devDependencies": {
+    "coveralls": "^3.0.4",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.3",
