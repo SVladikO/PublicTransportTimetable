@@ -14,7 +14,7 @@ const TABLE_ROWS = 7;
 
 class Timetable extends Table {
   init() {
-    createBoard(this.rootClass, this.height, this.columns, imageDisabledLamp);
+    createBoard(this.rootClass, this.height, this.columns, imageDisabledLamp, this.backgroundColor);
     this._images = this._getImgFromDOM();
     return this;
   }
