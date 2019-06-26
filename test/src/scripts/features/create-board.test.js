@@ -1,6 +1,5 @@
 'use strict';
 
-// jest.mock('../../../../src/scripts/features/create-board.js');
 const createBoard = require('../../../../src/scripts/features/create-board.js');
 const imageDisabledLamp = './public/img/off.png';
 
