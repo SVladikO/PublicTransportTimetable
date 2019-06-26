@@ -1,4 +1,4 @@
 node_modules/*
 webpack.config.js
-tableService.test.js
-tableData.test.js
+timetable.test.js
+table.test.js
