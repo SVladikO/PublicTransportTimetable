@@ -2,7 +2,7 @@
 <a href="https://github.com/SVladikO/_timetable">
     <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/_timetable.png">
   </a>
-
+  
   <h1>_timetable</h1>
   <p>
   	_timetable is a module. The main purpose is to process text in timetable. <br>
@@ -17,6 +17,7 @@
 2. [Introduction](#introduction)
 3. [Usage](#usage)
 4. [Additional information](#customExample)
+5. [Contributing](#contributing)
 
 <h2>Install</h2>
 
@@ -181,3 +182,6 @@ setInterval(() => {
 <div align="center">
     <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/timer_timetable.png">
 </div>
+
+<h2>Contributing</h2>
+Do you want to contribute to this module ? You are welcome!)
