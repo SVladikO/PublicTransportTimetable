@@ -4,7 +4,8 @@
   </a>
   
   <h1>timetable-f</h1>
-  <a href='https://coveralls.io/github/SVladikO/_timetable?branch=master'><img src='https://coveralls.io/repos/github/SVladikO/_timetable/badge.svg?branch=master' alt='Coverage Status' /></a>
+  <a href='https://coveralls.io/github/SVladikO/timetable-f?branch=master'><img src='https://coveralls.io/repos/github/SVladikO/timetable-f/badge.svg?branch=master' alt='Coverage Status' /></a>
+
 
   <p>
   	timetable-f is a module. The main purpose is to process text in timetable. <br>
