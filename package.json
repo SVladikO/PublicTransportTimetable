@@ -1,5 +1,5 @@
 {
-  "name": "_timetable",
+  "name": "time-table",
   "version": "0.1.0",
   "description": "Create timetable and put there your text. You can show/moveLeft/moveRight",
   "main": "index.js",
