@@ -1,5 +1,5 @@
 {
-  "name": "time-table",
+  "name": "timetable-f",
   "version": "0.1.0",
   "description": "Create timetable and put there your text. You can show/moveLeft/moveRight",
   "main": "index.js",
@@ -40,7 +40,6 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
-    "jest": "^24.8.0",
-    "puppeteer": "^1.18.0"
+    "jest": "^24.8.0"
   }
 }
