@@ -106,23 +106,27 @@ class Timetable extends Table {
   }
 
   /**
-   * Add eventListener on create table. Print clicked coordinates in console
+   * Create table and add on her eventListener.
+   * Print clicked coordinates in console.
+   * When you finished you need to copy coordinates
+   * and put them in character.js
    */
-  createCharacter() {
-    const root = getDiv(this.className);
+  static createCharacter(className) {
+    const timetable = new Timetable(className, { height: 100, columns: 7 }).init();
+    const root = getDiv(className);
     addStyle(root);
 
     const nodes = Array.prototype.slice.call(root.children);
     root.addEventListener('click', function(event) {
-      this.clear();
-      addOrDeleteCoordinate(nodes, event.target, this._convertedText);
-      console.log(sort(this._convertedText));
-      this._turnOnAllCoordinates();
-    }.bind(this));
+      timetable.clear();
+      addOrDeleteCoordinate(nodes, event.target, timetable._convertedText);
+      console.log(sort(timetable._convertedText));
+      timetable._turnOnAllCoordinates();
+    });
 
     function addStyle(root) {
       root.style.border = 'solid 2px red';
-      root.style.width = '80px';
+      root.style.width = '100px';
       root.style.margin = 'auto';
       return root
     }
