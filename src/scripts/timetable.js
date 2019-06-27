@@ -118,6 +118,7 @@ class Timetable extends Table {
 
     const nodes = Array.prototype.slice.call(root.children);
     root.addEventListener('click', function(event) {
+      debugger;
       timetable.clear();
       addOrDeleteCoordinate(nodes, event.target, timetable._convertedText);
       console.log(sort(timetable._convertedText));
@@ -141,7 +142,7 @@ class Timetable extends Table {
 
       if (indexOf >= 0) {
         coordinates.splice(indexOf, 1);
-      } else if (imageIndex > 0) {
+      } else if (imageIndex >= 0) {
         coordinates.push(imageIndex);
       }
     }
