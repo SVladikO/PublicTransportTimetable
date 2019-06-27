@@ -1,6 +1,6 @@
 <div align="center">
 <a href="https://github.com/SVladikO/timetable-f">
-    <img src="https://github.com/SVladikO/timetable-f/blob/develop/dev/img/timetable-f.png">
+    <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/icon.png">
   </a>
   
   <h1>timetable-f</h1>
@@ -18,8 +18,16 @@
 1. [Install](#install)
 2. [Introduction](#introduction)
 3. [Usage](#usage)
-4. [Additional information](#customExample)
-5. [Contributing](#contributing)
+    * [show](#show)
+    * [moveLeft](#moveLeft)
+    * [moveRight](#moveRight)
+    * [getColumnsByText](#getColumnsByText)
+    * [getColumnsFullWidth](#getColumnsFullWidth)
+    * [createCharacter](#createCharacter)
+    * [clear](#clear)
+    * [AnIdeaToUse](#anIdeaToUse)
+4. [Contributing](#contributin4)
+5. [Motivation](#motivation)
 
 <h2>Install</h2>
 
@@ -45,11 +53,13 @@ npm install timetable-f
 ```
 
 <div align="center">
-  <img src="https://github.com/SVladikO/timetable-f/blob/develop/dev/img/supported_characters.png">
+  <img src="https://github.com/SVladikO/timetable-f/blob/master/dev/img/supported_characters.png">
 </div>
 
 <h2>Usage</h2>
-<h4>show() with default options:</h4>
+<h4>show</h4>
+
+ With default options:
 
 ```bash
 const Timetable = require('timetable-f');
@@ -70,7 +80,8 @@ By default the second parameter in Timetable constructor set:
 	backgroundColor: 'black'
 }
 ```
-<h4>show() with custom options:</h4>
+
+With custom options:
 
 ```bash
 const Timetable = require('timetable-f');
@@ -82,12 +93,12 @@ const options = {
 	language: 'eng',
 	interval: 1000,
 	backgroundColor: 'black'
-  };
+};
 
 const table = new Timetable('className', options).init();
 table.show('ENG_TEXT');
 ```
-<h4>moveLeft()</h4>
+<h4>moveLeft</h4>
 
 ```bash
 const Timetable = require('timetable-f');
@@ -100,7 +111,7 @@ const table = new Timetable('className').init();
 table.moveLeft(text, timeToRepeat, timeout);
 ```
 
-<h4>moveRight()</h4>
+<h4>moveRight</h4>
 
 ```bash
 const Timetable = require('timetable-f');
@@ -113,7 +124,8 @@ const table = new Timetable('className').init();
 table.moveRight(text, timeToRepeat, timeout);
 ```
 
-<h4>getColumnsByText - calculate columns by custom text:</h4>
+<h4>getColumnsByText</h4>
+ <p>Calculate columns by custom text</p>
 
 ```bash
 const Timetable = require('timetable-f');
@@ -125,7 +137,8 @@ const options = {
 const table = new Timetable('className', options).init();
 table.show(text);
 ```
-<h4>getColumnsFullWidth - calculate columns by div[className].width</h4>
+<h4>getColumnsFullWidth</h4>
+<p> Calculate columns by div[className].width:</p>
 
 ```bash
 const Timetable = require('timetable-f');
@@ -140,7 +153,7 @@ const table = new Timetable(className, options).init();
 table.moveLeft('text');
 ```
 
-<h4>Create characters</h4>
+<h4>createCharacter</h4>
 When you want to add some characters or maybe language
 you can use next tool:
 
@@ -151,9 +164,9 @@ Timetable.createCharacter('className');
 You click on table and see coordinates in console.
 Then copied into Character obj.
 
-<h2>Additional information</h2>
-<h4>show(), moveLeft(), moveRight()  common features</h4>
+<h4>clear</h4>
 
+You can clear table.
 All methods show(), moveLeft(), moveRight() delete previous text if they work with one object
 
 ```bash
@@ -161,11 +174,13 @@ const Timetable = require('timetable-f');
 
 const table = new Timetable('timer').init();
 table.show('text 0');
+table.clear();
 table.moveLeft('text 1');
 table.moveRight('text 2');
-table.show('text 3');
+table.show('text 3'); // show 'text 3'
 ```
-<h4>Create timer</h4>
+
+<h4>AnIdeaToUse</h4>
 
 ```bash
 const Timetable = require('timetable-f');
@@ -182,8 +197,11 @@ setInterval(() => {
 }, 1000);
 ```
 <div align="center">
-    <img src="https://github.com/SVladikO/timetable-f/blob/develop/dev/img/timertimetable-f.png">
+    <img src="https://github.com/SVladikO/timetable-f/blob/master/dev/img/timer_timetable.png">
 </div>
 
 <h2>Contributing</h2>
 Do you want to contribute to this module ? You are welcome!)
+
+<h2>Motivation</h2>
+I always loved timetable. Especially different colors with different data. That's some kind of magic)
