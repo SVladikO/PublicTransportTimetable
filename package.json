@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --entry ./app.js --output-filename ./dist/bundle.js -w",
     "test": "jest",
     "test:w": "jest --watch",
-    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls",
+    "coveralls": "node --harmony node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "lint": "./node_modules/.bin/eslint .",
     "lint:fix": "./node_modules/.bin/eslint . --fix"
   },
@@ -40,7 +40,6 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
-    "jest": "^24.8.0",
-    "puppeteer": "^1.18.0"
+    "jest": "^24.8.0"
   }
 }
