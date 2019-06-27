@@ -1,4 +1,8 @@
 <div align="center">
+<a href="https://github.com/SVladikO/_timetable">
+    <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/_timetable.png">
+  </a>
+
   <h1>_timetable</h1>
   <p>
   	_timetable is a module. The main purpose is to process text in timetable. <br>
@@ -37,7 +41,9 @@ npm install _timetable
 }
 ```
 
-<p></p>
+<div align="center">
+  <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/supported_characters.png">
+</div>
 
 <h2>Usage</h2>
 <h4>show() with default options:</h4>
@@ -172,3 +178,6 @@ setInterval(() => {
   timer.show(`${HOURS}:${MINUTES}:${SECONDS}`);
 }, 1000);
 ```
+<div align="center">
+    <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/timer_timetable.png">
+</div>
