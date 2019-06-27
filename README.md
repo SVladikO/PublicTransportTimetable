@@ -1,11 +1,12 @@
 <div align="center">
-<a href="https://github.com/SVladikO/_timetable">
-    <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/_timetable.png">
+<a href="https://github.com/SVladikO/timetable-f">
+    <img src="https://github.com/SVladikO/timetable-f/blob/develop/dev/img/timetable-f.png">
   </a>
   
-  <h1>_timetable</h1>
+  <h1>timetable-f</h1>
+  [![Coverage Status](https://coveralls.io/repos/github/SVladikO/timetable-f/badge.svg?branch=master)](https://coveralls.io/github/SVladikO/timetable-f?branch=master)
   <p>
-  	_timetable is a module. The main purpose is to process text in timetable. <br>
+  	timetable-f is a module. The main purpose is to process text in timetable. <br>
 
     show(), moveLeft(), moveRight() 
   </p>
@@ -22,12 +23,12 @@
 <h2>Install</h2>
 
 ```bash
-npm install _timetable
+npm install timetable-f
 ```
 
 <h2>Introduction</h2>
 <p>
-  	_timetable is a module. The main purpose is to process text in timetable. <br>
+  	timetable-f is a module. The main purpose is to process text in timetable. <br>
 
     show(), moveLeft(), moveRight()
 </p>
@@ -43,14 +44,14 @@ npm install _timetable
 ```
 
 <div align="center">
-  <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/supported_characters.png">
+  <img src="https://github.com/SVladikO/timetable-f/blob/develop/dev/img/supported_characters.png">
 </div>
 
 <h2>Usage</h2>
 <h4>show() with default options:</h4>
 
 ```bash
-const Timetable = require('_timetable');
+const Timetable = require('timetable-f');
 
 // Be sure that div.className is exist in DOM
 const timetable = new Timetable('className').init();
@@ -71,7 +72,7 @@ By default the second parameter in Timetable constructor set:
 <h4>show() with custom options:</h4>
 
 ```bash
-const Timetable = require('_timetable');
+const Timetable = require('timetable-f');
 
 const options = { 
     height: 80, 
@@ -88,7 +89,7 @@ timetable.show('ENG_TEXT');
 <h4>moveLeft()</h4>
 
 ```bash
-const Timetable = require('_timetable');
+const Timetable = require('timetable-f');
 
 const text = 'ENG_TEXT';
 const timeToRepeat = 2; // optional =0
@@ -101,7 +102,7 @@ timetable.moveLeft(text, timeToRepeat, timeout);
 <h4>moveRight()</h4>
 
 ```bash
-const Timetable = require('_timetable');
+const Timetable = require('timetable-f');
 
 const text = 'ENG_TEXT';
 const timeToRepeat = 2; // optional =0
@@ -114,7 +115,7 @@ timetable.moveRight(text, timeToRepeat, timeout);
 <h4>getColumnsByText - calculate columns by custom text:</h4>
 
 ```bash
-const Timetable = require('_timetable');
+const Timetable = require('timetable-f');
 const text = "ENG_TEXT";
 const options = {
   columns: Timetable.getColumnsByText(text, 'eng'),
@@ -126,7 +127,7 @@ timetable.show(text);
 <h4>getColumnsFullWidth - calculate columns by div[className].width</h4>
 
 ```bash
-const Timetable = require('_timetable');
+const Timetable = require('timetable-f');
 const tableHeight = 70;
 const options = {
   height: tableHeight,
@@ -143,7 +144,7 @@ When you want to add some characters or maybe language
 you can use next tool:
 
 ```bash
-const Timetable = require('_timetable');
+const Timetable = require('timetable-f');
 new Timetable('character', { columns: 7 }).init().createCharacter();
 ```
 You see timetable with 7 columns. You click on lamps and see coordinates in console.
@@ -155,7 +156,7 @@ Then copy them into Character obj.
 All methods show(), moveLeft(), moveRight() delete previous text if they work with one object
 
 ```bash
-const Timetable = require('_timetable');
+const Timetable = require('timetable-f');
 
 const timetable = new Timetable('className').init();
 timetable.show('some text');  
@@ -167,7 +168,7 @@ timetable.clear();
 <h4>Create timer</h4>
 
 ```bash
-const Timetable = require('_timetable');
+const Timetable = require('timetable-f');
 const timer = new Timetable('timer', { height: 80, color: '#00aaff' }).init();
 const format = time => time < 10 ? '0' + time : time;
 
@@ -180,7 +181,7 @@ setInterval(() => {
 }, 1000);
 ```
 <div align="center">
-    <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/timer_timetable.png">
+    <img src="https://github.com/SVladikO/timetable-f/blob/develop/dev/img/timertimetable-f.png">
 </div>
 
 <h2>Contributing</h2>
