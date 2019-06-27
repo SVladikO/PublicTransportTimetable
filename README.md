@@ -4,7 +4,8 @@
   </a>
   
   <h1>timetable-f</h1>
-  [![Coverage Status](https://coveralls.io/repos/github/SVladikO/timetable-f/badge.svg?branch=master)](https://coveralls.io/github/SVladikO/timetable-f?branch=master)
+  <a href='https://coveralls.io/github/SVladikO/_timetable?branch=master'><img src='https://coveralls.io/repos/github/SVladikO/_timetable/badge.svg?branch=master' alt='Coverage Status' /></a>
+
   <p>
   	timetable-f is a module. The main purpose is to process text in timetable. <br>
 
@@ -54,8 +55,8 @@ npm install timetable-f
 const Timetable = require('timetable-f');
 
 // Be sure that div.className is exist in DOM
-const timetable = new Timetable('className').init();
-timetable.show('some text');
+const table = new Timetable('className').init();
+table.show('text');
 ```
 
 By default the second parameter in Timetable constructor set:
@@ -75,28 +76,28 @@ By default the second parameter in Timetable constructor set:
 const Timetable = require('timetable-f');
 
 const options = { 
-    height: 80, 
-	  columns: 80,
-	  color: 'red',
-	  language: 'eng',
-	  interval: 1000,
-	  backgroundColor: 'black'
+  height: 80, 
+	columns: 80,
+	color: 'red',
+	language: 'eng',
+	interval: 1000,
+	backgroundColor: 'black'
   };
 
-const timetable = new Timetable('className', options).init();
-timetable.show('ENG_TEXT');
+const table = new Timetable('className', options).init();
+table.show('ENG_TEXT');
 ```
 <h4>moveLeft()</h4>
 
 ```bash
 const Timetable = require('timetable-f');
 
-const text = 'ENG_TEXT';
+const text = 'text';
 const timeToRepeat = 2; // optional =0
-const timeout = 1000; // optional =500
+const timeout = 300; // optional =500
 
-const timetable = new Timetable('className').init();
-timetable.moveLeft(text, timeToRepeat, timeout);
+const table = new Timetable('className').init();
+table.moveLeft(text, timeToRepeat, timeout);
 ```
 
 <h4>moveRight()</h4>
@@ -104,39 +105,39 @@ timetable.moveLeft(text, timeToRepeat, timeout);
 ```bash
 const Timetable = require('timetable-f');
 
-const text = 'ENG_TEXT';
+const text = 'text';
 const timeToRepeat = 2; // optional =0
-const timeout = 1000; // optional =500
+const timeout = 300; // optional =500
 
-const timetable = new Timetable('className').init();
-timetable.moveRight(text, timeToRepeat, timeout);
+const table = new Timetable('className').init();
+table.moveRight(text, timeToRepeat, timeout);
 ```
 
 <h4>getColumnsByText - calculate columns by custom text:</h4>
 
 ```bash
 const Timetable = require('timetable-f');
-const text = "ENG_TEXT";
+const text = "text";
 const options = {
   columns: Timetable.getColumnsByText(text, 'eng'),
 };
  
-const timetable = new Timetable('className', options).init();
-timetable.show(text);
+const table = new Timetable('className', options).init();
+table.show(text);
 ```
 <h4>getColumnsFullWidth - calculate columns by div[className].width</h4>
 
 ```bash
 const Timetable = require('timetable-f');
 const tableHeight = 70;
+const className = 'className';
 const options = {
   height: tableHeight,
   // tableHeight here is need because imageSize calculated from tableHeight
-  columns: Timetable.getColumnsFullWidth(tableHeight, 'className')
+  columns: Timetable.getColumnsFullWidth(tableHeight, className)
 };
-
-const timetable = new Timetable('className', options).init();
-timetable.moveLeft(0);
+const table = new Timetable(className, options).init();
+table.moveLeft('text');
 ```
 
 <h4>Create characters</h4>
@@ -145,10 +146,10 @@ you can use next tool:
 
 ```bash
 const Timetable = require('timetable-f');
-new Timetable('character', { columns: 7 }).init().createCharacter();
+Timetable.createCharacter('className');
 ```
-You see timetable with 7 columns. You click on lamps and see coordinates in console.
-Then copy them into Character obj.
+You click on table and see coordinates in console.
+Then copied into Character obj.
 
 <h2>Additional information</h2>
 <h4>show(), moveLeft(), moveRight()  common features</h4>
@@ -158,17 +159,17 @@ All methods show(), moveLeft(), moveRight() delete previous text if they work wi
 ```bash
 const Timetable = require('timetable-f');
 
-const timetable = new Timetable('className').init();
-timetable.show('some text');  
-timetable.moveLeft('next text 1');  
-timetable.moveRight('next text 2');  
-timetable.show('next text 3'); 
-timetable.clear();
+const table = new Timetable('timer').init();
+table.show('text 0');
+table.moveLeft('text 1');
+table.moveRight('text 2');
+table.show('text 3');
 ```
 <h4>Create timer</h4>
 
 ```bash
 const Timetable = require('timetable-f');
+// Be sure div[className] is in DOM
 const timer = new Timetable('timer', { height: 80, color: '#00aaff' }).init();
 const format = time => time < 10 ? '0' + time : time;
 
