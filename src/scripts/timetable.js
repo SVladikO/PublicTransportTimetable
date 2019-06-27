@@ -4,6 +4,7 @@ const Table = require('./table.js');
 const Character = require('./character.js');
 const getColumnsByText = require('./features/get-columns-by-text.js');
 const getColumnsFullWidth = require('./features/get-columns-full-width.js');
+const reduceCoordinates = require('./features/reduce-coordinates.js');
 const createBoard = require('./features/create-board.js');
 const getDiv = require('./features/get-div.js');
 const getConvertedText = require('./features/get-converted-text.js');
@@ -106,40 +107,33 @@ class Timetable extends Table {
   }
 
   /**
-   * Add eventListener on create table. Print clicked coordinates in console
+   * Create table and add on her eventListener.
+   * Print clicked coordinates in console.
+   * When you finished you need to copy coordinates
+   * and put them in character.js
    */
-  createCharacter() {
-    const root = getDiv(this.className);
+  static createCharacter(className) {
+    const timetable = new Timetable(className, { height: 100, columns: 7 }).init();
+    const root = getDiv(className);
     addStyle(root);
 
     const nodes = Array.prototype.slice.call(root.children);
     root.addEventListener('click', function(event) {
-      this.clear();
-      addOrDeleteCoordinate(nodes, event.target, this._convertedText);
-      console.log(sort(this._convertedText));
-      this._turnOnAllCoordinates();
-    }.bind(this));
+      timetable.clear();
+      reduceCoordinates(nodes, event.target, timetable._convertedText);
+      console.log(sort(timetable._convertedText));
+      timetable._turnOnAllCoordinates();
+    });
 
     function addStyle(root) {
       root.style.border = 'solid 2px red';
-      root.style.width = '80px';
+      root.style.width = '100px';
       root.style.margin = 'auto';
       return root
     }
 
     function sort(coordinates) {
       return (coordinates.length >= 2) ? coordinates.sort((a, b) => a - b) : coordinates;
-    }
-
-    function addOrDeleteCoordinate(nodes, target, coordinates) {
-      const imageIndex = nodes.indexOf(target);
-      let indexOf = coordinates.indexOf(imageIndex);
-
-      if (indexOf >= 0) {
-        coordinates.splice(indexOf, 1);
-      } else if (imageIndex > 0) {
-        coordinates.push(imageIndex);
-      }
     }
   }
 
@@ -150,14 +144,14 @@ class Timetable extends Table {
   }
 
   _goToRight() {
-    const POSITION_FIRST = this._convertedText[0];
-    const INCREMENT = Math.floor(POSITION_FIRST / -TABLE_ROWS) * TABLE_ROWS + this._images.length;
+    const first = this._convertedText[0];
+    const INCREMENT = Math.floor(first / -TABLE_ROWS) * TABLE_ROWS + this._images.length;
     this._convertedText = this._convertedText.map(num => num + INCREMENT);
   }
 
   _goToLeft() {
-    const POSITION_LAST = this._convertedText.slice(-1)[0];
-    const INCREMENT = Math.floor(POSITION_LAST / TABLE_ROWS) * TABLE_ROWS;
+    const last = this._convertedText.slice(-1)[0];
+    const INCREMENT = Math.floor(last / TABLE_ROWS) * TABLE_ROWS;
     this._convertedText = this._convertedText.map(num => num - INCREMENT);
   }
 
@@ -166,18 +160,18 @@ class Timetable extends Table {
     return root.getElementsByTagName('IMG');
   }
 
-  _switchColor(position, color) {
+  _switchImageBackgroundColor(position, color) {
     if (position >= 0 && position < this._images.length) {
       this._images[position].style.backgroundColor = color;
     }
   }
 
   _turnOnAllCoordinates() {
-    this._convertedText.forEach(position => this._switchColor(position, this.color.active));
+    this._convertedText.forEach(position => this._switchImageBackgroundColor(position, this.color.active));
   }
 
   _turnOffAllCoordinates() {
-    this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+    this._convertedText.forEach(position => this._switchImageBackgroundColor(position, this.color.disabled));
   }
 
   /**
@@ -193,7 +187,7 @@ class Timetable extends Table {
         this._turnOffAllCoordinates();
         this._convertedText = this._convertedText.map(position => {
           let newPosition = changeCallback(position);
-          this._switchColor(newPosition, this.color.active);
+          this._switchImageBackgroundColor(newPosition, this.color.active);
           return newPosition;
         });
       } catch (error) {
