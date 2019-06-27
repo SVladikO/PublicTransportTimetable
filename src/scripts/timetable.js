@@ -4,6 +4,7 @@ const Table = require('./table.js');
 const Character = require('./character.js');
 const getColumnsByText = require('./features/get-columns-by-text.js');
 const getColumnsFullWidth = require('./features/get-columns-full-width.js');
+const reduceCoordinates = require('./features/reduce-coordinates.js');
 const createBoard = require('./features/create-board.js');
 const getDiv = require('./features/get-div.js');
 const getConvertedText = require('./features/get-converted-text.js');
@@ -118,9 +119,8 @@ class Timetable extends Table {
 
     const nodes = Array.prototype.slice.call(root.children);
     root.addEventListener('click', function(event) {
-      debugger;
       timetable.clear();
-      addOrDeleteCoordinate(nodes, event.target, timetable._convertedText);
+      reduceCoordinates(nodes, event.target, timetable._convertedText);
       console.log(sort(timetable._convertedText));
       timetable._turnOnAllCoordinates();
     });
@@ -134,17 +134,6 @@ class Timetable extends Table {
 
     function sort(coordinates) {
       return (coordinates.length >= 2) ? coordinates.sort((a, b) => a - b) : coordinates;
-    }
-
-    function addOrDeleteCoordinate(nodes, target, coordinates) {
-      const imageIndex = nodes.indexOf(target);
-      let indexOf = coordinates.indexOf(imageIndex);
-
-      if (indexOf >= 0) {
-        coordinates.splice(indexOf, 1);
-      } else if (imageIndex >= 0) {
-        coordinates.push(imageIndex);
-      }
     }
   }
 
