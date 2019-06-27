@@ -170,18 +170,18 @@ class Timetable extends Table {
     return root.getElementsByTagName('IMG');
   }
 
-  _switchColor(position, color) {
+  _switchImageBackgroundColor(position, color) {
     if (position >= 0 && position < this._images.length) {
       this._images[position].style.backgroundColor = color;
     }
   }
 
   _turnOnAllCoordinates() {
-    this._convertedText.forEach(position => this._switchColor(position, this.color.active));
+    this._convertedText.forEach(position => this._switchImageBackgroundColor(position, this.color.active));
   }
 
   _turnOffAllCoordinates() {
-    this._convertedText.forEach(position => this._switchColor(position, this.color.disabled));
+    this._convertedText.forEach(position => this._switchImageBackgroundColor(position, this.color.disabled));
   }
 
   /**
@@ -197,7 +197,7 @@ class Timetable extends Table {
         this._turnOffAllCoordinates();
         this._convertedText = this._convertedText.map(position => {
           let newPosition = changeCallback(position);
-          this._switchColor(newPosition, this.color.active);
+          this._switchImageBackgroundColor(newPosition, this.color.active);
           return newPosition;
         });
       } catch (error) {
