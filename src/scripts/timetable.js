@@ -144,14 +144,14 @@ class Timetable extends Table {
   }
 
   _goToRight() {
-    const POSITION_FIRST = this._convertedText[0];
-    const INCREMENT = Math.floor(POSITION_FIRST / -TABLE_ROWS) * TABLE_ROWS + this._images.length;
+    const first = this._convertedText[0];
+    const INCREMENT = Math.floor(first / -TABLE_ROWS) * TABLE_ROWS + this._images.length;
     this._convertedText = this._convertedText.map(num => num + INCREMENT);
   }
 
   _goToLeft() {
-    const POSITION_LAST = this._convertedText.slice(-1)[0];
-    const INCREMENT = Math.floor(POSITION_LAST / TABLE_ROWS) * TABLE_ROWS;
+    const last = this._convertedText.slice(-1)[0];
+    const INCREMENT = Math.floor(last / TABLE_ROWS) * TABLE_ROWS;
     this._convertedText = this._convertedText.map(num => num - INCREMENT);
   }
 
