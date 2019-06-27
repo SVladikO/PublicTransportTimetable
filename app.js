@@ -49,7 +49,7 @@ let Timetable = require('./src/scripts/timetable');
 new Timetable('scoreboard1').init().moveRight(0, 2);
 
 (function() {
-  const text = '_timetable'
+  const text = 'timetable-f'
   const options = {
     height: 80,
     columns: Timetable.getColumnsByText(text)
