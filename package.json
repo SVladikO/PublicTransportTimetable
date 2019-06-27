@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --entry ./app.js --output-filename ./dist/bundle.js -w",
     "test": "jest",
     "test:w": "jest --watch",
-    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls",
+    "coveralls": "node --harmony node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "lint": "./node_modules/.bin/eslint .",
     "lint:fix": "./node_modules/.bin/eslint . --fix"
   },
