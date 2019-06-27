@@ -98,10 +98,10 @@ class Timetable extends Table {
   /**
    * Calculate columns depends on text length.
    * @param  {string} text
-   * @param  {string} language
+   * @param  {string} language = 'eng'
    * @returns {number} columns
    */
-  static getColumnsByText(text, language) {
+  static getColumnsByText(text, language = 'eng') {
     return getColumnsByText(text, language, Character, TABLE_ROWS)
   }
 
