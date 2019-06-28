@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SVladikO/PublicTransportTimetable.git"
+    "url": "git+https://github.com/SVladikO/timetable-f.git"
   },
   "keywords": [
     "timetable",
@@ -24,9 +24,9 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SVladikO/PublicTransportTimetable/issues"
+    "url": "https://github.com/SVladikO/timetable-f/issues"
   },
-  "homepage": "https://github.com/SVladikO/PublicTransportTimetable#readme",
+  "homepage": "https://github.com/SVladikO/timetable-f#readme",
   "dependencies": {
     "assets": "^3.0.1",
     "webpack": "^4.29.4",
