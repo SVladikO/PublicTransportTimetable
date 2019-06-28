@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Create timetable and put there your text. You can show/moveLeft/moveRight",
   "main": "index.js",
+  "engines": {
+    "npm": "~6.4.1",
+    "node": "~10.14.2"
+  },
   "scripts": {
     "build": "webpack",
     "dev": "webpack-dev-server --entry ./app.js --output-filename ./dist/bundle.js -w",
