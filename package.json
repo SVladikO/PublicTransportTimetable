@@ -1,6 +1,6 @@
 {
   "name": "timetable-f",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Create timetable and put there your text. You can show/moveLeft/moveRight",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SVladikO/PublicTransportTimetable.git"
+    "url": "git+https://github.com/SVladikO/timetable-f.git"
   },
   "keywords": [
     "timetable",
@@ -24,10 +24,11 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SVladikO/PublicTransportTimetable/issues"
+    "url": "https://github.com/SVladikO/timetable-f/issues"
   },
-  "homepage": "https://github.com/SVladikO/PublicTransportTimetable#readme",
+  "homepage": "https://github.com/SVladikO/timetable-f#readme",
   "dependencies": {
+    "assets": "^3.0.1",
     "webpack": "^4.29.4",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"
