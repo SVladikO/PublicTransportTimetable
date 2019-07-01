@@ -1,6 +1,6 @@
 <div align="center">
 <a href="https://github.com/SVladikO/timetable-f">
-    <img src="https://github.com/SVladikO/_timetable/blob/develop/dev/img/icon.png">
+    <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/icon.png">
   </a>
   
   <h1>timetable-f</h1>
@@ -19,6 +19,7 @@
 1. [Install](#install)
 2. [Introduction](#introduction)
 3. [Usage](#usage)
+    * [PrepareAssets](#PrepareAssets)
     * [show](#show)
     * [moveLeft](#moveLeft)
     * [moveRight](#moveRight)
@@ -54,10 +55,25 @@ npm install timetable-f
 ```
 
 <div align="center">
-  <img src="https://github.com/SVladikO/timetable-f/blob/master/dev/img/supported_characters.png">
+  <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/supported_characters.png">
 </div>
 
 <h2>Usage</h2>
+<h4>PrepareAssets</h4>
+<p>!!! Important !!!</p>
+<p>Download image from 
+   <a href='https://github.com/SVladikO/timetable-f/blob/master/assets/img/off.png'> here</a>.
+   <br>
+   By default "timetable-f" try to get image from 'public/img/off.png'. 
+</p>
+
+You can set your own path.
+
+```bash
+const Timetable = require('timetable-f');
+Timetable.setImage('yourPath/off.png');
+```
+
 <h4>show</h4>
 
  With default options:
@@ -198,7 +214,7 @@ setInterval(() => {
 }, 1000);
 ```
 <div align="center">
-    <img src="https://github.com/SVladikO/timetable-f/blob/master/dev/img/timer_timetable.png">
+    <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/timer_timetable.png">
 </div>
 
 <h2>Contributing</h2>
