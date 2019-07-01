@@ -9,7 +9,7 @@ const createBoard = require('./features/create-board.js');
 const getDiv = require('./features/get-div.js');
 const getConvertedText = require('./features/get-converted-text.js');
 
-const imageDisabledLamp = 'public/img/off.png';
+let imageDisabledLamp = 'public/img/off.png';
 
 const TABLE_ROWS = 7;
 
@@ -84,6 +84,9 @@ class Timetable extends Table {
   clear() {
     clearInterval(this.intervalID);
     this._turnOffAllCoordinates();
+  }
+  static setImage(src) {
+    imageDisabledLamp = src;
   }
   /**
    * Calculate columns depends on div[className].width.

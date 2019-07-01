@@ -1,6 +1,6 @@
 let Timetable = require('./index.js');
-// let Timetable = require('../src/scripts/timetable');
 
+Timetable.setImage('assets/img/off.png');
 // Create timer
 (function() {
   let timer = new Timetable('timer', { height: 80, color: '#00aaff' }).init();
