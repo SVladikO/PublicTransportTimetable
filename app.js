@@ -1,4 +1,5 @@
-let Timetable = require('./src/scripts/timetable');
+let Timetable = require('./index.js');
+// let Timetable = require('../src/scripts/timetable');
 
 // Create timer
 (function() {

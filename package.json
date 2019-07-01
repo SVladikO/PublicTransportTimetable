@@ -4,12 +4,11 @@
   "description": "Create timetable and put there your text. You can show/moveLeft/moveRight",
   "main": "index.js",
   "engines": {
-    "npm": "~6.4.1",
-    "node": "~10.14.2"
+    "npm": "^6.4.1",
+    "node": "^10.14.2"
   },
   "scripts": {
-    "build": "webpack",
-    "dev": "webpack-dev-server --entry ./app.js --output-filename ./dist/bundle.js -w",
+    "dev": "webpack-dev-server --open --config webpack.dev.js",
     "test": "jest",
     "test:w": "jest --watch",
     "coveralls": "node --harmony node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
@@ -31,13 +30,9 @@
     "url": "https://github.com/SVladikO/timetable-f/issues"
   },
   "homepage": "https://github.com/SVladikO/timetable-f#readme",
-  "dependencies": {
-    "assets": "^3.0.1",
-    "webpack": "^4.29.4",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.14"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "assets": "^3.0.1",
     "coveralls": "^3.0.4",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
@@ -45,6 +40,10 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
-    "jest": "^24.8.0"
+    "jest": "^24.8.0",
+    "webpack": "^4.29.4",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14",
+    "webpack-merge": "^4.2.1"
   }
 }
