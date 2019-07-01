@@ -155,7 +155,7 @@ const table = new Timetable('className', options).init();
 table.show(text);
 ```
 <h4>getColumnsFullWidth</h4>
-<p> Calculate columns by div[className].width:</p>
+<p> Calculate columns by div.className.width:</p>
 
 ```bash
 const Timetable = require('timetable-f');
@@ -167,7 +167,7 @@ const options = {
   columns: Timetable.getColumnsFullWidth(tableHeight, className)
 };
 const table = new Timetable(className, options).init();
-table.moveLeft('text');
+table.show('text');
 ```
 
 <h4>createCharacter</h4>
@@ -189,7 +189,7 @@ All methods show(), moveLeft(), moveRight() delete previous text if they work wi
 ```bash
 const Timetable = require('timetable-f');
 
-const table = new Timetable('timer').init();
+const table = new Timetable('className').init();
 table.show('text 0');
 table.clear();
 table.moveLeft('text 1');
@@ -201,7 +201,7 @@ table.show('text 3'); // show 'text 3'
 
 ```bash
 const Timetable = require('timetable-f');
-// Be sure div[className] is in DOM
+// Be sure div.className is in DOM
 const timer = new Timetable('timer', { height: 80, color: '#00aaff' }).init();
 const format = time => time < 10 ? '0' + time : time;
 
