@@ -43,7 +43,7 @@ npm install timetable-f
     show(), moveLeft(), moveRight()
 </p>
 <p>    
-    This version 0.1.0 support next characters only in UpperCase:
+    This version 1.0.0 support next characters only in UpperCase:
 </p>
 
 ```bash

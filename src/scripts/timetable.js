@@ -9,7 +9,7 @@ const createBoard = require('./features/create-board.js');
 const getDiv = require('./features/get-div.js');
 const getConvertedText = require('./features/get-converted-text.js');
 
-const imageDisabledLamp = 'public/img/off.png';
+let imageDisabledLamp = 'public/img/off.png';
 
 const TABLE_ROWS = 7;
 
@@ -28,7 +28,8 @@ class Timetable extends Table {
    * @param  {string} text
    */
   show(text) {
-    this._prepareDataAndTable(text);
+    this.clear();
+    this._convert(text);
     this._turnOnAllCoordinates();
   }
 
@@ -39,15 +40,16 @@ class Timetable extends Table {
    * @param  {number} [interval] seconds for setInterval
    */
   moveLeft(text, time = 0, interval) {
-    this._prepareDataAndTable(text);
-    this._goToRight();
+    this.clear();
+    this._convert(text);
+    this._goToStartFromRightSide();
     this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, interval);
 
     function checkPosition() {
       if (!(this._convertedText.slice(-1)[0] < 0)) return;
 
       if (--time) {
-        this._goToRight();
+        this._goToStartFromRightSide();
       } else {
         clearInterval(this.intervalID);
       }
@@ -61,15 +63,16 @@ class Timetable extends Table {
     * @param  {number} [interval] seconds for setInterval
     */
   moveRight(text, time = 0, interval) {
-    this._prepareDataAndTable(text);
-    this._goToLeft();
+    this.clear();
+    this._convert(text);
+    this._goToStartFromLeftSide();
     this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, interval);
 
     function checkPosition() {
       if (!(this._convertedText[0] > this._images.length)) return;
 
       if (--time) {
-        this._goToLeft();
+        this._goToStartFromLeftSide();
       } else {
         clearInterval(this.intervalID);
       }
@@ -85,6 +88,15 @@ class Timetable extends Table {
     clearInterval(this.intervalID);
     this._turnOffAllCoordinates();
   }
+
+  /**
+   * Update default path to image
+   * @param  {string} src
+   */
+  static setImage(src) {
+    imageDisabledLamp = src;
+  }
+
   /**
    * Calculate columns depends on div[className].width.
    * We need here height too, because image size calculated from height
@@ -137,19 +149,18 @@ class Timetable extends Table {
     }
   }
 
-  _prepareDataAndTable(text) {
-    this.clear();
+  _convert(text) {
     this.text = '' + text;
     this._convertedText = getConvertedText(this.text, this.language, Character);
   }
 
-  _goToRight() {
+  _goToStartFromRightSide() {
     const first = this._convertedText[0];
     const INCREMENT = Math.floor(first / -TABLE_ROWS) * TABLE_ROWS + this._images.length;
     this._convertedText = this._convertedText.map(num => num + INCREMENT);
   }
 
-  _goToLeft() {
+  _goToStartFromLeftSide() {
     const last = this._convertedText.slice(-1)[0];
     const INCREMENT = Math.floor(last / TABLE_ROWS) * TABLE_ROWS;
     this._convertedText = this._convertedText.map(num => num - INCREMENT);
