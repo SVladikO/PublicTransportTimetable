@@ -58,7 +58,7 @@ test('Should move coordinates right', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
   const table = new Timetable(CLASS_NAME, { columns: 7 }).init();
   table._convertedText = [0, 7];
-  table._goToRight();
+  table._goToStartFromRightSide();
 
   expect(table._convertedText.length).toBe(2);
   expect(table._convertedText[0]).toBe(49);
@@ -69,7 +69,7 @@ test('Should move coordinates left', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
   const table = new Timetable(CLASS_NAME, { columns: 7 }).init();
   table._convertedText = [0, 7];
-  table._goToLeft();
+  table._goToStartFromLeftSide();
 
   expect(table._convertedText.length).toBe(2);
   expect(table._convertedText[0]).toBe(-7);
