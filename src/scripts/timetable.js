@@ -48,8 +48,9 @@ class Timetable extends Table {
     function checkPosition() {
       if (!(this._convertedText.slice(-1)[0] < 0)) return;
 
-      if (time < 0) {
+      if (time <= 0) {
         clearInterval(this.intervalID);
+        this._convertedText = [];
         return;
       }
 
@@ -73,8 +74,10 @@ class Timetable extends Table {
     function checkPosition() {
       if (!(this._convertedText[0] > this._images.length)) return;
 
-      if (time < 0) {
+      if (time <= 0) {
         clearInterval(this.intervalID);
+        this._convertedText = [];
+        this.clear();
         return;
       }
 
@@ -91,6 +94,8 @@ class Timetable extends Table {
   clear() {
     clearInterval(this.intervalID);
     this._turnOffAllCoordinates();
+    this._convertedText = [];
+    this.text = '';
   }
 
   /**
@@ -154,8 +159,7 @@ class Timetable extends Table {
   }
 
   _convert(text) {
-    this.text = '' + text;
-    this._convertedText = getConvertedText(this.text, this.language, Character);
+    this._convertedText = getConvertedText('' + text, this.language, Character);
   }
 
   _goToStartFromRightSide() {
