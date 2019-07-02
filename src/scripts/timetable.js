@@ -48,11 +48,13 @@ class Timetable extends Table {
     function checkPosition() {
       if (!(this._convertedText.slice(-1)[0] < 0)) return;
 
-      if (--time) {
-        this._goToStartFromRightSide();
-      } else {
+      if (time < 0) {
         clearInterval(this.intervalID);
+        return;
       }
+
+      --time;
+      this._goToStartFromRightSide();
     }
   }
 
@@ -71,11 +73,13 @@ class Timetable extends Table {
     function checkPosition() {
       if (!(this._convertedText[0] > this._images.length)) return;
 
-      if (--time) {
-        this._goToStartFromLeftSide();
-      } else {
+      if (time < 0) {
         clearInterval(this.intervalID);
+        return;
       }
+
+      --time;
+      this._goToStartFromLeftSide();
     }
   }
 
