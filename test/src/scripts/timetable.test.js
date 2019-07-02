@@ -2,7 +2,7 @@
 'use strict';
 
 const Timetable = require('../../../src/scripts/timetable.js');
-const Charcter = require('../../../src/scripts/character.js');
+const Character = require('../../../src/scripts/character.js');
 const CLASS_NAME = 'table';
 
 test('Should prepare environment without errors', () => {
@@ -26,7 +26,7 @@ test('Should delete backgroundColor for all images', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
 
   const character = '.';
-  const position = Charcter['eng'][character][0];
+  const position = Character['eng'][character][0];
 
   const color = 'red';
   const table = new Timetable(CLASS_NAME, { columns: 1, color }).init();
@@ -57,23 +57,23 @@ test('Should watch click in createCharacter()', () => {
 test('Should move coordinates right', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
   const table = new Timetable(CLASS_NAME, { columns: 7 }).init();
-  table._convertedText = [0, 7];
+  table._coordinates = [0, 7];
   table._goToStartFromRightSide();
 
-  expect(table._convertedText.length).toBe(2);
-  expect(table._convertedText[0]).toBe(49);
-  expect(table._convertedText[1]).toBe(56);
+  expect(table._coordinates.length).toBe(2);
+  expect(table._coordinates[0]).toBe(49);
+  expect(table._coordinates[1]).toBe(56);
 });
 
 test('Should move coordinates left', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
   const table = new Timetable(CLASS_NAME, { columns: 7 }).init();
-  table._convertedText = [0, 7];
+  table._coordinates = [0, 7];
   table._goToStartFromLeftSide();
 
-  expect(table._convertedText.length).toBe(2);
-  expect(table._convertedText[0]).toBe(-7);
-  expect(table._convertedText[1]).toBe(0);
+  expect(table._coordinates.length).toBe(2);
+  expect(table._coordinates[0]).toBe(-7);
+  expect(table._coordinates[1]).toBe(0);
 });
 
 test('Should return 0 images', () => {

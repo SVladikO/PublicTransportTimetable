@@ -46,11 +46,11 @@ class Timetable extends Table {
     this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, interval);
 
     function checkPosition() {
-      if (!(this._convertedText.slice(-1)[0] < 0)) return;
+      if (!(this._coordinates.slice(-1)[0] < 0)) return;
 
       if (time <= 0) {
         clearInterval(this.intervalID);
-        this._convertedText = [];
+        this._coordinates = [];
         return;
       }
 
@@ -72,11 +72,11 @@ class Timetable extends Table {
     this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, interval);
 
     function checkPosition() {
-      if (!(this._convertedText[0] > this._images.length)) return;
+      if (!(this._coordinates[0] > this._images.length)) return;
 
       if (time <= 0) {
         clearInterval(this.intervalID);
-        this._convertedText = [];
+        this._coordinates = [];
         this.clear();
         return;
       }
@@ -94,7 +94,7 @@ class Timetable extends Table {
   clear() {
     clearInterval(this.intervalID);
     this._turnOffAllCoordinates();
-    this._convertedText = [];
+    this._coordinates = [];
     this.text = '';
   }
 
@@ -141,8 +141,8 @@ class Timetable extends Table {
     const nodes = Array.prototype.slice.call(root.children);
     root.addEventListener('click', function(event) {
       timetable.clear();
-      reduceCoordinates(nodes, event.target, timetable._convertedText);
-      console.log(sort(timetable._convertedText));
+      reduceCoordinates(nodes, event.target, timetable._coordinates);
+      console.log(sort(timetable._coordinates));
       timetable._turnOnAllCoordinates();
     });
 
@@ -159,19 +159,19 @@ class Timetable extends Table {
   }
 
   _convert(text) {
-    this._convertedText = getConvertedText('' + text, this.language, Character);
+    this._coordinates = getConvertedText('' + text, this.language, Character);
   }
 
   _goToStartFromRightSide() {
-    const first = this._convertedText[0];
+    const first = this._coordinates[0];
     const INCREMENT = Math.floor(first / -TABLE_ROWS) * TABLE_ROWS + this._images.length;
-    this._convertedText = this._convertedText.map(num => num + INCREMENT);
+    this._coordinates = this._coordinates.map(num => num + INCREMENT);
   }
 
   _goToStartFromLeftSide() {
-    const last = this._convertedText.slice(-1)[0];
+    const last = this._coordinates.slice(-1)[0];
     const INCREMENT = Math.floor(last / TABLE_ROWS) * TABLE_ROWS;
-    this._convertedText = this._convertedText.map(num => num - INCREMENT);
+    this._coordinates = this._coordinates.map(num => num - INCREMENT);
   }
 
   _getImgFromDOM() {
@@ -186,11 +186,11 @@ class Timetable extends Table {
   }
 
   _turnOnAllCoordinates() {
-    this._convertedText.forEach(position => this._switchImageBackgroundColor(position, this.color.active));
+    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.color.active));
   }
 
   _turnOffAllCoordinates() {
-    this._convertedText.forEach(position => this._switchImageBackgroundColor(position, this.color.disabled));
+    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.color.disabled));
   }
 
   /**
@@ -204,7 +204,7 @@ class Timetable extends Table {
       try {
         checkCallback.call(this);
         this._turnOffAllCoordinates();
-        this._convertedText = this._convertedText.map(position => {
+        this._coordinates = this._coordinates.map(position => {
           let newPosition = changeCallback(position);
           this._switchImageBackgroundColor(newPosition, this.color.active);
           return newPosition;

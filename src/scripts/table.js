@@ -21,6 +21,6 @@ module.exports = class Table {
     this.interval = interval;
 
     this.intervalID = null;
-    this._convertedText = [];
+    this._coordinates = [];
   }
 }
