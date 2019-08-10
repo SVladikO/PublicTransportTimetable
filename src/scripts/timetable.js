@@ -34,25 +34,25 @@ class Timetable extends Table {
   /**
    * Clear previous and move left new text.
    * @param  {string} text
-   * @param  {number} [time] circles to repeat
-   * @param  {number} [interval] seconds for setInterval
+   * @param  {number} [circles] circles to repeat
+   * @param  {number} [timeInterval] seconds for setInterval
    */
-  moveLeft(text, time = 0, interval) {
+  moveLeft(text, circles = 0, timeInterval) {
     this.clear();
     this._convert(text);
     this._goToStartFromRightSide();
-    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, interval);
+    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, timeInterval);
 
     function checkPosition() {
       if (!(this._coordinates.slice(-1)[0] < 0)) return;
 
-      if (time <= 0) {
+      if (circles <= 0) {
         clearInterval(this.intervalID);
         this._coordinates = [];
         return;
       }
 
-      --time;
+      --circles;
       this._goToStartFromRightSide();
     }
   }
@@ -60,26 +60,26 @@ class Timetable extends Table {
   /**
     * Clear previous and move right new text.
     * @param  {string} text
-    * @param  {number} [time] circles to repeat
-    * @param  {number} [interval] seconds for setInterval
+    * @param  {number} [circles] circles to repeat
+    * @param  {number} [timeInterval] seconds for setInterval
     */
-  moveRight(text, time = 0, interval) {
+  moveRight(text, circles = 0, timeInterval) {
     this.clear();
     this._convert(text);
     this._goToStartFromLeftSide();
-    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, interval);
+    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, timeInterval);
 
     function checkPosition() {
       if (!(this._coordinates[0] > this._images.length)) return;
 
-      if (time <= 0) {
+      if (circles <= 0) {
         clearInterval(this.intervalID);
         this._coordinates = [];
         this.clear();
         return;
       }
 
-      --time;
+      --circles;
       this._goToStartFromLeftSide();
     }
   }
@@ -187,9 +187,9 @@ class Timetable extends Table {
    * Full circle movement text's coordinates
    * @param  {function} checkCallback
    * @param  {function} changeCallback
-   * @param  {number} interval=this.interval
+   * @param  {number} timeInterval
    */
-  _moveCoreFunctionality(checkCallback, changeCallback, interval = this.interval) {
+  _moveCoreFunctionality(checkCallback, changeCallback, timeInterval = this.timeInterval) {
     this.intervalID = setInterval(function () {
       try {
         checkCallback.call(this);
@@ -203,7 +203,7 @@ class Timetable extends Table {
         clearInterval(this.intervalID);
         throw error;
       }
-    }.bind(this), interval);
+    }.bind(this), timeInterval);
   }
 }
 
