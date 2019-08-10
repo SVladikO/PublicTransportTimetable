@@ -9,8 +9,6 @@ const createBoard = require('./features/create-board.js');
 const getDiv = require('./features/get-div.js');
 const getConvertedText = require('./features/get-converted-text.js');
 
-let imageDisabledLamp = 'public/img/off.png';
-
 const TABLE_ROWS = 7;
 
 /**
@@ -18,7 +16,7 @@ const TABLE_ROWS = 7;
  */
 class Timetable extends Table {
   init() {
-    createBoard(this.className, this.height, this.columns, imageDisabledLamp, this.backgroundColor);
+    createBoard(this.className, this.boardHeight, this.columnsInBoard, this.lampColor.disabled, this.backgroundColor);
     this._images = this._getImgFromDOM();
     return this;
   }
@@ -99,14 +97,6 @@ class Timetable extends Table {
   }
 
   /**
-   * Update default path to image
-   * @param  {string} src
-   */
-  static setImage(src) {
-    imageDisabledLamp = src;
-  }
-
-  /**
    * Calculate columns depends on div[className].width.
    * We need here height too, because image size calculated from height
    * @param  {number} height    Table's
@@ -139,7 +129,7 @@ class Timetable extends Table {
     addStyle(root);
 
     const nodes = Array.prototype.slice.call(root.children);
-    root.addEventListener('click', function(event) {
+    root.addEventListener('click', function (event) {
       timetable.clear();
       reduceCoordinates(nodes, event.target, timetable._coordinates);
       console.log(sort(timetable._coordinates));
@@ -176,7 +166,7 @@ class Timetable extends Table {
 
   _getImgFromDOM() {
     let root = document.getElementsByClassName(this.className)[0];
-    return root.getElementsByTagName('IMG');
+    return root.getElementsByTagName('span');
   }
 
   _switchImageBackgroundColor(position, color) {
@@ -186,11 +176,11 @@ class Timetable extends Table {
   }
 
   _turnOnAllCoordinates() {
-    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.color.active));
+    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.lampColor.active));
   }
 
   _turnOffAllCoordinates() {
-    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.color.disabled));
+    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.lampColor.disabled));
   }
 
   /**
@@ -200,13 +190,13 @@ class Timetable extends Table {
    * @param  {number} interval=this.interval
    */
   _moveCoreFunctionality(checkCallback, changeCallback, interval = this.interval) {
-    this.intervalID = setInterval(function() {
+    this.intervalID = setInterval(function () {
       try {
         checkCallback.call(this);
         this._turnOffAllCoordinates();
         this._coordinates = this._coordinates.map(position => {
           let newPosition = changeCallback(position);
-          this._switchImageBackgroundColor(newPosition, this.color.active);
+          this._switchImageBackgroundColor(newPosition, this.lampColor.active);
           return newPosition;
         });
       } catch (error) {

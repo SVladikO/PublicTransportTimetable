@@ -1,33 +1,32 @@
 'use strict';
 
-const getImageSize = require('./get-image-size.js');
+const getSizeOneLamp = require('./get-image-size.js');
 const getDiv = require('./get-div.js');
 const TABLE_ROWS = 7;
 
-function createBoard(className, height, columns, imageDisabledLamp, backgroundColor) {
+function createBoard(className, boardHeight, columnsInBoard, lampColorOff, boardBgColor) {
   let root = getDiv(className);
-  let images = root.getElementsByTagName('img');
-
-  if (images.length > 0) return;
 
   root.style.position = 'relative';
-  root.style.background = backgroundColor;
-  root.style.height = `${height}px`;
-  const imageSize = getImageSize(height);
-  const position = imageSize + imageSize / 5;
+  root.style.background = boardBgColor;
+  root.style.height = `${boardHeight}px`;
 
-  for (let j = 0; j < columns; j++) {
+  const lapmSize = getSizeOneLamp(boardHeight);
+  const position = lapmSize + lapmSize / 5;
+
+  for (let j = 0; j < columnsInBoard; j++) {
     for (let i = 0; i < TABLE_ROWS; i++) {
-      let img = document.createElement('img');
-      img.src = imageDisabledLamp;
-      img.style.width = `${imageSize}px`;
-      img.style.height = `${imageSize}px`;
-      img.style.position = 'absolute';
-      img.style.borderRadius = '50%';
-      img.style.top = `${position * i}px`;
-      img.style.left = `${position * j}px`;
+      let span = document.createElement('span');
 
-      root.appendChild(img);
+      span.style.top = `${position * i}px`;
+      span.style.left = `${position * j}px`;
+      span.style.width = `${lapmSize}px`;
+      span.style.height = `${lapmSize}px`;
+      span.style.position = 'absolute';
+      span.style.borderRadius = '50%';
+      span.style.background = lampColorOff;
+
+      root.appendChild(span);
     }
   }
 }
