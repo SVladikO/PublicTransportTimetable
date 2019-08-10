@@ -16,8 +16,8 @@ const TABLE_ROWS = 7;
  */
 class Timetable extends Table {
   init() {
-    createBoard(this.className, this.boardHeight, this.columnsInBoard, this.lampColor.disabled, this.backgroundColor);
-    this._images = this._getImgFromDOM();
+    createBoard(this.className, this.boardHeight, this.columnsInBoard, this.lampColorOff, this.backgroundColor);
+    this._images = this._getLampsFromDOM();
     return this;
   }
 
@@ -124,7 +124,7 @@ class Timetable extends Table {
    * and put them in character.js
    */
   static createCharacter(className) {
-    const timetable = new Timetable(className, { height: 100, columns: 7 }).init();
+    const timetable = new Timetable(className, { boardHeight: 100, columnsInBoard: 7 }).init();
     const root = getDiv(className);
     addStyle(root);
 
@@ -164,7 +164,7 @@ class Timetable extends Table {
     this._coordinates = this._coordinates.map(num => num - INCREMENT);
   }
 
-  _getImgFromDOM() {
+  _getLampsFromDOM() {
     let root = document.getElementsByClassName(this.className)[0];
     return root.getElementsByTagName('span');
   }
@@ -176,11 +176,11 @@ class Timetable extends Table {
   }
 
   _turnOnAllCoordinates() {
-    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.lampColor.active));
+    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.lampColorOn));
   }
 
   _turnOffAllCoordinates() {
-    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.lampColor.disabled));
+    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.lampColorOff));
   }
 
   /**
@@ -196,7 +196,7 @@ class Timetable extends Table {
         this._turnOffAllCoordinates();
         this._coordinates = this._coordinates.map(position => {
           let newPosition = changeCallback(position);
-          this._switchImageBackgroundColor(newPosition, this.lampColor.active);
+          this._switchImageBackgroundColor(newPosition, this.lampColorOn);
           return newPosition;
         });
       } catch (error) {

@@ -1,6 +1,6 @@
 'use strict';
 
-const getSizeOneLamp = require('./get-image-size.js');
+const getLampDiameter = require('./get-lamp-diameter.js');
 const getDiv = require('./get-div.js');
 const TABLE_ROWS = 7;
 
@@ -11,7 +11,7 @@ function createBoard(className, boardHeight, columnsInBoard, lampColorOff, board
   root.style.background = boardBgColor;
   root.style.height = `${boardHeight}px`;
 
-  const lapmSize = getSizeOneLamp(boardHeight);
+  const lapmSize = getLampDiameter(boardHeight);
   const position = lapmSize + lapmSize / 5;
 
   for (let j = 0; j < columnsInBoard; j++) {

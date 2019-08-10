@@ -12,7 +12,7 @@ test('Should delete if include & add if does not', function () {
   // prepare variables for test
   const div = document.getElementsByClassName(CLASS_NAME)[0];
   const nodes = Array.prototype.slice.call(div.children);
-  let image = div.getElementsByTagName('img')[0];
+  let image = div.getElementsByTagName('span')[0];
 
   let convertedText = [];
 

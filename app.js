@@ -1,9 +1,8 @@
 let Timetable = require('./index.js');
 
-Timetable.setImage('assets/img/off.png');
 // Create timer
-(function() {
-  let timer = new Timetable('timer', { height: 80, color: '#00aaff' }).init();
+(function () {
+  let timer = new Timetable('timer', { height: 80 }).init();
   let format = time => time < 10 ? '0' + time : time;
 
   setInterval(() => {
@@ -16,7 +15,7 @@ Timetable.setImage('assets/img/off.png');
   }, 1000);
 })();
 
-(function() {
+(function () {
   const ENG_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
 
   let options = {
@@ -27,7 +26,7 @@ Timetable.setImage('assets/img/off.png');
   new Timetable('eng_char', options).init().show(ENG_CHARACTERS);
 })();
 
-(function() {
+(function () {
   const UA_CHARACTERS = 'АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ._-!:><=+/0123456789';
 
   let options = {
@@ -39,17 +38,18 @@ Timetable.setImage('assets/img/off.png');
   new Timetable('ua_char', options).init().show(UA_CHARACTERS);
 })();
 
-(function() {
+(function () {
   const options = {
     height: 70,
     color: '#FFEB3B',
-    columns: Timetable.getColumnsFullWidth(70, 'scoreboard0')
+    columns: Timetable.getColumnsFullWidth(70, 'scoreboard0'),
+    timeInterval: 1000
   };
   new Timetable('scoreboard0', options).init().moveLeft(0);
 })();
 new Timetable('scoreboard1').init().moveRight(0, 2);
 
-(function() {
+(function () {
   const text = 'timetable-f'
   const options = {
     height: 80,
