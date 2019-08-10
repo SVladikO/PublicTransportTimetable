@@ -2,7 +2,17 @@ let Timetable = require('./index.js');
 
 // Create timer
 (function () {
-  let timer = new Timetable('timer', { height: 80 }).init();
+  let options = {
+    // language: 'eng',
+    boardHeight: 25,
+    boardBgColor: 'black',
+    lampColorOn: 'white',
+    // lampColorOff: 'red',
+    // timeInterval: 500,
+    columnsInBoard: 60
+  };
+
+  let timer = new Timetable('timer', options).init();
   let format = time => time < 10 ? '0' + time : time;
 
   setInterval(() => {
@@ -15,47 +25,104 @@ let Timetable = require('./index.js');
   }, 1000);
 })();
 
+
+// ENG CHARACTERS
+
+
 (function () {
-  const ENG_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
+  const TEXT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
 
   let options = {
-    columns: Timetable.getColumnsByText(ENG_CHARACTERS, 'eng'),
-    height: 30,
-    color: 'white'
+    // language: 'eng',
+    boardHeight: 25,
+    boardBgColor: 'black',
+    lampColorOn: 'white',
+    lampColorOff: 'red',
+    // timeInterval: 500,
+    columnsInBoard: Timetable.getColumnsByText(TEXT, 'eng')
+
   };
-  new Timetable('eng_char', options).init().show(ENG_CHARACTERS);
+  let table = new Timetable('eng_char', options).init();
+  table.show(TEXT);
 })();
 
+// UA CHARACTERS
+
 (function () {
-  const UA_CHARACTERS = 'АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ._-!:><=+/0123456789';
+  const TEXT = 'АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ._-!:><=+/0123456789';
 
   let options = {
-    height: 30,
-    columns: Timetable.getColumnsByText(UA_CHARACTERS, 'ua'),
-    color: 'rgb(255, 0, 0)',
-    language: 'ua'
+    language: 'ua',
+    boardHeight: 25,
+    boardBgColor: 'black',
+    lampColorOn: 'yellow',
+    lampColorOff: 'blue',
+    // timeInterval: 500,
+    columnsInBoard: Timetable.getColumnsByText(TEXT, 'ua')
   };
-  new Timetable('ua_char', options).init().show(UA_CHARACTERS);
+  let table = new Timetable('ua_char', options).init();
+  table.show(TEXT);
 })();
 
-(function () {
-  const options = {
-    height: 70,
-    color: '#FFEB3B',
-    columns: Timetable.getColumnsFullWidth(70, 'scoreboard0'),
-    timeInterval: 1000
-  };
-  new Timetable('scoreboard0', options).init().moveLeft(0);
-})();
-new Timetable('scoreboard1').init().moveRight(0, 2);
+//          ****  MOVE LEFT    ***
 
 (function () {
-  const text = 'timetable-f'
+  const TEXT = 'scoreboard0';
   const options = {
-    height: 80,
-    columns: Timetable.getColumnsByText(text)
+    boardHeight: 45,
+    boardBgColor: 'red',
+    // lampColorOn: 'yellow',
+    // lampColorOff: 'blue',
+    timeInterval: 600,
+    columnsInBoard: 38,
   };
-  new Timetable('scoreboard2', options).init().show(text);
+
+  let table = new Timetable('scoreboard0', options).init();
+  table.moveLeft(TEXT);
 })();
+
+
+//          ****  MOVE RIGHT    ***
+
+
+(function () {
+  const TEXT = 'scoreboard1';
+  const options = {
+    boardHeight: 45,
+    boardBgColor: 'red',
+    lampColorOn: 'blue',
+    lampColorOff: 'orange',
+    timeInterval: 600,
+    columnsInBoard: 38
+  };
+
+  let table = new Timetable('scoreboard1', options)
+  table.init();
+  table.moveRight(TEXT);
+})();
+
+
+//          **** SHOW  ***
+
+
+(function () {
+  const TEXT = 'scoreboard2';
+  const options = {
+    boardHeight: 45,
+    boardBgColor: 'red',
+    lampColorOn: 'yellow',
+    // lampColorOff: 'blue',
+    timeInterval: 600,
+    columnsInBoard: 38
+  };
+
+  let table = new Timetable('scoreboard2', options)
+  table.init();
+  table.show(TEXT);
+})();
+
+
 // CREATE CHARACTER
+
+
 Timetable.createCharacter('character');
