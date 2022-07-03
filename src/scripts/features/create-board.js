@@ -4,8 +4,8 @@ const getLampDiameter = require('./get-lamp-diameter.js');
 const getDiv = require('./get-div.js');
 const TABLE_ROWS = 7;
 
-function createBoard(className, boardHeight, columnsInBoard, lampColorOff, boardBgColor) {
-  let root = getDiv(className);
+function createBoard(_root, boardHeight, columnsInBoard, lampColorOff, boardBgColor) {
+  let root = getDiv(_root);
 
   root.style.position = 'relative';
   root.style.background = boardBgColor;

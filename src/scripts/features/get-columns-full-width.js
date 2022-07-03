@@ -2,8 +2,8 @@
 const getDiv = require('./get-div.js');
 const getLampSize = require('./get-lamp-diameter');
 
-function getColumnsFullWidth(height, className, width) {
-  const div = getDiv(className);
+function getColumnsFullWidth(height, root, width) {
+  const div = getDiv(root);
   const divWidth = width || div.clientWidth;
 
   const imageSize = getLampSize(height);

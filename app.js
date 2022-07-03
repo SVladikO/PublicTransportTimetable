@@ -12,7 +12,7 @@ let Timetable = require('./index.js');
     columnsInBoard: 60
   };
 
-  let timer = new Timetable('timer', options).init();
+  let timer = new Timetable('.timer', options).init();
   let format = time => time < 10 ? '0' + time : time;
 
   setInterval(() => {
@@ -42,7 +42,7 @@ let Timetable = require('./index.js');
     columnsInBoard: Timetable.getColumnsByText(TEXT, 'eng')
 
   };
-  let table = new Timetable('eng_char', options).init();
+  let table = new Timetable('#eng_char', options).init();
   table.show(TEXT);
 })();
 
@@ -60,7 +60,7 @@ let Timetable = require('./index.js');
     // timeInterval: 500,
     columnsInBoard: Timetable.getColumnsByText(TEXT, 'ua')
   };
-  let table = new Timetable('ua_char', options).init();
+  let table = new Timetable('.ua_char', options).init();
   table.show(TEXT);
 })();
 
@@ -77,7 +77,7 @@ let Timetable = require('./index.js');
     columnsInBoard: 38,
   };
 
-  let table = new Timetable('scoreboard0', options).init();
+  let table = new Timetable('.scoreboard0', options).init();
   table.moveLeft(TEXT);
 })();
 
@@ -96,7 +96,7 @@ let Timetable = require('./index.js');
     columnsInBoard: 38
   };
 
-  let table = new Timetable('scoreboard1', options)
+  let table = new Timetable('.scoreboard1', options)
   table.init();
   table.moveRight(TEXT);
 })();
@@ -116,7 +116,7 @@ let Timetable = require('./index.js');
     columnsInBoard: 38
   };
 
-  let table = new Timetable('scoreboard2', options)
+  let table = new Timetable('.scoreboard2', options)
   table.init();
   table.show(TEXT);
 })();

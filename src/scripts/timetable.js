@@ -1,6 +1,5 @@
 'use strict';
 
-const Table = require('./table.js');
 const Character = require('./character.js');
 const getColumnsByText = require('./features/get-columns-by-text.js');
 const getColumnsFullWidth = require('./features/get-columns-full-width.js');
@@ -8,15 +7,47 @@ const reduceCoordinates = require('./features/reduce-coordinates.js');
 const createBoard = require('./features/create-board.js');
 const getDiv = require('./features/get-div.js');
 const getConvertedText = require('./features/get-converted-text.js');
+const defaultValues = require('./defaultValues');
 
 const TABLE_ROWS = 7;
 
 /**
  * Manipulation ua/eng text in div(table)
  */
-class Timetable extends Table {
+class Timetable {
+  /**
+   * @param  {string} language
+   * @param  {number} boardHeight
+   * @param  {string} boardBgColor
+   * @param  {string} lampColorOn
+   * @param  {string} lampColorOff
+   * @param  {number} timeInterval
+   * @param  {number} columnsInBoard
+   */
+  constructor(root, {
+    language = defaultValues.language,
+    boardHeight = defaultValues.boardHeight,
+    boardBgColor = defaultValues.boardBgColor,
+    lampColorOn = defaultValues.lampColorOn,
+    lampColorOff = defaultValues.lampColorOff,
+    timeInterval = defaultValues.timeInterval,
+    columnsInBoard = defaultValues.columnsInBoard
+  } = {}) {
+    if (!root || root.length === 0) throw new Error(".root isn't valid");
+    this.root = root;
+    this.language = language;
+    this.boardHeight = boardHeight;
+    this.boardBgColor = boardBgColor;
+    this.timeInterval = timeInterval;
+    this.columnsInBoard = columnsInBoard;
+    this.lampColorOn = lampColorOn;
+    this.lampColorOff = lampColorOff;
+    this.intervalID = null;
+    this._coordinates = [];
+  }
+
   init() {
-    createBoard(this.className, this.boardHeight, this.columnsInBoard, this.lampColorOff, this.backgroundColor);
+    createBoard(this.root, this.boardHeight, this.columnsInBoard, this.lampColorOff, this.backgroundColor);
     this._images = this._getLampsFromDOM();
     return this;
   }
@@ -97,14 +128,14 @@ class Timetable extends Table {
   }
 
   /**
-   * Calculate columns depends on div[className].width.
+   * Calculate columns depends on div[root].width.
    * We need here height too, because image size calculated from height
    * @param  {number} height    Table's
-   * @param  {string} className Where you want to create table
+   * @param  {string} root Where you want to create table
    * @returns {string} columns
    */
-  static getColumnsFullWidth(height, className) {
-    return getColumnsFullWidth(height, className);
+  static getColumnsFullWidth(height, root) {
+    return getColumnsFullWidth(height, root);
   }
 
   /**
@@ -123,9 +154,9 @@ class Timetable extends Table {
    * When you finished you need to copy coordinates
    * and put them in character.js
    */
-  static createCharacter(className) {
-    const timetable = new Timetable(className, { boardHeight: 100, columnsInBoard: 7 }).init();
-    const root = getDiv(className);
+  static createCharacter(_root) {
+    const timetable = new Timetable(_root, { boardHeight: 100, columnsInBoard: 7 }).init();
+    const root = getDiv(_root);
     addStyle(root);
 
     const nodes = Array.prototype.slice.call(root.children);
@@ -165,7 +196,7 @@ class Timetable extends Table {
   }
 
   _getLampsFromDOM() {
-    let root = document.getElementsByClassName(this.className)[0];
+    let root = document.querySelector(this.root);
     return root.getElementsByTagName('span');
   }
 
