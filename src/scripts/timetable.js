@@ -16,10 +16,10 @@ const TABLE_ROWS = 7;
 class Timetable {
   constructor(root, {
     language = 'eng',
-    boardHeight = 30,
-    boardBgColor = 'red',
-    lampColorOn = 'rgb(28, 226, 116)',
-    lampColorOff = 'rgb(7, 84, 41)',
+    rootHeight = 30,
+    rootBackground = '#16300b',
+    lampColorOn = '#9dd143',
+    lampColorOff = '#1d5110',
     timeInterval = 500,
     columnsInBoard = 40
   } = {}) {
@@ -34,8 +34,8 @@ class Timetable {
 
     this.root = getDiv(root);
     this.language = language;
-    this.boardHeight = boardHeight;
-    this.boardBgColor = boardBgColor;
+    this.rootHeight = rootHeight;
+    this.rootBackground = rootBackground;
     this.timeInterval = timeInterval;
     this.columnsInBoard = columnsInBoard;
     this.lampColorOn = lampColorOn;
@@ -45,7 +45,7 @@ class Timetable {
   }
 
   init() {
-    createBoard(this.root, this.boardHeight, this.columnsInBoard, this.lampColorOff, this.boardBgColor);
+    createBoard(this.root, this.rootHeight, this.columnsInBoard, this.lampColorOff, this.rootBackground);
     this._images = this._getLampsFromDOM();
     return this;
   }
@@ -58,6 +58,7 @@ class Timetable {
     this.clear();
     this._convert(text);
     this._turnOnAllCoordinates();
+    return this;
   }
 
   /**
@@ -153,7 +154,7 @@ class Timetable {
    * and put them in character.js
    */
   static createCharacter(_root) {
-    const timetable = new Timetable(_root, { boardHeight: 100, columnsInBoard: 7 }).init();
+    const timetable = new Timetable(_root, { rootHeight: 100, columnsInBoard: 7 }).init();
     const root = getDiv(_root);
     addStyle(root);
 
