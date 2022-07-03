@@ -16,14 +16,14 @@ const TABLE_ROWS = 7;
 class Timetable {
   constructor(root, {
     language = 'eng',
+    // You can style your root through this field
     rootHeight = 30,
+    rootWidth = 0,
     rootBackground = '#16300b',
     lampColorOn = '#9dd143',
     lampColorOff = '#1d5110',
-    timeInterval = 500,
-    columnsInBoard = 40
+    timeInterval = 500
   } = {}) {
-
     if (!root || root.length === 0) {
       throw new Error('root is empty');
     }
@@ -35,9 +35,9 @@ class Timetable {
     this.root = getDiv(root);
     this.language = language;
     this.rootHeight = rootHeight;
+    this.rootWidth = rootWidth;
     this.rootBackground = rootBackground;
     this.timeInterval = timeInterval;
-    this.columnsInBoard = columnsInBoard;
     this.lampColorOn = lampColorOn;
     this.lampColorOff = lampColorOff;
     this.intervalID = null;
@@ -45,7 +45,7 @@ class Timetable {
   }
 
   init() {
-    createBoard(this.root, this.rootHeight, this.columnsInBoard, this.lampColorOff, this.rootBackground);
+    createBoard(this.root, this.rootHeight, this.rootWidth, this.lampColorOff, this.rootBackground);
     this._images = this._getLampsFromDOM();
     return this;
   }
@@ -154,12 +154,12 @@ class Timetable {
    * and put them in character.js
    */
   static createCharacter(_root) {
-    const timetable = new Timetable(_root, { rootHeight: 100, columnsInBoard: 7 }).init();
+    const timetable = new Timetable(_root, { rootHeight: 100, rootWidth: 100 }).init();
     const root = getDiv(_root);
     addStyle(root);
 
     const nodes = Array.prototype.slice.call(root.children);
-    root.addEventListener('click', function (event) {
+    root.addEventListener('click', function(event) {
       timetable.clear();
       reduceCoordinates(nodes, event.target, timetable._coordinates);
       console.log(sort(timetable._coordinates));
@@ -219,7 +219,7 @@ class Timetable {
    * @param  {number} timeInterval
    */
   _moveCoreFunctionality(checkCallback, changeCallback, timeInterval = this.timeInterval) {
-    this.intervalID = setInterval(function () {
+    this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
         this._turnOffAllCoordinates();

@@ -1,8 +1,7 @@
 let Timetable = require('./index.js');
 
 (() => {
-
-  let timetable = new Timetable('#timer').init();
+  let timetable = new Timetable('#timer', { rootWidth: 180 }).init();
   let format = time => time < 10 ? '0' + time : time;
 
   setInterval(() => {
@@ -11,7 +10,7 @@ let Timetable = require('./index.js');
     const MINUTES = format(date.getMinutes());
     const SECONDS = format(date.getSeconds());
 
-    timetable.show(`${HOURS}:${MINUTES}:${SECONDS}`);
+    timetable.show(` ${HOURS}:${MINUTES}:${SECONDS}`);
   }, 1000);
 })();
 //
