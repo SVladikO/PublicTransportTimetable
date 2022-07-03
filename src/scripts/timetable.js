@@ -5,7 +5,7 @@ const getColumnsByText = require('./features/get-columns-by-text.js');
 const getColumnsFullWidth = require('./features/get-columns-full-width.js');
 const reduceCoordinates = require('./features/reduce-coordinates.js');
 const createBoard = require('./features/create-board.js');
-const getDiv = require('./features/get-div.js');
+const getRoot = require('./features/get-root.js');
 const getConvertedText = require('./features/get-converted-text.js');
 
 const TABLE_ROWS = 7;
@@ -34,7 +34,7 @@ class Timetable {
 
     if (!language) throw new Error('language is not valid');
 
-    this.root = getDiv(root);
+    this.root = getRoot(root);
     this.language = language;
     this.rootHeight = rootHeight;
     this.rootWidth = rootWidth;
@@ -73,10 +73,11 @@ class Timetable {
     this.clear();
     this._convert(text);
     this._goToStartFromRightSide();
-    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, timeInterval);
-
+    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS);
     function checkPosition() {
-      if (!(this._coordinates.slice(-1)[0] < 0)) return;
+      if (!(this._coordinates.slice(-1)[0] < 0)) {
+        return;
+      }
 
       if (circles <= 0) {
         clearInterval(this.intervalID);
@@ -99,7 +100,7 @@ class Timetable {
     this.clear();
     this._convert(text);
     this._goToStartFromLeftSide();
-    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, timeInterval);
+    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS);
 
     function checkPosition() {
       if (!(this._coordinates[0] > this._images.length)) return;
@@ -157,7 +158,7 @@ class Timetable {
    */
   static createCharacter(_root) {
     const timetable = new Timetable(_root, { rootHeight: 100, rootWidth: 100 }).init();
-    const root = getDiv(_root);
+    const root = getRoot(_root);
     addStyle(root);
 
     const nodes = Array.prototype.slice.call(root.children);
@@ -218,9 +219,8 @@ class Timetable {
    * Full circle movement text's coordinates
    * @param  {function} checkCallback
    * @param  {function} changeCallback
-   * @param  {number} timeInterval
    */
-  _moveCoreFunctionality(checkCallback, changeCallback, timeInterval = this.timeInterval) {
+  _moveCoreFunctionality(checkCallback, changeCallback) {
     this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
@@ -234,7 +234,7 @@ class Timetable {
         clearInterval(this.intervalID);
         throw error;
       }
-    }.bind(this), timeInterval);
+    }.bind(this), this.timeInterval);
   }
 }
 

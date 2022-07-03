@@ -1,15 +1,15 @@
 'use strict';
 
-const getDiv = require('../../../../src/scripts/features/get-div.js');
+const getRoot = require('../../../../src/scripts/features/get-root.js');
 
 test('Should throw Error', function () {
-  expect(() => getDiv()).toThrow();
+  expect(() => getRoot()).toThrow();
 });
 
 test('Should return columns', function () {
   const CLASS_NAME = 'table';
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
-  const result = getDiv(CLASS_NAME);
+  const result = getRoot(CLASS_NAME);
 
   expect(result).toBeDefined();
 });
