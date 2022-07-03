@@ -7,7 +7,6 @@ const reduceCoordinates = require('./features/reduce-coordinates.js');
 const createBoard = require('./features/create-board.js');
 const getDiv = require('./features/get-div.js');
 const getConvertedText = require('./features/get-converted-text.js');
-const defaultValues = require('./defaultValues');
 
 const TABLE_ROWS = 7;
 
@@ -15,26 +14,25 @@ const TABLE_ROWS = 7;
  * Manipulation ua/eng text in div(table)
  */
 class Timetable {
-  /**
-   * @param  {string} language
-   * @param  {number} boardHeight
-   * @param  {string} boardBgColor
-   * @param  {string} lampColorOn
-   * @param  {string} lampColorOff
-   * @param  {number} timeInterval
-   * @param  {number} columnsInBoard
-   */
   constructor(root, {
-    language = defaultValues.language,
-    boardHeight = defaultValues.boardHeight,
-    boardBgColor = defaultValues.boardBgColor,
-    lampColorOn = defaultValues.lampColorOn,
-    lampColorOff = defaultValues.lampColorOff,
-    timeInterval = defaultValues.timeInterval,
-    columnsInBoard = defaultValues.columnsInBoard
+    language = 'eng',
+    boardHeight = 30,
+    boardBgColor = 'red',
+    lampColorOn = 'rgb(28, 226, 116)',
+    lampColorOff = 'rgb(7, 84, 41)',
+    timeInterval = 500,
+    columnsInBoard = 40
   } = {}) {
-    if (!root || root.length === 0) throw new Error(".root isn't valid");
-    this.root = root;
+
+    if (!root || root.length === 0) {
+      throw new Error('root is empty');
+    }
+
+    if (!'.#'.includes(root[0])) {
+      throw new Error(root + ' isn\'t valid root. Please use next syntax for #id or .className');
+    }
+
+    this.root = getDiv(root);
     this.language = language;
     this.boardHeight = boardHeight;
     this.boardBgColor = boardBgColor;
@@ -47,7 +45,7 @@ class Timetable {
   }
 
   init() {
-    createBoard(this.root, this.boardHeight, this.columnsInBoard, this.lampColorOff, this.backgroundColor);
+    createBoard(this.root, this.boardHeight, this.columnsInBoard, this.lampColorOff, this.boardBgColor);
     this._images = this._getLampsFromDOM();
     return this;
   }
@@ -196,8 +194,7 @@ class Timetable {
   }
 
   _getLampsFromDOM() {
-    let root = document.querySelector(this.root);
-    return root.getElementsByTagName('span');
+    return this.root.getElementsByTagName('span');
   }
 
   _switchImageBackgroundColor(position, color) {

@@ -1,7 +1,6 @@
 let Timetable = require('./index.js');
 
-// Create timer
-(function () {
+(() => {
   let options = {
     // language: 'eng',
     boardHeight: 25,
@@ -12,7 +11,7 @@ let Timetable = require('./index.js');
     columnsInBoard: 60
   };
 
-  let timer = new Timetable('.timer', options).init();
+  let timetable = new Timetable('.timer', options).init();
   let format = time => time < 10 ? '0' + time : time;
 
   setInterval(() => {
@@ -21,15 +20,13 @@ let Timetable = require('./index.js');
     const MINUTES = format(date.getMinutes());
     const SECONDS = format(date.getSeconds());
 
-    timer.show(`${HOURS}:${MINUTES}:${SECONDS}`);
+    timetable.show(`${HOURS}:${MINUTES}:${SECONDS}`);
   }, 1000);
 })();
 
-
 // ENG CHARACTERS
 
-
-(function () {
+(() => {
   const TEXT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
 
   let options = {
@@ -42,13 +39,12 @@ let Timetable = require('./index.js');
     columnsInBoard: Timetable.getColumnsByText(TEXT, 'eng')
 
   };
-  let table = new Timetable('#eng_char', options).init();
-  table.show(TEXT);
+  new Timetable('#eng_char', options).init().show(TEXT);
 })();
 
 // UA CHARACTERS
 
-(function () {
+(() => {
   const TEXT = 'АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ._-!:><=+/0123456789';
 
   let options = {
@@ -60,13 +56,11 @@ let Timetable = require('./index.js');
     // timeInterval: 500,
     columnsInBoard: Timetable.getColumnsByText(TEXT, 'ua')
   };
-  let table = new Timetable('.ua_char', options).init();
-  table.show(TEXT);
+  new Timetable('.ua_char', options).init().show(TEXT);
 })();
 
 //          ****  MOVE LEFT    ***
-
-(function () {
+(() => {
   const TEXT = 'scoreboard0';
   const options = {
     boardHeight: 45,
@@ -74,18 +68,14 @@ let Timetable = require('./index.js');
     // lampColorOn: 'yellow',
     // lampColorOff: 'blue',
     timeInterval: 600,
-    columnsInBoard: 38,
+    columnsInBoard: 38
   };
 
-  let table = new Timetable('.scoreboard0', options).init();
-  table.moveLeft(TEXT);
+  new Timetable('.scoreboard0', options).init().moveLeft(TEXT);
 })();
 
-
 //          ****  MOVE RIGHT    ***
-
-
-(function () {
+(() => {
   const TEXT = 'scoreboard1';
   const options = {
     boardHeight: 45,
@@ -96,16 +86,11 @@ let Timetable = require('./index.js');
     columnsInBoard: 38
   };
 
-  let table = new Timetable('.scoreboard1', options)
-  table.init();
-  table.moveRight(TEXT);
+  new Timetable('.scoreboard1', options).init().moveRight(TEXT);
 })();
 
-
 //          **** SHOW  ***
-
-
-(function () {
+(() => {
   const TEXT = 'scoreboard2';
   const options = {
     boardHeight: 45,
@@ -116,13 +101,8 @@ let Timetable = require('./index.js');
     columnsInBoard: 38
   };
 
-  let table = new Timetable('.scoreboard2', options)
-  table.init();
-  table.show(TEXT);
+  new Timetable('.scoreboard2', options).init().show(TEXT);
 })();
 
-
 // CREATE CHARACTER
-
-
-Timetable.createCharacter('character');
+Timetable.createCharacter('.character');
