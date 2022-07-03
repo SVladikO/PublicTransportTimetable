@@ -32,6 +32,8 @@ class Timetable {
       throw new Error(root + ' isn\'t valid root. Please use next syntax for #id or .className');
     }
 
+    if (!language) throw new Error('language is not valid');
+
     this.root = getDiv(root);
     this.language = language;
     this.rootHeight = rootHeight;

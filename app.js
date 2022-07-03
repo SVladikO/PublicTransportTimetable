@@ -1,5 +1,7 @@
 let Timetable = require('./index.js');
 
+window.t = new Timetable('#t').init().show(' T');
+
 (() => {
   let timetable = new Timetable('#timer', { rootWidth: 180 }).init();
   let format = time => time < 10 ? '0' + time : time;
@@ -10,7 +12,9 @@ let Timetable = require('./index.js');
     const MINUTES = format(date.getMinutes());
     const SECONDS = format(date.getSeconds());
 
-    timetable.show(` ${HOURS}:${MINUTES}:${SECONDS}`);
+    let separator = (!!(SECONDS%2) ? ':' : ' ');
+
+    timetable.show(` ${HOURS}${separator}${MINUTES}${separator}${SECONDS}`);
   }, 1000);
 })();
 //
@@ -49,20 +53,21 @@ let Timetable = require('./index.js');
 //   new Timetable('.ua_char', options).init().show(TEXT);
 // })();
 //
-// //          ****  MOVE LEFT    ***
-// (() => {
-//   const TEXT = 'scoreboard0';
-//   const options = {
-//     boardHeight: 45,
-//     boardBgColor: 'red',
-//     // lampColorOn: 'yellow',
-//     // lampColorOff: 'blue',
-//     timeInterval: 600,
-//     columnsInBoard: 38
-//   };
-//
-//   new Timetable('.scoreboard0', options).init().moveLeft(TEXT);
-// })();
+//          ****  MOVE LEFT    ***
+(() => {
+  const TEXT = 'An Application\n' +
+      'Using props and state, we can put together a small Todo application. This example uses state to track the current list of items as well as the text that the user has entered. Although event handlers appear to be rendered inline, they will be collected and implemented using event delegation.';
+  const options = {
+    boardHeight: 45,
+    boardBgColor: 'red',
+    // lampColorOn: 'yellow',
+    // lampColorOff: 'blue',
+    timeInterval: 30,
+    columnsInBoard: 38
+  };
+
+  new Timetable('.scoreboard0', options).init().moveLeft(TEXT);
+})();
 //
 // //          ****  MOVE RIGHT    ***
 // (() => {
