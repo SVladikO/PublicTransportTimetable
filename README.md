@@ -17,8 +17,9 @@
 ## Table of Contents
 
 1. [Install](#install)
-2. [Introduction](#introduction)
-3. [Usage](#usage)
+2. [QuickStart](#quickStart)
+3. [Introduction](#introduction)
+4. [Usage](#usage)
     * [PrepareAssets](#PrepareAssets)
     * [show](#show)
     * [moveLeft](#moveLeft)
@@ -28,18 +29,33 @@
     * [createCharacter](#createCharacter)
     * [clear](#clear)
     * [AnIdeaToUse](#anIdeaToUse)
-4. [Contributing](#contributin4)
-5. [Motivation](#motivation)
+5. [Contributing](#contributin4)
+6. [Motivation](#motivation)
 
-<h2>Install</h2>
+<h2 id='Install'>Install</h2>
 
 ```bash
 npm install timetable-f
 ```
 
-<h2>Introduction</h2>
+<h2 id='quickStart'>QuickStart</h2>
+
+1. Let's show some text.
+```
+new Timetable('#root').init().show(' SEEMS IT WORKS ?');
+```
+<a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a>
+
+2. Let's make timer.
+```
+new Timetable('#root').init().show(' SEEMS IT WORKS ?');
+```
+<a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a>
+
+
+<h2 id='introduction'>Introduction</h2>
 <p>
-  	timetable-f is a module. The main purpose is to process text in timetable. <br>
+  	The main purpose is to process text in timetable. <br>
 
     show(), moveLeft(), moveRight()
 </p>
