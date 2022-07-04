@@ -1,33 +1,34 @@
 'use strict';
 
-const getImageSize = require('./get-image-size.js');
-const getDiv = require('./get-div.js');
+const getLampDiameter = require('./get-lamp-diameter.js');
 const TABLE_ROWS = 7;
 
-function createBoard(className, height, columns, imageDisabledLamp, backgroundColor) {
-  let root = getDiv(className);
-  let images = root.getElementsByTagName('img');
-
-  if (images.length > 0) return;
-
+function createBoard(root, rootHeight, rootWidth, lampColorOff, boardBgColor) {
+  if (rootWidth) {
+    root.style.width = rootWidth + 'px';
+  }
+  root.style.overflow = 'hidden';
   root.style.position = 'relative';
-  root.style.background = backgroundColor;
-  root.style.height = `${height}px`;
-  const imageSize = getImageSize(height);
-  const position = imageSize + imageSize / 5;
+  root.style.background = boardBgColor;
+  root.style.height = `${rootHeight}px`;
 
-  for (let j = 0; j < columns; j++) {
+  const lamSize = getLampDiameter(rootHeight);
+  const columnsAmount = (rootWidth || root.clientWidth) / lamSize + 1;
+  const position = lamSize + lamSize / 5;
+
+  for (let j = 0; j < columnsAmount; j++) {
     for (let i = 0; i < TABLE_ROWS; i++) {
-      let img = document.createElement('img');
-      img.src = imageDisabledLamp;
-      img.style.width = `${imageSize}px`;
-      img.style.height = `${imageSize}px`;
-      img.style.position = 'absolute';
-      img.style.borderRadius = '50%';
-      img.style.top = `${position * i}px`;
-      img.style.left = `${position * j}px`;
+      let span = document.createElement('span');
 
-      root.appendChild(img);
+      span.style.top = `${position * i}px`;
+      span.style.left = `${position * j}px`;
+      span.style.width = `${lamSize}px`;
+      span.style.height = `${lamSize}px`;
+      span.style.position = 'absolute';
+      span.style.borderRadius = '50%';
+      span.style.background = lampColorOff;
+
+      root.appendChild(span);
     }
   }
 }

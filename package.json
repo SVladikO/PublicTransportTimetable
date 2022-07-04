@@ -8,7 +8,7 @@
     "node": "^10.14.2"
   },
   "scripts": {
-    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js",
     "test": "jest",
     "test:w": "jest --watch",
     "coveralls": "node --harmony node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",

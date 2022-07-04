@@ -17,8 +17,9 @@
 ## Table of Contents
 
 1. [Install](#install)
-2. [Introduction](#introduction)
-3. [Usage](#usage)
+2. [QuickStart](#quickStart)
+2. [Introdaction](#introdaction)
+4. [API](#api)
     * [PrepareAssets](#PrepareAssets)
     * [show](#show)
     * [moveLeft](#moveLeft)
@@ -28,23 +29,46 @@
     * [createCharacter](#createCharacter)
     * [clear](#clear)
     * [AnIdeaToUse](#anIdeaToUse)
-4. [Contributing](#contributin4)
-5. [Motivation](#motivation)
+5. [Contributing](#contributin4)
+6. [Motivation](#motivation)
 
-<h2>Install</h2>
+<h2 id='Install'>Install</h2>
 
 ```bash
 npm install timetable-f
 ```
 
-<h2>Introduction</h2>
-<p>
-  	timetable-f is a module. The main purpose is to process text in timetable. <br>
+<h2 id='quickStart'>QuickStart</h2>
 
-    show(), moveLeft(), moveRight()
-</p>
+1. Example 1
+```
+new Timetable('#root').show(' YOUR TEXT ');
+```
+<a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a>
+
+2. Example 2 timer.
+```
+  let timetable = new Timetable('#timer');
+  let format = time => time < 10 ? '0' + time : time;
+
+  setInterval(() => {
+    let date = new Date();
+    const HOURS = format(date.getHours());
+    const MINUTES = format(date.getMinutes());
+    const SECONDS = format(date.getSeconds());
+
+    timetable.show(` ${HOURS}:${MINUTES}:${SECONDS}`);
+  }, 1000);
+```
+<img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/timer_timetable.png?raw=true">
+
+<p><a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a></p>
+
+
+
+<h2 id='introdaction'>Introduction</h2>
 <p>    
-    This version 1.0.0 support next characters only in UpperCase:
+    This version 1.0.0 support next characters:
 </p>
 
 ```bash
@@ -53,36 +77,23 @@ npm install timetable-f
   eng: "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789"
 }
 ```
+<p>The main purpose is to process text in timetable.</p>
+<img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/supported_characters.png?raw=true">
 
-<div align="center">
-  <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/supported_characters.png">
-</div>
-
-<h2>Usage</h2>
-<h4>PrepareAssets</h4>
-<p>!!! Important !!!</p>
-<p>Download image from 
-   <a href='https://github.com/SVladikO/timetable-f/blob/master/assets/img/off.png'> here</a>.
-   <br>
-   By default "timetable-f" try to get image from 'public/img/off.png'. 
+<p>
+You can find alphabet implementation   
+<a href="https://github.com/SVladikO/timetable-f/blob/master/src/scripts/character.js">here</a>
 </p>
 
-You can set your own path.
 
-```bash
-const Timetable = require('timetable-f');
-Timetable.setImage('yourPath/off.png');
-```
+<h2 id='api'>API</h2>
 
-<h4>show</h4>
+<h4 id=''>show()</h4>
 
  With default options:
 
-```bash
-const Timetable = require('timetable-f');
-
-// Be sure that div.className is exist in DOM
-const table = new Timetable('className').init();
+```
+const table = new Timetable('.className');
 table.show('text');
 ```
 
@@ -112,10 +123,10 @@ const options = {
 	backgroundColor: 'black'
 };
 
-const table = new Timetable('className', options).init();
+const table = new Timetable('className', options);
 table.show('ENG_TEXT');
 ```
-<h4>moveLeft</h4>
+<h4>moveLeft()</h4>
 
 ```bash
 const Timetable = require('timetable-f');
@@ -124,11 +135,11 @@ const text = 'text';
 const timeToRepeat = 2; // optional =0
 const timeout = 300; // optional =500
 
-const table = new Timetable('className').init();
+const table = new Timetable('className');
 table.moveLeft(text, timeToRepeat, timeout);
 ```
 
-<h4>moveRight</h4>
+<h4>moveRight()</h4>
 
 ```bash
 const Timetable = require('timetable-f');
@@ -137,37 +148,8 @@ const text = 'text';
 const timeToRepeat = 2; // optional =0
 const timeout = 300; // optional =500
 
-const table = new Timetable('className').init();
+const table = new Timetable('className');
 table.moveRight(text, timeToRepeat, timeout);
-```
-
-<h4>getColumnsByText</h4>
- <p>Calculate columns by custom text</p>
-
-```bash
-const Timetable = require('timetable-f');
-const text = "text";
-const options = {
-  columns: Timetable.getColumnsByText(text, 'eng'),
-};
- 
-const table = new Timetable('className', options).init();
-table.show(text);
-```
-<h4>getColumnsFullWidth</h4>
-<p> Calculate columns by div.className.width:</p>
-
-```bash
-const Timetable = require('timetable-f');
-const tableHeight = 70;
-const className = 'className';
-const options = {
-  height: tableHeight,
-  // tableHeight here is need because imageSize calculated from tableHeight
-  columns: Timetable.getColumnsFullWidth(tableHeight, className)
-};
-const table = new Timetable(className, options).init();
-table.show('text');
 ```
 
 <h4>createCharacter</h4>
@@ -181,41 +163,20 @@ Timetable.createCharacter('className');
 You click on table and see coordinates in console.
 Then copied into Character obj.
 
-<h4>clear</h4>
-
+<h4>clear()</h4>
 You can clear table.
 All methods show(), moveLeft(), moveRight() delete previous text if they work with one object
 
 ```bash
 const Timetable = require('timetable-f');
 
-const table = new Timetable('className').init();
+const table = new Timetable('className');
 table.show('text 0');
 table.clear();
 table.moveLeft('text 1');
 table.moveRight('text 2');
 table.show('text 3'); // show 'text 3'
 ```
-
-<h4>AnIdeaToUse</h4>
-
-```bash
-const Timetable = require('timetable-f');
-// Be sure div.className is in DOM
-const timer = new Timetable('timer', { height: 80, color: '#00aaff' }).init();
-const format = time => time < 10 ? '0' + time : time;
-
-setInterval(() => {
-  let date = new Date();
-  const HOURS = format(date.getHours());
-  const MINUTES = format(date.getMinutes());
-  const SECONDS = format(date.getSeconds());
-  timer.show(`${HOURS}:${MINUTES}:${SECONDS}`);
-}, 1000);
-```
-<div align="center">
-    <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/timer_timetable.png">
-</div>
 
 <h2>Contributing</h2>
 Do you want to contribute to this module ? You are welcome!)

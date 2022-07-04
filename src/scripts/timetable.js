@@ -1,26 +1,52 @@
 'use strict';
 
-const Table = require('./table.js');
 const Character = require('./character.js');
 const getColumnsByText = require('./features/get-columns-by-text.js');
 const getColumnsFullWidth = require('./features/get-columns-full-width.js');
 const reduceCoordinates = require('./features/reduce-coordinates.js');
 const createBoard = require('./features/create-board.js');
-const getDiv = require('./features/get-div.js');
+const getRoot = require('./features/get-root.js');
 const getConvertedText = require('./features/get-converted-text.js');
-
-let imageDisabledLamp = 'public/img/off.png';
 
 const TABLE_ROWS = 7;
 
 /**
  * Manipulation ua/eng text in div(table)
  */
-class Timetable extends Table {
-  init() {
-    createBoard(this.className, this.height, this.columns, imageDisabledLamp, this.backgroundColor);
-    this._images = this._getImgFromDOM();
-    return this;
+class Timetable {
+  constructor(root, {
+    language = 'eng',
+    // You can style your root through this field
+    rootHeight = 30,
+    rootWidth = 0,
+    rootBackground = '#16300b',
+    lampColorOn = '#9dd143',
+    lampColorOff = '#1d5110',
+    timeInterval = 500
+  } = {}) {
+    if (!root || root.length === 0) {
+      throw new Error('root is empty');
+    }
+
+    if (!'.#'.includes(root[0])) {
+      throw new Error(root + ' isn\'t valid root. Please use next syntax for #id or .className');
+    }
+
+    if (!language) throw new Error('language is not valid');
+
+    this.root = getRoot(root);
+    this.language = language;
+    this.rootHeight = rootHeight;
+    this.rootWidth = rootWidth;
+    this.rootBackground = rootBackground;
+    this.timeInterval = timeInterval;
+    this.lampColorOn = lampColorOn;
+    this.lampColorOff = lampColorOff;
+    this.intervalID = null;
+    this._coordinates = [];
+
+    createBoard(this.root, this.rootHeight, this.rootWidth, this.lampColorOff, this.rootBackground);
+    this._images = this._getLampsFromDOM();
   }
 
   /**
@@ -31,30 +57,32 @@ class Timetable extends Table {
     this.clear();
     this._convert(text);
     this._turnOnAllCoordinates();
+    return this;
   }
 
   /**
    * Clear previous and move left new text.
    * @param  {string} text
-   * @param  {number} [time] circles to repeat
-   * @param  {number} [interval] seconds for setInterval
+   * @param  {number} [circles] circles to repeat
+   * @param  {number} [timeInterval] seconds for setInterval
    */
-  moveLeft(text, time = 0, interval) {
+  moveLeft(text, circles = 0, timeInterval) {
     this.clear();
     this._convert(text);
     this._goToStartFromRightSide();
-    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS, interval);
-
+    this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS);
     function checkPosition() {
-      if (!(this._coordinates.slice(-1)[0] < 0)) return;
+      if (!(this._coordinates.slice(-1)[0] < 0)) {
+        return;
+      }
 
-      if (time <= 0) {
+      if (circles <= 0) {
         clearInterval(this.intervalID);
         this._coordinates = [];
         return;
       }
 
-      --time;
+      --circles;
       this._goToStartFromRightSide();
     }
   }
@@ -62,26 +90,26 @@ class Timetable extends Table {
   /**
     * Clear previous and move right new text.
     * @param  {string} text
-    * @param  {number} [time] circles to repeat
-    * @param  {number} [interval] seconds for setInterval
+    * @param  {number} [circles] circles to repeat
+    * @param  {number} [timeInterval] seconds for setInterval
     */
-  moveRight(text, time = 0, interval) {
+  moveRight(text, circles = 0, timeInterval) {
     this.clear();
     this._convert(text);
     this._goToStartFromLeftSide();
-    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS, interval);
+    this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS);
 
     function checkPosition() {
       if (!(this._coordinates[0] > this._images.length)) return;
 
-      if (time <= 0) {
+      if (circles <= 0) {
         clearInterval(this.intervalID);
         this._coordinates = [];
         this.clear();
         return;
       }
 
-      --time;
+      --circles;
       this._goToStartFromLeftSide();
     }
   }
@@ -99,22 +127,14 @@ class Timetable extends Table {
   }
 
   /**
-   * Update default path to image
-   * @param  {string} src
-   */
-  static setImage(src) {
-    imageDisabledLamp = src;
-  }
-
-  /**
-   * Calculate columns depends on div[className].width.
+   * Calculate columns depends on div[root].width.
    * We need here height too, because image size calculated from height
    * @param  {number} height    Table's
-   * @param  {string} className Where you want to create table
+   * @param  {string} root Where you want to create table
    * @returns {string} columns
    */
-  static getColumnsFullWidth(height, className) {
-    return getColumnsFullWidth(height, className);
+  static getColumnsFullWidth(height, root) {
+    return getColumnsFullWidth(height, root);
   }
 
   /**
@@ -133,9 +153,9 @@ class Timetable extends Table {
    * When you finished you need to copy coordinates
    * and put them in character.js
    */
-  static createCharacter(className) {
-    const timetable = new Timetable(className, { height: 100, columns: 7 }).init();
-    const root = getDiv(className);
+  static createCharacter(_root) {
+    const timetable = new Timetable(_root, { rootHeight: 100, rootWidth: 100 });
+    const root = getRoot(_root);
     addStyle(root);
 
     const nodes = Array.prototype.slice.call(root.children);
@@ -174,9 +194,8 @@ class Timetable extends Table {
     this._coordinates = this._coordinates.map(num => num - INCREMENT);
   }
 
-  _getImgFromDOM() {
-    let root = document.getElementsByClassName(this.className)[0];
-    return root.getElementsByTagName('IMG');
+  _getLampsFromDOM() {
+    return this.root.getElementsByTagName('span');
   }
 
   _switchImageBackgroundColor(position, color) {
@@ -186,34 +205,33 @@ class Timetable extends Table {
   }
 
   _turnOnAllCoordinates() {
-    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.color.active));
+    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.lampColorOn));
   }
 
   _turnOffAllCoordinates() {
-    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.color.disabled));
+    this._coordinates.forEach(position => this._switchImageBackgroundColor(position, this.lampColorOff));
   }
 
   /**
    * Full circle movement text's coordinates
    * @param  {function} checkCallback
    * @param  {function} changeCallback
-   * @param  {number} interval=this.interval
    */
-  _moveCoreFunctionality(checkCallback, changeCallback, interval = this.interval) {
+  _moveCoreFunctionality(checkCallback, changeCallback) {
     this.intervalID = setInterval(function() {
       try {
         checkCallback.call(this);
         this._turnOffAllCoordinates();
         this._coordinates = this._coordinates.map(position => {
           let newPosition = changeCallback(position);
-          this._switchImageBackgroundColor(newPosition, this.color.active);
+          this._switchImageBackgroundColor(newPosition, this.lampColorOn);
           return newPosition;
         });
       } catch (error) {
         clearInterval(this.intervalID);
         throw error;
       }
-    }.bind(this), interval);
+    }.bind(this), this.timeInterval);
   }
 }
 

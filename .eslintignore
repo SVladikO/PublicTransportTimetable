@@ -8,5 +8,5 @@ get-converted-text.test.js
 get-columns-by-text.test.js
 get-columns-full-width.test.js
 get-div.test.js
-get-image-size.test.js
+get-lamp-diameter.test.js
 reduce-coordinates.test.js

@@ -1,5 +1,6 @@
 
 const Table = require('../../../src/scripts/table.js');
+const defaultValues = require('../../../src/scripts/defaultValues.js');
 
 const ClASS_NAME = 'className';
 
@@ -7,34 +8,35 @@ test('Should set default parameters', () => {
   let table = new Table(ClASS_NAME);
 
   expect(table.className).toBe(ClASS_NAME);
-  expect(table.height).toBe(30);
-  expect(table.columns).toBe(40);
-  expect(table.color.active).toBe('chartreuse');
-  expect(table.color.disabled).toBe('');
-  expect(table.language).toBe('eng');
-  expect(table.interval).toBe(500);
-  // expect(table.convertedText).toBe([]);
+  expect(table.language).toBe(defaultValues.language);
+  expect(table.boardHeight).toBe(defaultValues.boardHeight);
+  expect(table.boardBgColor).toBe(defaultValues.boardBgColor);
+  expect(table.timeInterval).toBe(defaultValues.timeInterval);
+  expect(table.columnsInBoard).toBe(defaultValues.columnsInBoard);
+  expect(table.lampColorOn).toBe(defaultValues.lampColorOn);
+  expect(table.lampColorOff).toBe(defaultValues.lampColorOff);
   expect(table.intervalID).toBeNull();
 });
 
 test('Should set outcomes parameters', () => {
   let options = {
-    height: 85,
-    columns: 50,
-    color: 'red',
+    boardHeight: 85,
+    columnsInBoard: 50,
+    lampColorOn: 'red',
+    lampColorOff: 'blue',
     language: 'ua',
-    interval: 1000
+    timeInterval: 1000
   };
 
   let table = new Table(ClASS_NAME, options);
 
   expect(table.className).toBe(ClASS_NAME);
-  expect(table.height).toBe(options.height);
-  expect(table.columns).toBe(options.columns);
-  expect(table.color.active).toBe(options.color);
-  expect(table.color.disabled).toBe('');
+  expect(table.boardHeight).toBe(options.boardHeight);
+  expect(table.columnsInBoard).toBe(options.columnsInBoard);
+  expect(table.lampColorOn).toBe(options.lampColorOn);
+  expect(table.lampColorOff).toBe(options.lampColorOff);
   expect(table.language).toBe(options.language);
-  expect(table.interval).toBe(options.interval);
+  expect(table.timeInterval).toBe(options.timeInterval);
 });
 
 test('Should throw errors without .className', () => {
