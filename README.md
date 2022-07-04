@@ -1,18 +1,13 @@
 <div align="center">
 <a href="https://github.com/SVladikO/timetable-f">
-    <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/icon.png">
+    <img src="https://github.com/SVladikO/timetable-f/blob/develop/assets/img/icon.png?raw=true">
   </a>
 
   <h1>timetable-f</h1>
   <a href='https://coveralls.io/github/SVladikO/timetable-f?branch=master'><img src='https://coveralls.io/repos/github/SVladikO/timetable-f/badge.svg?branch=master' alt='Coverage Status' /></a>
 
 
-  <p>
-  	timetable-f is a module. The main purpose is to process text in timetable. <br>
-
-    show(), moveLeft(), moveRight() 
-
-  </p>
+   <p>The main purpose is to process text in timetable.</p>
 </div>
 
 ## Table of Contents
@@ -34,9 +29,8 @@
 <h2 id='Install'>Install</h2>
 
 ```bash
-npm install timetable-f
+npm i timetable-f
 ```
-
 <h2 id='quickStart'>QuickStart</h2>
 
 1. Example 1
@@ -47,7 +41,7 @@ new Timetable('#root').show(' YOUR TEXT ');
 
 <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/your_text.png?raw=true">
 <br/>
-<a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a>
+<a href='https://codepen.io/vlad-serhiychuk/pen/bGvVWdL'> Try it on CodePen</a>
 
 2. Example 2 timer.
 
@@ -67,7 +61,7 @@ new Timetable('#root').show(' YOUR TEXT ');
 
 <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/timer.png?raw=true">
 
-<p><a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a></p>
+<p><a href='https://codepen.io/vlad-serhiychuk/pen/zYWvwvV'> Try it on CodePen</a></p>
 
 
 
@@ -152,7 +146,7 @@ const t = new Timetable('#root', options);
     const table = new Timetable('.className', {languageKey = 'ua'})
 ```
 
-<h4>Change timetable colors:</h4>
+<h4>Change colors:</h4>
 
 ```
    const options = {
