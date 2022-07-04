@@ -40,7 +40,7 @@ let Timetable = require('./index.js');
     columnsInBoard: 38
   };
 
-  new Timetable('.scoreboard0', options).moveLeft(TEXT, 3);
+  console.log(new Timetable('.scoreboard0', options).moveLeft(TEXT, 3));
 })();
 
 //          ****  MOVE RIGHT    ***

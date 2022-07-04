@@ -76,7 +76,8 @@ class Timetable {
    */
   show(text) {
     this.clear();
-    this._convert(text);
+    this.text = text;
+    this._convert(this.text);
     this._turnOnAllCoordinates();
     return this;
   }
@@ -89,7 +90,8 @@ class Timetable {
    */
   moveLeft(text, circles = 0, timeInterval) {
     this.clear();
-    this._convert(text);
+    this.text = text;
+    this._convert(this.text);
     this._goToStartFromRightSide();
     this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS);
 
@@ -107,6 +109,7 @@ class Timetable {
       --circles;
       this._goToStartFromRightSide();
     }
+    return this;
   }
 
   /**
@@ -117,7 +120,8 @@ class Timetable {
    */
   moveRight(text, circles = 0, timeInterval) {
     this.clear();
-    this._convert(text);
+    this.text = text;
+    this._convert(this.text);
     this._goToStartFromLeftSide();
     this._moveCoreFunctionality(checkPosition, position => position + TABLE_ROWS);
 
@@ -134,6 +138,7 @@ class Timetable {
       --circles;
       this._goToStartFromLeftSide();
     }
+    return this;
   }
 
   /**
