@@ -82,7 +82,7 @@ new Timetable('#root').show(' YOUR TEXT ');
 
 <p>
 You can find alphabet implementation   
-<a href="https://github.com/SVladikO/timetable-f/blob/master/src/scripts/character.js">here</a>
+<a href="https://github.com/SVladikO/timetable-f/blob/master/src/scripts/character.js" target="_blank">here</a>
 </p>
 
 
