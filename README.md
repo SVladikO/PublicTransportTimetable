@@ -32,8 +32,7 @@
 npm i timetable-f
 ```
 <h2 id='quickStart'>QuickStart</h2>
-
-1. Example 1
+<h4>Example 1:</h4>
 
 ```
 new Timetable('#root').show(' YOUR TEXT ');
@@ -41,9 +40,11 @@ new Timetable('#root').show(' YOUR TEXT ');
 
 <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/your_text.png?raw=true">
 <br/>
+<p>
 <a href='https://codepen.io/vlad-serhiychuk/pen/bGvVWdL' target="_blank"> Try it on CodePen</a>
-
-2. Example 2 timer.
+</p>
+<br>
+<h4>Example 2 timer.</h4>
 
 ```
   let timetable = new Timetable('#timer');
