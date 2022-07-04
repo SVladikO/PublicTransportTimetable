@@ -1,6 +1,6 @@
 let Timetable = require('./index.js');
 
-window.t = new Timetable('#t').show(' T');
+window.t = new Timetable('#t').show('YOUR TEXT');
 
 (() => {
   let timetable = new Timetable('#timer', { rootWidth: 180 });
@@ -20,18 +20,7 @@ window.t = new Timetable('#t').show(' T');
 
 (() => {
   const TEXT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-.':?><+/=_!0123456789";
-
-  let options = {
-    // language: 'eng',
-    boardHeight: 25,
-    boardBgColor: 'black',
-    lampColorOn: 'white',
-    lampColorOff: 'red',
-    // timeInterval: 500,
-    columnsInBoard: Timetable.getColumnsByText(TEXT, 'eng')
-
-  };
-  new Timetable('#eng_char', options).show(TEXT);
+  new Timetable('#eng_char').show(TEXT);
 })();
 
 // UA CHARACTERS
@@ -39,14 +28,7 @@ window.t = new Timetable('#t').show(' T');
 (() => {
   const TEXT = 'АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ._-!:><=+/0123456789';
 
-  let options = {
-    language: 'ua',
-    boardHeight: 25,
-    boardBgColor: 'black',
-    lampColorOn: 'yellow',
-    lampColorOff: 'blue',
-    columnsInBoard: Timetable.getColumnsByText(TEXT, 'ua')
-  };
+  let options = {language: 'ua'};
   new Timetable('.ua_char', options).show(TEXT);
 })();
 
