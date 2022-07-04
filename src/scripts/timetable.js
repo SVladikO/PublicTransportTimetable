@@ -10,19 +10,30 @@ const getConvertedText = require('./features/get-converted-text.js');
 
 const TABLE_ROWS = 7;
 
+const defaultOptions = {
+  'languageKey': 'eng',
+  // You can style your root through this field
+  'rootHeight': 30,
+  'rootWidth': 0,
+  'rootBackground': '#16300b',
+  'lampColorOn': '#9dd143',
+  'lampColorOff': '#1d5110',
+  'timeInterval': 500
+}
+
 /**
  * Manipulation ua/eng text in div(table)
  */
 class Timetable {
   constructor(root, {
-    language = 'eng',
+    languageKey = defaultOptions.languageKey,
     // You can style your root through this field
-    rootHeight = 30,
-    rootWidth = 0,
-    rootBackground = '#16300b',
-    lampColorOn = '#9dd143',
-    lampColorOff = '#1d5110',
-    timeInterval = 500
+    rootHeight = defaultOptions.rootHeight,
+    rootWidth = defaultOptions.rootWidth,
+    rootBackground = defaultOptions.rootBackground,
+    lampColorOn = defaultOptions.lampColorOn,
+    lampColorOff = defaultOptions.lampColorOff,
+    timeInterval = defaultOptions.timeInterval
   } = {}) {
     if (!root || root.length === 0) {
       throw new Error('root is empty');
@@ -32,10 +43,10 @@ class Timetable {
       throw new Error(root + ' isn\'t valid root. Please use next syntax for #id or .className');
     }
 
-    if (!language) throw new Error('language is not valid');
+    if (!languageKey) throw new Error('language is not valid');
 
     this.root = getRoot(root);
-    this.language = language;
+    this.languageKey = languageKey;
     this.rootHeight = rootHeight;
     this.rootWidth = rootWidth;
     this.rootBackground = rootBackground;
@@ -47,6 +58,16 @@ class Timetable {
 
     createBoard(this.root, this.rootHeight, this.rootWidth, this.lampColorOff, this.rootBackground);
     this._images = this._getLampsFromDOM();
+  }
+
+  static getDefault() {
+    console.log('languageKey - ', defaultOptions.languageKey);
+    console.log('rootHeight - ', defaultOptions.rootHeight);
+    console.log('rootWidth - ', defaultOptions.rootWidth);
+    console.log('rootBackground - ', defaultOptions.rootBackground);
+    console.log('timeInterval - ', defaultOptions.timeInterval);
+    console.log('lampColorOn - ', defaultOptions.lampColorOn);
+    console.log('lampColorOff - ', defaultOptions.lampColorOff);
   }
 
   /**
@@ -71,6 +92,7 @@ class Timetable {
     this._convert(text);
     this._goToStartFromRightSide();
     this._moveCoreFunctionality(checkPosition, position => position - TABLE_ROWS);
+
     function checkPosition() {
       if (!(this._coordinates.slice(-1)[0] < 0)) {
         return;
@@ -88,11 +110,11 @@ class Timetable {
   }
 
   /**
-    * Clear previous and move right new text.
-    * @param  {string} text
-    * @param  {number} [circles] circles to repeat
-    * @param  {number} [timeInterval] seconds for setInterval
-    */
+   * Clear previous and move right new text.
+   * @param  {string} text
+   * @param  {number} [circles] circles to repeat
+   * @param  {number} [timeInterval] seconds for setInterval
+   */
   moveRight(text, circles = 0, timeInterval) {
     this.clear();
     this._convert(text);
@@ -140,11 +162,11 @@ class Timetable {
   /**
    * Calculate columns depends on text length.
    * @param  {string} text
-   * @param  {string} language = 'eng'
+   * @param  {string} languageKey = 'eng'
    * @returns {number} columns
    */
-  static getColumnsByText(text, language = 'eng') {
-    return getColumnsByText(text, language, Character, TABLE_ROWS)
+  static getColumnsByText(text, languageKey = 'eng') {
+    return getColumnsByText(text, languageKey, Character, TABLE_ROWS)
   }
 
   /**
@@ -154,12 +176,12 @@ class Timetable {
    * and put them in character.js
    */
   static createCharacter(_root) {
-    const timetable = new Timetable(_root, { rootHeight: 100, rootWidth: 100 });
+    const timetable = new Timetable(_root, {rootHeight: 100, rootWidth: 100});
     const root = getRoot(_root);
     addStyle(root);
 
     const nodes = Array.prototype.slice.call(root.children);
-    root.addEventListener('click', function(event) {
+    root.addEventListener('click', function (event) {
       timetable.clear();
       reduceCoordinates(nodes, event.target, timetable._coordinates);
       console.log(sort(timetable._coordinates));
@@ -179,7 +201,7 @@ class Timetable {
   }
 
   _convert(text) {
-    this._coordinates = getConvertedText('' + text, this.language, Character);
+    this._coordinates = getConvertedText('' + text, this.languageKey, Character);
   }
 
   _goToStartFromRightSide() {
@@ -218,7 +240,7 @@ class Timetable {
    * @param  {function} changeCallback
    */
   _moveCoreFunctionality(checkCallback, changeCallback) {
-    this.intervalID = setInterval(function() {
+    this.intervalID = setInterval(function () {
       try {
         checkCallback.call(this);
         this._turnOffAllCoordinates();
