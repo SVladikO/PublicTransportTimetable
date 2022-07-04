@@ -1,6 +1,6 @@
 {
   "name": "timetable-f",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Create timetable and put there your text. You can show/moveLeft/moveRight",
   "main": "index.js",
   "engines": {

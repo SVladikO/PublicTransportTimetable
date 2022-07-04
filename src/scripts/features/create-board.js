@@ -4,6 +4,10 @@ const getLampDiameter = require('./get-lamp-diameter.js');
 const TABLE_ROWS = 7;
 
 function createBoard(root, rootHeight, rootWidth, lampColorOff, boardBgColor) {
+  if (root.hasChildNodes()) {
+    root.innerHTML = '';
+    console.warn('You use one root for few timetables!')
+  }
   if (rootWidth) {
     root.style.width = rootWidth + 'px';
   }
