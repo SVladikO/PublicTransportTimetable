@@ -174,20 +174,27 @@ const table = new Timetable('.className');
 table.moveLeft('your text', timeToRepeat, timeout);
 ```
 
-You can clear it any time you want.
+<h4>You can clear it any time you want.</h4>
 
 ```bash
 table.clear()
 ```
 
-<h3>createCharacter</h3>
-When you want to add some characters or maybe language
-you can use next tool:
+[//]: # ()
+[//]: # (<h3>createCharacter</h3>)
 
-```bash
-const Timetable = require('timetable-f');
-Timetable.createCharacter('className');
-```
+[//]: # (When you want to add some characters or maybe language)
+
+[//]: # (you can use next tool:)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (const Timetable = require&#40;'timetable-f'&#41;;)
+
+[//]: # (Timetable.createCharacter&#40;'className'&#41;;)
+
+[//]: # (```)
 
 You click on table and see coordinates in console.
 Then copied into Character obj.
