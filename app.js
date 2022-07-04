@@ -1,7 +1,7 @@
 let Timetable = require('./index.js');
 
 window.t = new Timetable('#t').show('YOUR TEXT');
-t.getDefault();
+Timetable.getDefault();
 
 (() => {
   let timetable = new Timetable('#timer', { rootWidth: 180 });
@@ -29,7 +29,7 @@ t.getDefault();
 (() => {
   const TEXT = 'АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ._-!:><=+/0123456789';
 
-  let options = {language: 'ua'};
+  let options = {languageKey: 'ua'};
   new Timetable('.ua_char', options).show(TEXT);
 })();
 
