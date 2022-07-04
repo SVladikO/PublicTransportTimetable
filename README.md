@@ -20,17 +20,14 @@
 2. [QuickStart](#quickStart)
 2. [Introdaction](#introdaction)
 4. [API](#api)
-    * [PrepareAssets](#PrepareAssets)
-    * [show](#show)
-    * [moveLeft](#moveLeft)
-    * [moveRight](#moveRight)
-    * [getColumnsByText](#getColumnsByText)
-    * [getColumnsFullWidth](#getColumnsFullWidth)
-    * [createCharacter](#createCharacter)
-    * [clear](#clear)
-    * [AnIdeaToUse](#anIdeaToUse)
-5. [Contributing](#contributin4)
-6. [Motivation](#motivation)
+    * [show()](#show)
+    * [moveLeft()](#moveLeft)
+    * [moveRight()](#moveRight)
+    * [Customization](#Customization)
+
+[//]: # (    * [createCharacter]&#40;#createCharacter&#41;)
+6. [Contributing](#contributin4)
+7. [Motivation](#motivation)
 
 <h2 id='Install'>Install</h2>
 
@@ -44,6 +41,8 @@ npm install timetable-f
 ```
 new Timetable('#root').show(' YOUR TEXT ');
 ```
+<img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/your_text.png?raw=true">
+<br/>
 <a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a>
 
 2. Example 2 timer.
@@ -60,7 +59,7 @@ new Timetable('#root').show(' YOUR TEXT ');
     timetable.show(` ${HOURS}:${MINUTES}:${SECONDS}`);
   }, 1000);
 ```
-<img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/timer_timetable.png?raw=true">
+<img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/timer.png?raw=true">
 
 <p><a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a></p>
 
@@ -68,7 +67,7 @@ new Timetable('#root').show(' YOUR TEXT ');
 
 <h2 id='introdaction'>Introduction</h2>
 <p>    
-    This version 1.0.0 support next characters:
+    From version 1.0.0 this package support next characters:
 </p>
 
 ```bash
@@ -88,71 +87,66 @@ You can find alphabet implementation
 
 <h2 id='api'>API</h2>
 
-<h4 id=''>show()</h4>
-
- With default options:
-
+<h3 id='show'>show()</h3>
 ```
 const table = new Timetable('.className');
-table.show('text');
+table.show('your text');
 ```
+We only show your text.
 
-By default the second parameter in Timetable constructor set:
-```bash
-{ 
-	height: 30,  
-	columns: 40,
-	color: 'chartreuse',
-	language: 'eng',
-	interval: 500,
-	backgroundColor: 'black'
-}
-```
-
-With custom options:
+<h3 id='moveLeft'>moveLeft()</h3>
 
 ```bash
-const Timetable = require('timetable-f');
-
-const options = { 
-  height: 80, 
-	columns: 80,
-	color: 'red',
-	language: 'eng',
-	interval: 1000,
-	backgroundColor: 'black'
-};
-
-const table = new Timetable('className', options);
-table.show('ENG_TEXT');
+const table = new Timetable('.className');
+table.moveLeft('your text');
 ```
-<h4>moveLeft()</h4>
+In the above example text will move from right to left (by default one circle & with speed 500)
+
+<h3 id='moveRight'>moveRight()</h3>
 
 ```bash
-const Timetable = require('timetable-f');
+const table = new Timetable('className');
+table.moveRight('your text', timeToRepeat, timeout);
+```
+In the above example text will move from left to right (by default one circle & speed 500)
 
-const text = 'text';
+
+
+<h3 id='Customization'>Customization</h3>
+If you want to check default options you can call getDefault method.
+```bash
+new Timetable('.className').getDefault();
+```
+On current moment it's:
+
+```aidl
+    language = 'eng',
+    // You can style your root through this field
+    rootHeight = 30,
+    rootWidth = 0,
+    rootBackground = '#16300b',
+    lampColorOn = '#9dd143',
+    lampColorOff = '#1d5110',
+    timeInterval = 500
+```
+
+If you want to change default parameters:
+```bash
 const timeToRepeat = 2; // optional =0
 const timeout = 300; // optional =500
 
-const table = new Timetable('className');
-table.moveLeft(text, timeToRepeat, timeout);
+const table = new Timetable('.className');
+table.moveLeft('your text', timeToRepeat, timeout);
 ```
-
-<h4>moveRight()</h4>
+You can clear it any time you want.
 
 ```bash
-const Timetable = require('timetable-f');
-
-const text = 'text';
-const timeToRepeat = 2; // optional =0
-const timeout = 300; // optional =500
-
-const table = new Timetable('className');
-table.moveRight(text, timeToRepeat, timeout);
+table.clear()
 ```
 
-<h4>createCharacter</h4>
+
+
+<h3>createCharacter</h3>
 When you want to add some characters or maybe language
 you can use next tool:
 
@@ -163,20 +157,6 @@ Timetable.createCharacter('className');
 You click on table and see coordinates in console.
 Then copied into Character obj.
 
-<h4>clear()</h4>
-You can clear table.
-All methods show(), moveLeft(), moveRight() delete previous text if they work with one object
-
-```bash
-const Timetable = require('timetable-f');
-
-const table = new Timetable('className');
-table.show('text 0');
-table.clear();
-table.moveLeft('text 1');
-table.moveRight('text 2');
-table.show('text 3'); // show 'text 3'
-```
 
 <h2>Contributing</h2>
 Do you want to contribute to this module ? You are welcome!)

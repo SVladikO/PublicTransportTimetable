@@ -1,6 +1,7 @@
 let Timetable = require('./index.js');
 
 window.t = new Timetable('#t').show('YOUR TEXT');
+t.getDefault();
 
 (() => {
   let timetable = new Timetable('#timer', { rootWidth: 180 });

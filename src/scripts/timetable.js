@@ -35,7 +35,7 @@ class Timetable {
     if (!language) throw new Error('language is not valid');
 
     this.root = getRoot(root);
-    this.language = language;
+    this.languageKey = language;
     this.rootHeight = rootHeight;
     this.rootWidth = rootWidth;
     this.rootBackground = rootBackground;
@@ -47,6 +47,16 @@ class Timetable {
 
     createBoard(this.root, this.rootHeight, this.rootWidth, this.lampColorOff, this.rootBackground);
     this._images = this._getLampsFromDOM();
+  }
+
+  getDefault() {
+    console.log('languageKey - ', this.languageKey);
+    console.log('rootHeight - ', this.rootHeight);
+    console.log('rootWidth - ', this.rootWidth);
+    console.log('rootBackground - ', this.rootBackground);
+    console.log('timeInterval - ', this.timeInterval );
+    console.log('lampColorOn - ', this.lampColorOn);
+    console.log('lampColorOff - ', this.lampColorOff);
   }
 
   /**
@@ -140,11 +150,11 @@ class Timetable {
   /**
    * Calculate columns depends on text length.
    * @param  {string} text
-   * @param  {string} language = 'eng'
+   * @param  {string} languageKey = 'eng'
    * @returns {number} columns
    */
-  static getColumnsByText(text, language = 'eng') {
-    return getColumnsByText(text, language, Character, TABLE_ROWS)
+  static getColumnsByText(text, languageKey = 'eng') {
+    return getColumnsByText(text, languageKey, Character, TABLE_ROWS)
   }
 
   /**
@@ -179,7 +189,7 @@ class Timetable {
   }
 
   _convert(text) {
-    this._coordinates = getConvertedText('' + text, this.language, Character);
+    this._coordinates = getConvertedText('' + text, this.languageKey, Character);
   }
 
   _goToStartFromRightSide() {
