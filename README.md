@@ -116,7 +116,7 @@ In the above example text will move from right to left (by default one circle & 
 
 ```bash
 const table = new Timetable('className');
-table.moveRight('your text', timeToRepeat, timeout);
+table.moveRight('your text');
 ```
 
 In the above example text will move from left to right (by default one circle & speed 500)
