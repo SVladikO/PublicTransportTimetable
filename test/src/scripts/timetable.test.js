@@ -9,16 +9,16 @@ const lampTagName = 'span';
 
 test('Should prepare environment without errors', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
-  new Timetable(CLASS_NAME).init();
+  new Timetable(CLASS_NAME);
 });
 
 test('Should throw errors', () => {
-  expect(() => new Timetable().init()).toThrow();
+  expect(() => new Timetable()).toThrow();
 });
 
 test('Should create correct images amount', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
-  new Timetable(CLASS_NAME, { columnsInBoard: 1 }).init();
+  new Timetable(CLASS_NAME, { columnsInBoard: 1 });
   const div = document.getElementsByClassName(CLASS_NAME)[0];
   const lamps = div.getElementsByTagName(lampTagName);
   expect(lamps.length).toBe(7)
@@ -32,7 +32,7 @@ test('Should delete backgroundColor for all images', () => {
 
   const options = { columnsInBoard: 1, lampColorOn: 'red' };
 
-  const table = new Timetable(CLASS_NAME, options).init();
+  const table = new Timetable(CLASS_NAME, options);
   table.show(text);
 
   const lamps = document.getElementsByTagName(lampTagName);
@@ -58,7 +58,7 @@ test('Should watch click in createCharacter()', () => {
 
 test('Should move coordinates right', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
-  const table = new Timetable(CLASS_NAME, { columnsInBoard: 7 }).init();
+  const table = new Timetable(CLASS_NAME, { columnsInBoard: 7 });
   table._coordinates = [0, 7];
   table._goToStartFromRightSide();
 
@@ -69,7 +69,7 @@ test('Should move coordinates right', () => {
 
 test('Should move coordinates left', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
-  const table = new Timetable(CLASS_NAME, { columnsInBoard: 7 }).init();
+  const table = new Timetable(CLASS_NAME, { columnsInBoard: 7 });
   table._coordinates = [0, 7];
   table._goToStartFromLeftSide();
 
@@ -88,7 +88,7 @@ test('Should return 0 images', () => {
 
 test('Should return images', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
-  const table = new Timetable(CLASS_NAME, { columnsInBoard: 7 }).init();
+  const table = new Timetable(CLASS_NAME, { columnsInBoard: 7 });
   const lamps = table._getLampsFromDOM();
 
   expect(lamps.length).toBe(49);
@@ -98,7 +98,7 @@ test('Should switch image background color', () => {
   document.body.innerHTML = `<div class="${CLASS_NAME}"></div>`;
 
   const color = 'yellow';
-  const table = new Timetable(CLASS_NAME).init();
+  const table = new Timetable(CLASS_NAME);
 
   const div = document.getElementsByClassName(CLASS_NAME)[0];
   let image = div.getElementsByTagName(lampTagName)[0];

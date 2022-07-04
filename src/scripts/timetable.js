@@ -44,12 +44,9 @@ class Timetable {
     this.lampColorOff = lampColorOff;
     this.intervalID = null;
     this._coordinates = [];
-  }
 
-  init() {
     createBoard(this.root, this.rootHeight, this.rootWidth, this.lampColorOff, this.rootBackground);
     this._images = this._getLampsFromDOM();
-    return this;
   }
 
   /**
@@ -157,7 +154,7 @@ class Timetable {
    * and put them in character.js
    */
   static createCharacter(_root) {
-    const timetable = new Timetable(_root, { rootHeight: 100, rootWidth: 100 }).init();
+    const timetable = new Timetable(_root, { rootHeight: 100, rootWidth: 100 });
     const root = getRoot(_root);
     addStyle(root);
 

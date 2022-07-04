@@ -42,13 +42,13 @@ npm install timetable-f
 
 1. Let's show some text.
 ```
-new Timetable('#root').init().show(' SEEMS IT WORKS ?');
+new Timetable('#root').show(' SEEMS IT WORKS ?');
 ```
 <a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a>
 
 2. Let's make timer.
 ```
-new Timetable('#root').init().show(' SEEMS IT WORKS ?');
+new Timetable('#root').show(' SEEMS IT WORKS ?');
 ```
 <a href='https://codepen.io/gaearon/pen/yzMaBd'> Try it on CodePen</a>
 
@@ -98,7 +98,7 @@ Timetable.setImage('yourPath/off.png');
 const Timetable = require('timetable-f');
 
 // Be sure that div.className is exist in DOM
-const table = new Timetable('className').init();
+const table = new Timetable('className');
 table.show('text');
 ```
 
@@ -128,7 +128,7 @@ const options = {
 	backgroundColor: 'black'
 };
 
-const table = new Timetable('className', options).init();
+const table = new Timetable('className', options);
 table.show('ENG_TEXT');
 ```
 <h4>moveLeft</h4>
@@ -140,7 +140,7 @@ const text = 'text';
 const timeToRepeat = 2; // optional =0
 const timeout = 300; // optional =500
 
-const table = new Timetable('className').init();
+const table = new Timetable('className');
 table.moveLeft(text, timeToRepeat, timeout);
 ```
 
@@ -153,7 +153,7 @@ const text = 'text';
 const timeToRepeat = 2; // optional =0
 const timeout = 300; // optional =500
 
-const table = new Timetable('className').init();
+const table = new Timetable('className');
 table.moveRight(text, timeToRepeat, timeout);
 ```
 
@@ -167,7 +167,7 @@ const options = {
   columns: Timetable.getColumnsByText(text, 'eng'),
 };
  
-const table = new Timetable('className', options).init();
+const table = new Timetable('className', options);
 table.show(text);
 ```
 <h4>getColumnsFullWidth</h4>
@@ -182,7 +182,7 @@ const options = {
   // tableHeight here is need because imageSize calculated from tableHeight
   columns: Timetable.getColumnsFullWidth(tableHeight, className)
 };
-const table = new Timetable(className, options).init();
+const table = new Timetable(className, options);
 table.show('text');
 ```
 
@@ -205,7 +205,7 @@ All methods show(), moveLeft(), moveRight() delete previous text if they work wi
 ```bash
 const Timetable = require('timetable-f');
 
-const table = new Timetable('className').init();
+const table = new Timetable('className');
 table.show('text 0');
 table.clear();
 table.moveLeft('text 1');
@@ -218,7 +218,7 @@ table.show('text 3'); // show 'text 3'
 ```bash
 const Timetable = require('timetable-f');
 // Be sure div.className is in DOM
-const timer = new Timetable('timer', { height: 80, color: '#00aaff' }).init();
+const timer = new Timetable('timer', { height: 80, color: '#00aaff' });
 const format = time => time < 10 ? '0' + time : time;
 
 setInterval(() => {
