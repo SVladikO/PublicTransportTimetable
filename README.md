@@ -41,7 +41,7 @@ new Timetable('#root').show(' YOUR TEXT ');
 
 <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/your_text.png?raw=true">
 <br/>
-<a href='https://codepen.io/vlad-serhiychuk/pen/bGvVWdL'> Try it on CodePen</a>
+<a href='https://codepen.io/vlad-serhiychuk/pen/bGvVWdL' target="_blank"> Try it on CodePen</a>
 
 2. Example 2 timer.
 
@@ -61,7 +61,7 @@ new Timetable('#root').show(' YOUR TEXT ');
 
 <img src="https://github.com/SVladikO/timetable-f/blob/master/assets/img/timer.png?raw=true">
 
-<p><a href='https://codepen.io/vlad-serhiychuk/pen/zYWvwvV'> Try it on CodePen</a></p>
+<p><a href='https://codepen.io/vlad-serhiychuk/pen/XWEmRXL' target="_blank"> Try it on CodePen</a></p>
 
 
 
